@@ -1,0 +1,10 @@
+@startuml
+class Reposicion {
+    + Reposicion()
+    + Reposicion(id:string, fechaReposicion:DateTime, precioTotal:double, comentario:string)
+    + Id : string <<get>> <<set>>
+    + FechaReposicion : DateTime <<get>> <<set>>
+    + PrecioTotal : double <<get>> <<set>>
+    + Comentario : string? <<get>> <<set>>
+}
+@enduml
