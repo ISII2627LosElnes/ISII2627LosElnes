@@ -1,8 +1,10 @@
 @startuml
 !include .\\ApplicationUser.puml
 !include .\\Compra.puml
-!include .\\Editorial.puml
+!include .\\Genero.puml
+!include .\\GooglePay.puml
 !include .\\Libro.puml
+!include .\\MetodoPago.puml
 !include .\\Reposicion.puml
 !include .\\Resena.puml
 @enduml
