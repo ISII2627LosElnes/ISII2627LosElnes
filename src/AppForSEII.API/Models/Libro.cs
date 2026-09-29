@@ -25,6 +25,12 @@ public class Libro
     [Range(0, int.MaxValue, ErrorMessage = "El stock debe ser mayor que 0")]
     public int Stock { get; set; }
 
+    public Editorial Editorial { get; set; }
+
+    public Genero Genero { get; set; }
+
+    
+
     
     
 }
