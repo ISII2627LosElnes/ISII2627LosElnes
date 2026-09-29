@@ -11,11 +11,6 @@ public class Subasta
     }
     
 
-    // Constructor vacío
-    public Subasta()
-    {
-    }
-
 
     [Key]
     public String Id { get; set; }
