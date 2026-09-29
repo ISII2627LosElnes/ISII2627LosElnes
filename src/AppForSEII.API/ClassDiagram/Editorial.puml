@@ -1,12 +1,10 @@
 @startuml
-
 class Editorial {
-    + Editorial()
     + Editorial(id:int, nombre:string)
     + Id : int <<get>> <<set>>
     + Nombre : string <<get>> <<set>>
 }
-
-Editorial o-- "0..* Libros" "Libro"
-
+class "IList`1"<T> {
+}
+Editorial o-> "Libros<Libro>" "IList`1"
 @enduml

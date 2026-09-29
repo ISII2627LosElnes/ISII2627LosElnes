@@ -1,5 +1,5 @@
 @startuml
-class MetodoPago {
+abstract class MetodoPago {
     + MetodoPago(id:string)
     + Id : string <<get>> <<set>>
 }

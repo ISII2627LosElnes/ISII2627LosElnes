@@ -1,0 +1,6 @@
+@startuml
+class PayPal {
+    + PayPal(numeroTelefono:int)
+    + NumeroTelefono : int <<get>> <<set>>
+}
+@enduml
