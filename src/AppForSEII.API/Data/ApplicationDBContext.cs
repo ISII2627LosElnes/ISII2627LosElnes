@@ -21,6 +21,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Compra> Compras { get; set; }
     public DbSet<Reposicion> Reposiciones { get; set; }
 
+    public DbSet<PayPal> PayPals { get; set; }
 
 
 }
