@@ -12,8 +12,6 @@ class Libro {
     + CalificacionMedia : decimal <<get>> <<set>>
     + FechaLanzamiento : DateTime <<get>> <<set>>
 }
-
 Libro --> "Editorial" Editorial
 Libro --> "Genero" Genero
-
 @enduml
