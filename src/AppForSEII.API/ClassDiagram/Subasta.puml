@@ -1,0 +1,9 @@
+@startuml
+class Subasta {
+    + Subasta(id:String, precioSubasta:double, fechaSubasta:DateTime)
+    + Subasta()
+    + Id : String <<get>> <<set>>
+    + PrecioSubasta : double <<get>> <<set>>
+    + FechaSubasta : DateTime <<get>> <<set>>
+}
+@enduml
