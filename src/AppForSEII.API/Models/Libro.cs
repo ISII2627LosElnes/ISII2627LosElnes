@@ -5,12 +5,13 @@ public class Libro
     {
     }
 
-    public Libro(int id, string titulo, string autor, decimal precioTotal, int stock)
+    public Libro(int id, string titulo, string autor, decimal precioTotal, decimal precioReposicion, int stock)
     {
         Id = id;
         Titulo = titulo;
         Autor = autor;
         PrecioTotal = precioTotal;
+        PrecioReposicion = precioReposicion;
         Stock = stock;
     }
 
@@ -21,6 +22,9 @@ public class Libro
     public string Autor { get; set; }
 
     public decimal PrecioTotal { get; set; }
+    
+    [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
+    public decimal PrecioReposicion { get; set; }
 
     [Range(0, int.MaxValue, ErrorMessage = "El stock debe ser mayor que 0")]
     public int Stock { get; set; }
