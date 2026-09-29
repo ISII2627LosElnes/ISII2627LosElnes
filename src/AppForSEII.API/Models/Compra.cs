@@ -27,4 +27,6 @@ namespace AppForSEII.API.Models
          public string? CodigoDescuento { get; set; } 
     }
 
+    public List<CompraItem> CompraItems { get; set; }
+
 }

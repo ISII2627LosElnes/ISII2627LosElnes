@@ -33,6 +33,9 @@ public class Libro
 
     public Genero Genero { get; set; }
 
+    public List<CompraItem> CompraItems { get; set; }
+
+
     
 
     
