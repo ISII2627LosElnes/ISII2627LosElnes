@@ -6,12 +6,13 @@ public class Reposicion
     {
     }
 
-    public Reposicion(string id, DateTime fechaReposicion, double precioTotal, string comentario)
+    public Reposicion(string id, DateTime fechaReposicion, double precioTotal, string comentario, IList<ReposicionItem> reposicionItems)
     {
         Id = id;
         FechaReposicion = fechaReposicion;
         PrecioTotal = precioTotal;
         Comentario = comentario;
+        ReposicionItems = reposicionItems;
     }
 
     [Key]
@@ -23,4 +24,5 @@ public class Reposicion
 
     [StringLength(100, MinimumLength = 20, ErrorMessage = "El comentario debe tener entre 20 y 100 caracteres.")]
     public string? Comentario { get; set; }
+    public IList<ReposicionItem> ReposicionItems { get; set; }
 }
