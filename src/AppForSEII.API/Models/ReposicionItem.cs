@@ -15,6 +15,7 @@ public class ReposicionItem
         Reposicion = reposicion;
     }
 
+    [Range(1, int.MaxValue, ErrorMessage = "La cantidad de reposición debe ser como mínimo 1.")]
     public int CantidadReposicion { get; set; }
 
     public string LibroId { get; set; }
