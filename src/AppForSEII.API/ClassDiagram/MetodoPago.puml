@@ -1,0 +1,6 @@
+@startuml
+class MetodoPago {
+    + MetodoPago(id:string)
+    + Id : string <<get>> <<set>>
+}
+@enduml
