@@ -22,5 +22,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     
     public DbSet<Genero> Generos { get; set; }
 
+    public DbSet<Editorial> Editoriales { get; set; }
+
+
 
 }
