@@ -32,6 +32,9 @@ public class Libro
     public string Autor { get; set; }
 
     public decimal PrecioTotal { get; set; }
+    
+    [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
+    public decimal PrecioReposicion { get; set; }
 
     [Range(0, int.MaxValue, ErrorMessage = "El stock debe ser mayor que 0")]
     public int Stock { get; set; }
