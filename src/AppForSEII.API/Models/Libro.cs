@@ -5,14 +5,25 @@ public class Libro
     {
     }
 
-    public Libro(int id, string titulo, string autor, decimal precioTotal, int stock)
-    {
-        Id = id;
-        Titulo = titulo;
-        Autor = autor;
-        PrecioTotal = precioTotal;
-        Stock = stock;
-    }
+   public Libro(
+    int id,
+    string titulo,
+    string tipoLibro,
+    string autor,
+    decimal precioTotal,
+    int stock,
+    decimal calificacionMedia,
+    DateTime fechaLanzamiento)
+{
+    Id = id;
+    Titulo = titulo;
+    TipoLibro = tipoLibro;
+    Autor = autor;
+    PrecioTotal = precioTotal;
+    Stock = stock;
+    CalificacionMedia = calificacionMedia;
+    FechaLanzamiento = fechaLanzamiento;
+}
 
     public int Id { get; set; }
 
@@ -28,6 +39,15 @@ public class Libro
     public Editorial Editorial { get; set; }
 
     public Genero Genero { get; set; }
+
+    [StringLength(50, MinimumLength = 10,
+    ErrorMessage = "El tipo de libro debe tener entre 10 y 50 caracteres.")]
+    public string TipoLibro { get; set; }
+
+    public decimal CalificacionMedia { get; set; }
+
+    [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
+    public DateTime FechaLanzamiento { get; set; }
 
     
 
