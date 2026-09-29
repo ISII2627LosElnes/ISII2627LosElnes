@@ -1,6 +1,6 @@
 namespace AppForSEII.API.Models;
 
-public class MetodoPago
+public abstract class MetodoPago
 {
     public MetodoPago(string id)
     {
