@@ -1,12 +1,11 @@
 @startuml
-
 class Genero {
     + Genero()
     + Genero(id:int, nombre:string)
     + Id : int <<get>> <<set>>
     + Nombre : string <<get>> <<set>>
 }
-
-Genero "1" o-- "0..*" Libro : Libros
-
+class "IList`1"<T> {
+}
+Genero o-> "Libros<Libro>" "IList`1"
 @enduml
