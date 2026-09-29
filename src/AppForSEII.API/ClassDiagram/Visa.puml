@@ -1,0 +1,8 @@
+@startuml
+class Visa {
+    + Visa(id:string, numeroTarjeta:string, fechaCaducidad:DateTime)
+    + NumeroTarjeta : string <<get>> <<set>>
+}
+MetodoPago <|-- Visa
+Visa --> "FechaCaducidad" DateTime
+@enduml
