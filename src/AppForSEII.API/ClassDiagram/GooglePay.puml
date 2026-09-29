@@ -1,0 +1,6 @@
+@startuml
+class GooglePay {
+    + GooglePay(email:String)
+}
+GooglePay --> "Email" String
+@enduml
