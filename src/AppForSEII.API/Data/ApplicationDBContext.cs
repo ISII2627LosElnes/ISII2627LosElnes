@@ -21,6 +21,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Reposicion> Reposiciones { get; set; }
 
     public DbSet<Editorial> Editoriales { get; set; }
+    public DbSet<Visa> Visas { get; set; }
 
 
 
