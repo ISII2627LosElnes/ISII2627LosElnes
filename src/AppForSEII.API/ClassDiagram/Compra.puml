@@ -1,0 +1,10 @@
+@startuml
+class Compra {
+    + Compra()
+    + Compra(id:int, fechaCompra:DateTime, precioTotal:decimal, codigoDescuento:string)
+    + Id : int <<get>> <<set>>
+    + PrecioTotal : decimal <<get>> <<set>>
+    + CodigoDescuento : string? <<get>> <<set>>
+}
+Compra --> "FechaCompra" DateTime
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class Resena {
+    + Resena()
+    + Resena(id:int, fechaResena:DateTime, titulo:string)
+    + Id : int <<get>> <<set>>
+    + Titulo : string <<get>> <<set>>
+}
+Resena --> "FechaResena" DateTime
+@enduml
