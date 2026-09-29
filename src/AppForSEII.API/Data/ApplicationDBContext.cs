@@ -23,6 +23,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     
     public DbSet<Genero> Generos { get; set; }
 
+    public DbSet<PayPal> PayPals { get; set; }
     public DbSet<Subasta> Subastas { get; set; }
     public DbSet<Editorial> Editoriales { get; set; }
     public DbSet<Visa> Visas { get; set; }
