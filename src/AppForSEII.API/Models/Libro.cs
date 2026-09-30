@@ -43,8 +43,9 @@ public class Libro
 
     public Genero Genero { get; set; }
 
-    public IList<CompraItem> CompraItems { get; set; }
-    public IList<ReposicionItem> ReposicionItems { get; set; }
+    public IList<CompraItem> CompraItems { get; set; } = new List<CompraItem>();
+    public IList<ReposicionItem> ReposicionItems { get; set; } = new List<ReposicionItem>();
+
 
     [StringLength(50, MinimumLength = 10,
     ErrorMessage = "El tipo de libro debe tener entre 10 y 50 caracteres.")]
