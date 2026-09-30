@@ -9,6 +9,7 @@
 !include .\\MetodoPago.puml
 !include .\\PayPal.puml
 !include .\\Reposicion.puml
+!include .\\ReposicionItem.puml
 !include .\\Resena.puml
 !include .\\ResenaItem.puml
 !include .\\Subasta.puml

@@ -1,6 +1,7 @@
 @startuml
 class ResenaItem {
     + ResenaItem()
+    + ResenaItem(libro:Libro, descripcion:string?, calificacion:int, resena:Resena)
     + Descripcion : string? <<get>> <<set>>
     + Calificacion : int <<get>> <<set>>
     + LibroId : int <<get>> <<set>>

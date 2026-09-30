@@ -54,6 +54,8 @@ public class Libro
     [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
     public DateTime FechaLanzamiento { get; set; }
 
+    public IList<ResenaItem> ResenaItems { get; set; } = new List<ResenaItem>();
+
     
 
     

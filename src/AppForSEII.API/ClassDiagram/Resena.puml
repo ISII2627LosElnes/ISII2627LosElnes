@@ -5,5 +5,8 @@ class Resena {
     + Id : int <<get>> <<set>>
     + Titulo : string <<get>> <<set>>
 }
+class "IList`1"<T> {
+}
 Resena --> "FechaResena" DateTime
+Resena o-> "ResenaItems<ResenaItem>" "IList`1"
 @enduml
