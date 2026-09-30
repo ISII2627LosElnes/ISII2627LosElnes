@@ -6,19 +6,20 @@ public class ReposicionItem
     public ReposicionItem()
     {
     }
-    public ReposicionItem(string libroId, string reposicionId, int cantidadReposicion, Libro libro, Reposicion reposicion)
+    public ReposicionItem(int cantidadReposicion, Libro libro, Reposicion reposicion)
     {
         CantidadReposicion = cantidadReposicion;
-        LibroId = libroId;
-        ReposicionId = reposicionId;
         Libro = libro;
         Reposicion = reposicion;
+        LibroId = libro.Id;
+        ReposicionId = reposicion.Id;
+        
     }
 
     [Range(1, int.MaxValue, ErrorMessage = "La cantidad de reposición debe ser como mínimo 1.")]
     public int CantidadReposicion { get; set; }
 
-    public string LibroId { get; set; }
+    public int LibroId { get; set; }
 
     public string ReposicionId { get; set; }
 
