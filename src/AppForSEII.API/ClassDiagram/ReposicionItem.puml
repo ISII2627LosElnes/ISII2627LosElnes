@@ -5,6 +5,9 @@ class ReposicionItem {
     + CantidadReposicion : int <<get>> <<set>>
     + LibroId : string <<get>> <<set>>
     + ReposicionId : string <<get>> <<set>>
+    + Libro : Libro <<get>> <<set>>
+    + Reposicion : Reposicion <<get>> <<set>>
+}
 }
 ReposicionItem --> "Libro" Libro
 ReposicionItem --> "Reposicion" Reposicion

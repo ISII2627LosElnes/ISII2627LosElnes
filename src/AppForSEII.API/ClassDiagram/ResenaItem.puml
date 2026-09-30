@@ -5,8 +5,8 @@ class ResenaItem {
     + Descripcion : string? <<get>> <<set>>
     + Calificacion : int <<get>> <<set>>
     + LibroId : int <<get>> <<set>>
+    + Libro : Libro <<get>> <<set>>
     + ResenaId : int <<get>> <<set>>
+    + Resena : Resena <<get>> <<set>>
 }
-ResenaItem --> "Libro" Libro
-ResenaItem --> "Resena" Resena
 @enduml

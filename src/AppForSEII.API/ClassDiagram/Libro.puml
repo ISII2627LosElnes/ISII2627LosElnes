@@ -8,6 +8,10 @@ class Libro {
     + PrecioTotal : decimal <<get>> <<set>>
     + PrecioReposicion : decimal <<get>> <<set>>
     + Stock : int <<get>> <<set>>
+    + Editorial : Editorial <<get>> <<set>>
+    + Genero : Genero <<get>> <<set>>
+    + CompraItems : IList<CompraItem> <<get>> <<set>>
+    + ReposicionItems : IList<ReposicionItem> <<get>> <<set>>
     + TipoLibro : string <<get>> <<set>>
     + CalificacionMedia : decimal <<get>> <<set>>
 }
