@@ -3,7 +3,7 @@ namespace AppForSEII.API.Models;
 public class Subasta
 {
     // Constructor con parámetros
-    public Subasta(String id, double precioSubasta, DateTime fechaSubasta)
+    public Subasta(int id, double precioSubasta, DateTime fechaSubasta)
     {
         Id = id;
         PrecioSubasta = precioSubasta;
@@ -13,7 +13,7 @@ public class Subasta
 
 
     [Key]
-    public String Id { get; set; }
+    public int Id { get; set; }
 
     public double PrecioSubasta { get; set; }
 
