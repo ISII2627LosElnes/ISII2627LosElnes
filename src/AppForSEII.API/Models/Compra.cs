@@ -25,8 +25,8 @@ namespace AppForSEII.API.Models
 
         [StringLength(10, MinimumLength = 5, ErrorMessage = "El código de descuento debe tener entre 5 y 10 caracteres.")]
          public string? CodigoDescuento { get; set; } 
+
+          public IList<CompraItem> CompraItems { get; set; }
+
     }
-
-    public List<CompraItem> CompraItems { get; set; }
-
 }
