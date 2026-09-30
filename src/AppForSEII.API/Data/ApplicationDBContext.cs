@@ -31,6 +31,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<CompraItem> CompraItems { get; set; }
 
 
+    public DbSet<ResenaItem> ResenaItems { get; set; }
+
+
+
+    
+
 
 
 }

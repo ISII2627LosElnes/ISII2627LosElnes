@@ -7,8 +7,10 @@
 !include .\\GooglePay.puml
 !include .\\Libro.puml
 !include .\\MetodoPago.puml
+!include .\\PayPal.puml
 !include .\\Reposicion.puml
 !include .\\Resena.puml
+!include .\\ResenaItem.puml
 !include .\\Subasta.puml
 !include .\\Visa.puml
 @enduml
