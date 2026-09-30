@@ -45,7 +45,8 @@ public class Libro
 
     public IList<CompraItem> CompraItems { get; set; } = new List<CompraItem>();
     public IList<ReposicionItem> ReposicionItems { get; set; } = new List<ReposicionItem>();
-
+    public IList<ResenaItem> ResenaItems { get; set; } = new List<ResenaItem>();
+    public IList<SubastaItem> SubastaItems { get; set; } = new List<SubastaItem>();
 
     [StringLength(50, MinimumLength = 10,
     ErrorMessage = "El tipo de libro debe tener entre 10 y 50 caracteres.")]
@@ -55,9 +56,6 @@ public class Libro
 
     [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
     public DateTime FechaLanzamiento { get; set; }
-
-    public IList<ResenaItem> ResenaItems { get; set; } = new List<ResenaItem>();
-
     
 
     
