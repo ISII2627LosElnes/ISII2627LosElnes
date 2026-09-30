@@ -8,4 +8,8 @@ class Compra {
     + CodigoDescuento : string? <<get>> <<set>>
     + CompraItems : IList<CompraItem> <<get>> <<set>>
 }
+class "IList`1"<T> {
+}
+Compra --> "FechaCompra" DateTime
+Compra --> "CompraItems<CompraItem>" "IList`1"
 @enduml

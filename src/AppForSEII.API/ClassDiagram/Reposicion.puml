@@ -8,4 +8,8 @@ class Reposicion {
     + Comentario : string? <<get>> <<set>>
     + ReposicionItems : IList<ReposicionItem> <<get>> <<set>>
 }
+class "IList`1"<T> {
+}
+Reposicion --> "FechaReposicion" DateTime
+Reposicion --> "ReposicionItems<ReposicionItem>" "IList`1"
 @enduml
