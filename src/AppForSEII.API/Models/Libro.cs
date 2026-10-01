@@ -32,6 +32,7 @@ public class Libro
     [Required]
     public string Autor { get; set; }
 
+    [Required]
     public decimal PrecioTotal { get; set; }
 
     [Required]
@@ -41,9 +42,11 @@ public class Libro
     [Range(0, int.MaxValue, ErrorMessage = "El stock debe ser mayor que 0")]
     public int Stock { get; set; }
 
-    public Editorial Editorial { get; set; }
+    [Required]
+     public Editorial Editorial { get; set; }
 
-    public Genero Genero { get; set; }
+    [Required]
+     public Genero Genero { get; set; }
 
     public IList<CompraItem> CompraItems { get; set; } = new List<CompraItem>();
     public IList<ReposicionItem> ReposicionItems { get; set; } = new List<ReposicionItem>();
