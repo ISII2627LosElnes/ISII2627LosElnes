@@ -29,6 +29,15 @@ namespace AppForSEII.API.Data {
              {
                 logger.LogError(ex, "An error occurred seeding the Editoriales in the Database.");
             }
+
+            try
+            {
+                SeedGeneros(dbContext);
+            }
+            catch (Exception ex)
+            {
+            logger.LogError(ex, "An error occurred seeding the Generos in the Database.");
+            }
  
 
         }
@@ -87,7 +96,7 @@ namespace AppForSEII.API.Data {
         dbContext.Database.ExecuteSqlRaw(
             "INSERT INTO [Editoriales] ([Nombre]) VALUES (N'Planeta')");
     }
-
+    
     if (!dbContext.Editoriales.Any(e => e.Nombre == "Anagrama"))
     {
         dbContext.Database.ExecuteSqlRaw(
@@ -114,7 +123,25 @@ namespace AppForSEII.API.Data {
         }
 
 
+    public static void SeedGeneros(ApplicationDbContext dbContext) {
+    // Géneros extraídos de tus requisitos y algunos adicionales comunes
+    var generos = new List<string> { 
+        "Misterio", 
+        "Ficción", 
+        "Novela", 
+        "Fantasía", 
+        "Ciencia Ficción", 
+        "Ensayo" 
+    };
 
+    foreach (var genero in generos) {
+        if (!dbContext.Generos.Any(g => g.Nombre == genero)) {
+            // Se utiliza parametrización {0} para evitar problemas de formato y seguridad
+            dbContext.Database.ExecuteSqlRaw(
+                "INSERT INTO [Generos] ([Nombre]) VALUES ({0})", genero);
+        }
+    }
+}
 
 
     }
