@@ -21,6 +21,8 @@ public class SubastaItem
     
     [StringLength(100, MinimumLength = 20, ErrorMessage = "El código de descuento debe tener entre 20 y 100 caracteres.")]
     public string? Descripcion { get; set; }
+
+    [Required]
     public decimal PrecioPuja { get; set; }
     public Subasta Subasta { get; set; }
     public Libro Libro { get; set; }
