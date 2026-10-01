@@ -19,7 +19,7 @@ public Resena(int id, DateTime fechaResena, string titulo)
     [System.ComponentModel.DataAnnotations.DataTypeAttribute(
     System.ComponentModel.DataAnnotations.DataType.Date)]
     public DateTime FechaResena { get; set; }
-
+    [Required]
      [StringLength(20, MinimumLength = 10,
         ErrorMessage = "El título de la reseña debe tener entre 10 y 20 caracteres.")]
     public string Titulo { get; set; }

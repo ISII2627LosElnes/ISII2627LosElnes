@@ -53,10 +53,12 @@ public class Libro
     public IList<ResenaItem> ResenaItems { get; set; } = new List<ResenaItem>();
     public IList<SubastaItem> SubastaItems { get; set; } = new List<SubastaItem>();
 
+    [Required]
     [StringLength(50, MinimumLength = 10,
     ErrorMessage = "El tipo de libro debe tener entre 10 y 50 caracteres.")]
     public string TipoLibro { get; set; }
 
+    
     public decimal CalificacionMedia { get; set; }
 
     [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
