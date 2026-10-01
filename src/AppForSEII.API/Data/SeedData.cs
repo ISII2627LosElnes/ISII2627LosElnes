@@ -16,7 +16,7 @@ namespace AppForSEII.API.Data {
                 SeedUsers(userManager, rolesNames);
             }
             catch (Exception ex) {
-                logger.LogError(ex, "An error occurred seeding the Users in the Database.");
+                logger.LogError(ex, "An error occurred seeding the Users in the Database.");    
             }
 
 
@@ -124,24 +124,31 @@ namespace AppForSEII.API.Data {
 
 
     public static void SeedGeneros(ApplicationDbContext dbContext) {
-    // Géneros extraídos de tus requisitos y algunos adicionales comunes
-    var generos = new List<string> { 
-        "Misterio", 
-        "Ficción", 
-        "Novela", 
-        "Fantasía", 
-        "Ciencia Ficción", 
-        "Ensayo" 
-    };
+        var generos = new List<string> { 
+            "Misterio", 
+            "Ficción", 
+            "Novela", 
+            "Fantasía", 
+            "Ciencia Ficción", 
+            "Ensayo" 
+        };
 
-    foreach (var genero in generos) {
-        if (!dbContext.Generos.Any(g => g.Nombre == genero)) {
-            // Se utiliza parametrización {0} para evitar problemas de formato y seguridad
-            dbContext.Database.ExecuteSqlRaw(
-                "INSERT INTO [Generos] ([Nombre]) VALUES ({0})", genero);
+        bool guardarCambios = false;
+
+        foreach (var genero in generos) {
+            // Comprueba si el género ya existe
+            if (!dbContext.Generos.Any(g => g.Nombre == genero)) {
+                // Usa el método nativo .Add() en lugar de SQL directo
+                dbContext.Generos.Add(new Genero { Nombre = genero });
+                guardarCambios = true;
+            }
+        }
+
+        // Si se ha añadido algún género nuevo, guarda los cambios en la BD
+        if (guardarCambios) {
+            dbContext.SaveChanges();
         }
     }
-}
 
 
     }
