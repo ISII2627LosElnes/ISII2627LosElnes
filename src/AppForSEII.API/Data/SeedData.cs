@@ -38,6 +38,15 @@ namespace AppForSEII.API.Data {
             {
             logger.LogError(ex, "An error occurred seeding the Generos in the Database.");
             }
+
+            try
+            {
+                SeedLibros(dbContext);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred seeding the Libros in the Database.");
+            }
  
 
         }
@@ -149,6 +158,96 @@ namespace AppForSEII.API.Data {
             dbContext.SaveChanges();
         }
     }
+
+    public static void SeedLibros(ApplicationDbContext dbContext) {
+    // Comprobamos si ya hay libros para no duplicarlos
+    if (dbContext.Libros.Any()) {
+        return; 
+    }
+
+    // Buscamos las entidades relacionadas en la base de datos para obtener sus IDs
+    var planeta = dbContext.Editoriales.FirstOrDefault(e => e.Nombre == "Planeta");
+    var anagrama = dbContext.Editoriales.FirstOrDefault(e => e.Nombre == "Anagrama");
+    var tusquets = dbContext.Editoriales.FirstOrDefault(e => e.Nombre == "Tusquets Editores");
+    var salamandra = dbContext.Editoriales.FirstOrDefault(e => e.Nombre == "Salamandra");
+
+    var misterio = dbContext.Generos.FirstOrDefault(g => g.Nombre == "Misterio");
+    var ficcion = dbContext.Generos.FirstOrDefault(g => g.Nombre == "Ficción");
+    var novela = dbContext.Generos.FirstOrDefault(g => g.Nombre == "Novela");
+    var fantasia = dbContext.Generos.FirstOrDefault(g => g.Nombre == "Fantasía");
+
+    // Si por algún motivo faltan las editoriales o géneros, evitamos que la aplicación falle
+    if (planeta == null || misterio == null) return;
+
+    // Creamos la lista de libros asignando los IDs de las referencias encontradas
+    var libros = new List<Libro> {
+        new Libro {
+            Titulo = "La sombra del viento",
+            Autor = "Carlos Ruiz Zafón",
+            PrecioTotal = 20.50m,
+            PrecioReposicion = 15.00m,
+            Stock = 10,
+            TipoLibro = "Tapa Dura",
+            CalificacionMedia = 4.8m,
+            FechaLanzamiento = new DateTime(2001, 4, 1),
+            Editorial = planeta,
+            Genero = misterio
+        },
+        new Libro {
+            Titulo = "El juego del ángel",
+            Autor = "Carlos Ruiz Zafón",
+            PrecioTotal = 22.00m,
+            PrecioReposicion = 16.50m,
+            Stock = 8,
+            TipoLibro = "Bolsillo",
+            CalificacionMedia = 4.5m,
+            FechaLanzamiento = new DateTime(2008, 4, 17),
+            Editorial = planeta,
+            Genero = ficcion
+        },
+        new Libro {
+            Titulo = "Los detectives salvajes",
+            Autor = "Roberto Bolaño",
+            PrecioTotal = 24.00m,
+            PrecioReposicion = 18.00m,
+            Stock = 5,
+            TipoLibro = "Tapa Dura",
+            CalificacionMedia = 4.6m,
+            FechaLanzamiento = new DateTime(1998, 1, 1),
+            Editorial = anagrama,
+            Genero = ficcion
+        },
+        new Libro {
+            Titulo = "Patria",
+            Autor = "Fernando Aramburu",
+            PrecioTotal = 21.00m,
+            PrecioReposicion = 14.50m,
+            Stock = 12,
+            TipoLibro = "Bolsillo",
+            CalificacionMedia = 4.7m,
+            FechaLanzamiento = new DateTime(2016, 9, 1),
+            Editorial = tusquets,
+            Genero = novela
+        },
+        new Libro {
+            Titulo = "Harry Potter y la piedra filosofal",
+            Autor = "J.K. Rowling",
+            PrecioTotal = 19.99m,
+            PrecioReposicion = 10.00m,
+            Stock = 20,
+            TipoLibro = "Tapa Dura",
+            CalificacionMedia = 4.9m,
+            FechaLanzamiento = new DateTime(1997, 6, 26),
+            Editorial = salamandra,
+            Genero
+             = fantasia
+        }
+    };
+
+    // Añadimos todos de golpe y guardamos los cambios en la BD
+    dbContext.Libros.AddRange(libros);
+    dbContext.SaveChanges();
+}
 
 
     }
