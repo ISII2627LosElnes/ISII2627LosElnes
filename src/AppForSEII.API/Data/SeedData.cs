@@ -19,6 +19,16 @@ namespace AppForSEII.API.Data {
                 logger.LogError(ex, "An error occurred seeding the Users in the Database.");
             }
 
+
+           
+            try
+                {
+            SeedEditoriales(dbContext);
+            }
+             catch (Exception ex)
+             {
+                logger.LogError(ex, "An error occurred seeding the Editoriales in the Database.");
+            }
  
 
         }
@@ -69,6 +79,38 @@ namespace AppForSEII.API.Data {
                 }
             }
 
+        }
+
+        public static void SeedEditoriales(ApplicationDbContext dbContext) {
+             if (!dbContext.Editoriales.Any(e => e.Nombre == "Planeta"))
+    {
+        dbContext.Database.ExecuteSqlRaw(
+            "INSERT INTO [Editoriales] ([Nombre]) VALUES (N'Planeta')");
+    }
+
+    if (!dbContext.Editoriales.Any(e => e.Nombre == "Anagrama"))
+    {
+        dbContext.Database.ExecuteSqlRaw(
+            "INSERT INTO [Editoriales] ([Nombre]) VALUES (N'Anagrama')");
+    }
+
+    if (!dbContext.Editoriales.Any(e => e.Nombre == "Tusquets Editores"))
+    {
+        dbContext.Database.ExecuteSqlRaw(
+            "INSERT INTO [Editoriales] ([Nombre]) VALUES (N'Tusquets Editores')");
+    }
+
+    if (!dbContext.Editoriales.Any(e => e.Nombre == "Salamandra"))
+    {
+        dbContext.Database.ExecuteSqlRaw(
+            "INSERT INTO [Editoriales] ([Nombre]) VALUES (N'Salamandra')");
+    }
+
+    if (!dbContext.Editoriales.Any(e => e.Nombre == "Penguin Random House"))
+    {
+        dbContext.Database.ExecuteSqlRaw(
+            "INSERT INTO [Editoriales] ([Nombre]) VALUES (N'Penguin Random House')");
+    }
         }
 
 
