@@ -20,6 +20,8 @@ public class CompraItem
 
     public Compra Compra { get; set; }
      [Range(1,int.MaxValue, ErrorMessage = "La cantidad debe ser mayor que 1")]
+    
+    [Required]
     public int Cantidad { get; set; } 
 
     public int LibroId { get; set; }
