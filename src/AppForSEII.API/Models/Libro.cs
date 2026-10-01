@@ -24,15 +24,17 @@ public class Libro
     CalificacionMedia = calificacionMedia;
     FechaLanzamiento = fechaLanzamiento;
 }
-
+    [Key]
     public int Id { get; set; }
-
+    [Required]
     public string Titulo { get; set; }
 
+    [Required]
     public string Autor { get; set; }
 
     public decimal PrecioTotal { get; set; }
-    
+
+    [Required]
     [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
     public decimal PrecioReposicion { get; set; }
 
