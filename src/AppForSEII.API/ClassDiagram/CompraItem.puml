@@ -1,5 +1,9 @@
 @startuml
 class CompraItem {
+    + CompraItem()
+    + CompraItem(libro:Libro, cantidad:int, compra:Compra)
+    + Libro : Libro <<get>> <<set>>
+    + Compra : Compra <<get>> <<set>>
     + Cantidad : int <<get>> <<set>>
     + LibroId : int <<get>> <<set>>
     + CompraId : int <<get>> <<set>>

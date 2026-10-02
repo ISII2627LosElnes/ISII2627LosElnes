@@ -1,4 +1,13 @@
 @startuml
 hide methods
-!include Compra.puml
+!include .\\Compra.puml
+!include .\\Libro.puml
+!include .\\CompraItem.puml
+!include .\\MetodoPago.puml
+!include .\\Genero.puml
+!include .\\Editorial.puml
+!include .\\Visa.puml
+!include .\\GooglePay.puml
+!include .\\PayPal.puml
+!include .\\ApplicationUser.puml
 @enduml
