@@ -14,12 +14,11 @@ class Libro {
     + ReposicionItems : IList<ReposicionItem> <<get>> <<set>>
     + TipoLibro : string <<get>> <<set>>
     + CalificacionMedia : decimal <<get>> <<set>>
+     + FechaLanzamiento : DateTime <<get>> <<set>>
 }
-class "IList`1"<T> {
-}
+
 Libro --> "Editorial" Editorial
 Libro --> "Genero" Genero
 Libro --> "CompraItems<CompraItem>" "IList`1"
-Libro --> "FechaLanzamiento" DateTime
-Libro o-> "ResenaItems<ResenaItem>" "IList`1"
+Libro "1" o-- "0..*" ResenaItem : ResenaItems
 @enduml
