@@ -9,9 +9,11 @@ public class ReposicionItem
     public ReposicionItem(int cantidadReposicion, Libro libro, Reposicion reposicion)
     {
         CantidadReposicion = cantidadReposicion;
+
         Libro = libro;
-        Reposicion = reposicion;
         LibroId = libro.Id;
+
+        Reposicion = reposicion;
         ReposicionId = reposicion.Id;
         
     }

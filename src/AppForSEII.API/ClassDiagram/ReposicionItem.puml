@@ -8,7 +8,4 @@ class ReposicionItem {
     + Libro : Libro <<get>> <<set>>
     + Reposicion : Reposicion <<get>> <<set>>
 }
-}
-ReposicionItem --> "Libro" Libro
-ReposicionItem --> "Reposicion" Reposicion
 @enduml
