@@ -1,4 +1,14 @@
 @startuml
 hide methods
+
 !include Reposicion.puml
+!include Libro.puml
+!include .\\Genero.puml
+!include .\\ReposicionItem.puml
+!include .\\Reposicion.puml
+!include .\\ApplicationUser.puml
+!include .\\MetodoPago.puml
+!include .\\Visa.puml
+!include .\\GooglePay.puml
+!include .\\PayPal.puml
 @enduml
