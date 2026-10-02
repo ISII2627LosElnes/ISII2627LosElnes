@@ -1,4 +1,5 @@
 @startuml
+
 class Resena {
     + Resena()
     + Resena(id:int, fechaResena:DateTime, titulo:string)
@@ -6,8 +7,8 @@ class Resena {
     + FechaResena : DateTime <<get>> <<set>>
     + Titulo : string <<get>> <<set>>
 }
-class "IList`1"<T> {
-}
-Resena --> "FechaResena" DateTime
-Resena o-> "ResenaItems<ResenaItem>" "IList`1"
+
+Resena "1" o-- "0..*" ResenaItem : ResenaItems
+ApplicationUser "1" -- "0..*" Resena : Resenas
+
 @enduml

@@ -2,6 +2,11 @@
 
 hide methods
 
+!include .\\Libro.puml
+!include .\\Genero.puml
+!include .\\Editorial.puml
+!include .\\ResenaItem.puml
 !include .\\Resena.puml
+!include .\\ApplicationUser.puml
 
 @enduml
