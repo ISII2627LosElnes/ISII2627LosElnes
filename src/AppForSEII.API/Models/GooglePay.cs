@@ -1,12 +1,12 @@
 namespace AppForSEII.API.Models;
 
-public class GooglePay
+public class GooglePay: MetodoPago
 {
-    public GooglePay(String email)
+    public GooglePay(string id, string email): base(id)
     {
         Email = email;
     }
 
     [Key]
-    public String Email { get; set; }
+    public string Email { get; set; }
 }
