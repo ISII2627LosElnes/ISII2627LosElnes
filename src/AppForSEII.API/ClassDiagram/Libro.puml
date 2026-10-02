@@ -19,6 +19,6 @@ class Libro {
 
 Libro --> "Editorial" Editorial
 Libro --> "Genero" Genero
-Libro --> "CompraItems<CompraItem>" "IList`1"
+Libro "1" o-- "0..*" CompraItem : CompraItems
 Libro "1" o-- "0..*" ResenaItem : ResenaItems
 @enduml

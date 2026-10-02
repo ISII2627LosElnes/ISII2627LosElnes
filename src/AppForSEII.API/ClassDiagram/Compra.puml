@@ -6,10 +6,10 @@ class Compra {
     + FechaCompra : DateTime <<get>> <<set>>
     + PrecioTotal : decimal <<get>> <<set>>
     + CodigoDescuento : string? <<get>> <<set>>
-    + CompraItems : IList<CompraItem> <<get>> <<set>>
+
 }
-class "IList`1"<T> {
-}
-Compra --> "FechaCompra" DateTime
-Compra --> "CompraItems<CompraItem>" "IList`1"
+
+ Compra "1" o-- "0..*" CompraItem: CompraItems
+ ApplicationUser "1" -- "0..*" Compra : Compras
+ MetodoPago "1" -- "1.*" Compra : MetodoPagos
 @enduml
