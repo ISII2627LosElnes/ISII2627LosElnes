@@ -1,0 +1,12 @@
+@startuml
+class SubastaItem {
+    + SubastaItem()
+    + SubastaItem(descripcion:string?, precioPuja:decimal, libro:Libro, subasta:Subasta)
+    + Descripcion : string? <<get>> <<set>>
+    + PrecioPuja : decimal <<get>> <<set>>
+    + LibroId : int <<get>> <<set>>
+    + Libro : Libro <<get>> <<set>>
+    + SubastaId : int <<get>> <<set>>
+    + Subasta : Subasta <<get>> <<set>>
+}
+@enduml
