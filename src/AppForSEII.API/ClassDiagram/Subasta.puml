@@ -5,4 +5,9 @@ class Subasta {
     + PrecioSubasta : double <<get>> <<set>>
     + FechaSubasta : DateTime <<get>> <<set>>
 }
+
+Subasta "1" o-- "0..*" SubastaItem: SubastaItems
+ ApplicationUser "1" -- "0..*" Subasta : Subastas
+ MetodoPago "1" -- "1.*" Subasta : MetodoPagos
+
 @enduml

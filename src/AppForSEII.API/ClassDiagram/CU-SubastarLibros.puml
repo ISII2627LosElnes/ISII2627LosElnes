@@ -1,4 +1,12 @@
 @startuml
 hide methods
-!include Subasta.puml
+!include .\\Subasta.puml
+!include .\\SubastaItem.puml
+!include .\\MetodoPago.puml
+!include .\\ApplicationUser.puml
+!include .\\Visa.puml
+!include .\\GooglePay.puml
+!include .\\PayPal.puml
+!include .\\Libro.puml
+!include .\\Editorial.puml
 @enduml

@@ -22,4 +22,6 @@ Libro --> "Genero" Genero
 Libro "1" o-- "0..*" CompraItem : CompraItems
 Libro "1" o-- "0..*" ResenaItem : ResenaItems
 Libro "1" o-- "0..*" ReposicionItem : ReposicionItems
+
+Libro "1" o-- "0..*" SubastaItem : SubastaItems
 @enduml

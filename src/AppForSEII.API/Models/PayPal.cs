@@ -1,14 +1,14 @@
 namespace AppForSEII.API.Models;
 
-public class PayPal
+public class PayPal: MetodoPago
 {
 
-    public PayPal(int numeroTelefono)
+    public PayPal(string id, string numeroTelefono): base(id)
     {
         NumeroTelefono = numeroTelefono;
     }
 
     [Key]
-    public int NumeroTelefono { get; set; }
+    public string NumeroTelefono { get; set; }
 
 }

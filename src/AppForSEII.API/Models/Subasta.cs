@@ -17,5 +17,7 @@ public class Subasta
 
     public double PrecioSubasta { get; set; }
 
+    [System.ComponentModel.DataAnnotations.DataTypeAttribute(
+    System.ComponentModel.DataAnnotations.DataType.Date)]
     public DateTime FechaSubasta { get; set; }
 }
