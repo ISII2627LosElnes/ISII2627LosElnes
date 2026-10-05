@@ -7,8 +7,6 @@ public class PayPal: MetodoPago
     {
         NumeroTelefono = numeroTelefono;
     }
-
-    [Key]
     public string NumeroTelefono { get; set; }
 
 }

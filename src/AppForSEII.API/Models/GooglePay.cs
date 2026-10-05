@@ -6,7 +6,5 @@ public class GooglePay: MetodoPago
     {
         Email = email;
     }
-
-    [Key]
     public string Email { get; set; }
 }
