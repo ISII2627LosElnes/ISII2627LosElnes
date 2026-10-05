@@ -3,4 +3,5 @@ class PayPal {
     + PayPal(numeroTelefono:int)
     + NumeroTelefono : int <<get>> <<set>>
 }
+MetodoPago <|-- PayPal
 @enduml

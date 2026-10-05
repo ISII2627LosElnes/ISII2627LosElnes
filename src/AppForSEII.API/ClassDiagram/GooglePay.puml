@@ -3,4 +3,5 @@ class GooglePay {
     + GooglePay(email:String)
     + Email : String <<get>> <<set>>
 }
+MetodoPago <|-- GooglePay
 @enduml
