@@ -47,7 +47,24 @@ namespace AppForSEII.API.Data {
             {
                 logger.LogError(ex, "An error occurred seeding the Libros in the Database.");
             }
- 
+
+            try
+            {
+                 SeedResenas(dbContext);
+            }
+                catch (Exception ex)
+            {
+                 logger.LogError(ex, "An error occurred seeding the Resenas in the Database.");
+            }
+
+            try
+            {
+                SeedResenaItems(dbContext);
+            }
+            catch (Exception ex)
+            {
+             logger.LogError(ex, "An error occurred seeding the ResenaItems in the Database.");
+            }
 
         }
 
@@ -246,6 +263,103 @@ namespace AppForSEII.API.Data {
 
     // Añadimos todos de golpe y guardamos los cambios en la BD
     dbContext.Libros.AddRange(libros);
+    dbContext.SaveChanges();
+}
+public static void SeedResenas(ApplicationDbContext dbContext)
+{
+    if (!dbContext.Resenas.Any(r => r.Titulo == "Reseña excelente"))
+    {
+        dbContext.Resenas.Add(new Resena
+        {
+            FechaResena = new DateTime(2026, 10, 10),
+            Titulo = "Reseña excelente"
+        });
+    }
+
+    if (!dbContext.Resenas.Any(r => r.Titulo == "Muy recomendable"))
+    {
+        dbContext.Resenas.Add(new Resena
+        {
+            FechaResena = new DateTime(2026, 10, 11),
+            Titulo = "Muy recomendable"
+        });
+    }
+
+    if (!dbContext.Resenas.Any(r => r.Titulo == "Lectura interesante"))
+    {
+        dbContext.Resenas.Add(new Resena
+        {
+            FechaResena = new DateTime(2026, 10, 12),
+            Titulo = "Lectura interesante"
+        });
+    }
+
+    if (!dbContext.Resenas.Any(r => r.Titulo == "Una gran lectura"))
+    {
+        dbContext.Resenas.Add(new Resena
+        {
+            FechaResena = new DateTime(2026, 10, 13),
+            Titulo = "Una gran lectura"
+        });
+    }
+
+    if (!dbContext.Resenas.Any(r => r.Titulo == "Opinión del libro"))
+    {
+        dbContext.Resenas.Add(new Resena
+        {
+            FechaResena = new DateTime(2026, 10, 14),
+            Titulo = "Opinión del libro"
+        });
+    }
+
+    dbContext.SaveChanges();
+}
+
+public static void SeedResenaItems(ApplicationDbContext dbContext)
+{
+    var sombraDelViento = dbContext.Libros.FirstOrDefault(l => l.Titulo == "La sombra del viento");
+    var juegoDelAngel = dbContext.Libros.FirstOrDefault(l => l.Titulo == "El juego del ángel");
+    var detectivesSalvajes = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Los detectives salvajes");
+    var harryPotter = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Harry Potter y la piedra filosofal");
+
+    var resenaExcelente = dbContext.Resenas.FirstOrDefault(r => r.Titulo == "Reseña excelente");
+    var muyRecomendable = dbContext.Resenas.FirstOrDefault(r => r.Titulo == "Muy recomendable");
+    var lecturaInteresante = dbContext.Resenas.FirstOrDefault(r => r.Titulo == "Lectura interesante");
+    var granLectura = dbContext.Resenas.FirstOrDefault(r => r.Titulo == "Una gran lectura");
+    var opinionLibro = dbContext.Resenas.FirstOrDefault(r => r.Titulo == "Opinión del libro");
+
+    if (sombraDelViento == null || juegoDelAngel == null || detectivesSalvajes == null || harryPotter == null ||
+        resenaExcelente == null || muyRecomendable == null || lecturaInteresante == null ||
+        granLectura == null || opinionLibro == null)
+    {
+        return;
+    }
+
+    if (!dbContext.ResenaItems.Any(ri => ri.LibroId == sombraDelViento.Id && ri.ResenaId == resenaExcelente.Id))
+    {
+        dbContext.ResenaItems.Add(new ResenaItem(sombraDelViento, "Una historia muy entretenida y bien escrita.", 5, resenaExcelente));
+    }
+
+    if (!dbContext.ResenaItems.Any(ri => ri.LibroId == harryPotter.Id && ri.ResenaId == muyRecomendable.Id))
+    {
+        dbContext.ResenaItems.Add(new ResenaItem(harryPotter, "Me ha gustado mucho el desarrollo de la historia.", 5, muyRecomendable));
+    }
+
+    if (!dbContext.ResenaItems.Any(ri => ri.LibroId == juegoDelAngel.Id && ri.ResenaId == lecturaInteresante.Id))
+    {
+        dbContext.ResenaItems.Add(new ResenaItem(juegoDelAngel, "El ritmo es bueno y mantiene el interés hasta el final.", 4, lecturaInteresante));
+    }
+
+    if (!dbContext.ResenaItems.Any(ri => ri.LibroId == detectivesSalvajes.Id && ri.ResenaId == granLectura.Id))
+    {
+        dbContext.ResenaItems.Add(new ResenaItem(detectivesSalvajes, "Una lectura sencilla pero muy disfrutable y recomendable.", 4, granLectura));
+    }
+
+    if (!dbContext.ResenaItems.Any(ri => ri.LibroId == sombraDelViento.Id && ri.ResenaId == opinionLibro.Id))
+    {
+        dbContext.ResenaItems.Add(new ResenaItem(sombraDelViento, null, 3, opinionLibro));
+    }
+
     dbContext.SaveChanges();
 }
 
