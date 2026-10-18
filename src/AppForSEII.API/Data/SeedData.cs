@@ -84,6 +84,25 @@ namespace AppForSEII.API.Data {
                 logger.LogError(ex, "An error occurred seeding the ReposicionItems in the Database.");
             }
 
+            try
+            {
+                SeedCompras(dbContext);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred seeding the Compras in the Database.");
+            }
+
+            try
+            {
+                SeedCompraItems(dbContext);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred seeding the CompraItems in the Database.");
+            }
+
+
         }
 
         public static void SeedRoles(RoleManager<IdentityRole> roleManager, List<string> roles) {
@@ -498,6 +517,80 @@ public static void SeedReposicionItems(ApplicationDbContext dbContext)
 
     dbContext.SaveChanges();
 }
+
+public static void SeedCompras(ApplicationDbContext dbContext)
+{
+    if (!dbContext.Compras.Any(c => c.CodigoDescuento == "DESC10"))
+    {
+        dbContext.Compras.Add(new Compra
+        {
+            FechaCompra = new DateTime(2026, 10, 15),
+            PrecioTotal = 45.50m,
+            CodigoDescuento = "DESC10"
+        });
+    }
+
+    if (!dbContext.Compras.Any(c => c.PrecioTotal == 30.00m && c.CodigoDescuento == null))
+    {
+        dbContext.Compras.Add(new Compra
+        {
+            FechaCompra = new DateTime(2026, 10, 16),
+            PrecioTotal = 30.00m,
+            CodigoDescuento = null
+        });
+    }
+
+    dbContext.SaveChanges();
+}
+
+public static void SeedCompraItems(ApplicationDbContext dbContext)
+{
+    var sombraDelViento = dbContext.Libros.FirstOrDefault(l => l.Titulo == "La sombra del viento");
+    var juegoDelAngel = dbContext.Libros.FirstOrDefault(l => l.Titulo == "El juego del ángel");
+    var harryPotter = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Harry Potter y la piedra filosofal");
+
+    var compraConDescuento = dbContext.Compras.FirstOrDefault(c => c.CodigoDescuento == "DESC10");
+    var compraSinDescuento = dbContext.Compras.FirstOrDefault(c => c.PrecioTotal == 30.00m && c.CodigoDescuento == null);
+
+    if (sombraDelViento == null || juegoDelAngel == null || harryPotter == null ||
+        compraConDescuento == null || compraSinDescuento == null)
+    {
+        return;
+    }
+
+    if (!dbContext.CompraItems.Any(ci => ci.LibroId == sombraDelViento.Id && ci.CompraId == compraConDescuento.Id))
+    {
+        dbContext.CompraItems.Add(new CompraItem
+        {
+            Cantidad = 2,
+            LibroId = sombraDelViento.Id,
+            CompraId = compraConDescuento.Id
+        });
+    }
+
+    if (!dbContext.CompraItems.Any(ci => ci.LibroId == juegoDelAngel.Id && ci.CompraId == compraConDescuento.Id))
+    {
+        dbContext.CompraItems.Add(new CompraItem
+        {
+            Cantidad = 3,
+            LibroId = juegoDelAngel.Id,
+            CompraId = compraConDescuento.Id
+        });
+    }
+
+    if (!dbContext.CompraItems.Any(ci => ci.LibroId == harryPotter.Id && ci.CompraId == compraSinDescuento.Id))
+    {
+        dbContext.CompraItems.Add(new CompraItem
+        {
+            Cantidad = 2,
+            LibroId = harryPotter.Id,
+            CompraId = compraSinDescuento.Id
+        });
+    }
+
+    dbContext.SaveChanges();
+}
+
 
 
     }
