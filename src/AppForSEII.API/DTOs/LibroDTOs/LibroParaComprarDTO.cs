@@ -4,11 +4,11 @@ namespace AppForSEII.API.LibroDTOs;
 
 public class LibroParaComprarDTO
 {
-    public LibroParaComprarDTO(int id, string titulo, decimal precioTotal, DateTime fechaLanzamiento, string genero, string editorial)
+    public LibroParaComprarDTO(int id, string titulo, decimal precioCompra, DateTime fechaLanzamiento, string genero, string editorial)
     {
         Id = id;
         Titulo = titulo;
-        PrecioTotal = precioTotal;
+        PrecioCompra = precioCompra;
         FechaLanzamiento = fechaLanzamiento;
         Genero = genero;
         Editorial = editorial;
@@ -18,7 +18,7 @@ public class LibroParaComprarDTO
 
     public string Titulo { get; set; }
 
-    public decimal PrecioTotal { get; set; }
+    public decimal PrecioCompra { get; set; }
 
     [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
     public DateTime FechaLanzamiento { get; set; }
