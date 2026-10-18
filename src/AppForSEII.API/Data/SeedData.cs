@@ -102,6 +102,23 @@ namespace AppForSEII.API.Data {
                 logger.LogError(ex, "An error occurred seeding the CompraItems in the Database.");
             }
 
+            try
+            {
+                SeedSubastas(dbContext);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred seeding the Subastas in the Database.");
+            }
+
+            try
+            {
+                SeedSubastaItems(dbContext);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred seeding the SubastaItems in the Database.");
+            }
 
         }
 
@@ -592,6 +609,100 @@ public static void SeedCompraItems(ApplicationDbContext dbContext)
 }
 
 
+public static void SeedSubastas(ApplicationDbContext dbContext)
+{
+    // Subasta 1: Precio 20.8, (2x Harry Potter y la Piedra Filosofal a 10.40)
+    if (!dbContext.Subastas.Any(r => r.Id == 001))
+    {
+        dbContext.Subastas.Add(new Subasta {
+            PrecioSubasta = 20.80,
+            FechaSubasta = new DateTime(2026, 10, 30)
+
+        });
+    }
+
+    // Subasta 2: Precio 51.2, (2x Patria a 15.60 + 1x Los detectives salvajes a 20.00)
+    if (!dbContext.Subastas.Any(r => r.Id == 002))
+    {
+        dbContext.Subastas.Add(new Subasta {
+            PrecioSubasta = 51.20,
+            FechaSubasta = new DateTime(2026, 11, 13)
+
+        });
+    }
+
+    // Subasta 3: Precio 13, (1x Harry Potter y la Piedra Filosofal a 13.00)
+    if (!dbContext.Subastas.Any(r => r.Id == 003))
+    {
+        dbContext.Subastas.Add(new Subasta {
+            PrecioSubasta = 13.00,
+            FechaSubasta = new DateTime(2026, 10, 27)
+
+        });
+    }
+
+    // Subasta 4: Precio 60.6, (1x Harry Potter y la Piedra Filosofal a 13.00 + 2x La sombra del viento a 16.00 + 1x Patria a 15.6)
+    if (!dbContext.Subastas.Any(r => r.Id == 004))
+    {
+        dbContext.Subastas.Add(new Subasta {
+            PrecioSubasta = 60.60,
+            FechaSubasta = new DateTime(2026, 12, 03)
+
+        });
+    }
+
+    dbContext.SaveChanges();
+}
+
+public static void SeedSubastaItems(ApplicationDbContext dbContext)
+{
+    // Buscamos todos los libros que vamos a subastar
+    var sombraDelViento = dbContext.Libros.FirstOrDefault(l => l.Titulo == "La sombra del viento");
+    var detectivesSalvajes = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Los detectives salvajes");
+    var patria = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Patria");
+    var harryPotter = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Harry Potter y la piedra filosofal");
+
+    // Buscamos las subastas base que acabamos de crear
+    var sub1 = dbContext.Subastas.FirstOrDefault(r => r.Id == 001);
+    var sub2 = dbContext.Subastas.FirstOrDefault(r => r.Id == 002);
+    var sub3 = dbContext.Subastas.FirstOrDefault(r => r.Id == 003);
+    var sub4 = dbContext.Subastas.FirstOrDefault(r => r.Id == 004);
+
+    if (sombraDelViento == null || detectivesSalvajes == null || 
+        patria == null || harryPotter == null || 
+        sub1 == null || sub2 == null || sub3 == null || sub4 == null)
+    {
+        return;
+    }
+
+    // Items para la subasta 1
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == harryPotter.Id && ri.SubastaId == sub1.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("", 20.80m, harryPotter, sub1));
+
+    // Items para la subasta 2
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == patria.Id && ri.SubastaId == sub2.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("Se han vendido 2 patrias", 31.20m, patria, sub2));
+
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == detectivesSalvajes.Id && ri.SubastaId == sub2.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("Se ha vendido 1 detective salvaje", 20.00m, detectivesSalvajes, sub2));
+
+    // Items para la subasta 3
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == harryPotter.Id && ri.SubastaId == sub3.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("", 13.00m, harryPotter, sub3));
+
+    // Items para la subasta 4
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == harryPotter.Id && ri.SubastaId == sub4.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("Se ha vendido 1 harry potter", 13.00m, harryPotter, sub4));
+        
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == sombraDelViento.Id && ri.SubastaId == sub4.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("Se han vendido 2 sombras del viento", 32.00m, sombraDelViento, sub4));
+
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == patria.Id && ri.SubastaId == sub4.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("", 15.60m, patria, sub4));
+
+
+    dbContext.SaveChanges();
+}
 
     }
 

@@ -2,6 +2,11 @@ namespace AppForSEII.API.Models;
 
 public class Subasta
 {
+    public Subasta()
+    {
+        
+    }
+
     // Constructor con parámetros
     public Subasta(int id, double precioSubasta, DateTime fechaSubasta)
     {
