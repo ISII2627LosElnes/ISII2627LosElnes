@@ -61,11 +61,11 @@ public async Task<IActionResult> GetLibrosParaComprar(string? genero, decimal? p
         .Include(libro => libro.Editorial)
         .Where(libro => libro.Stock > 0 && 
                         (genero == null || libro.Genero.Nombre.Equals(genero)) &&
-                        (precio == null || libro.PrecioTotal <= precio))
+                        (precio == null || libro.PrecioCompra <= precio))
         .Select(libro => new LibroParaComprarDTO(
             libro.Id,
             libro.Titulo,
-            libro.PrecioTotal,
+            libro.PrecioCompra,
             libro.FechaLanzamiento,
             libro.Genero.Nombre,
             libro.Editorial.Nombre))

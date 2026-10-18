@@ -10,7 +10,8 @@ public class Libro
     string titulo,
     string tipoLibro,
     string autor,
-    decimal precioTotal,
+    decimal precioCompra,
+    decimal precioReposicion,
     int stock,
     decimal calificacionMedia,
     DateTime fechaLanzamiento)
@@ -19,7 +20,8 @@ public class Libro
     Titulo = titulo;
     TipoLibro = tipoLibro;
     Autor = autor;
-    PrecioTotal = precioTotal;
+    PrecioCompra = precioCompra;
+    PrecioReposicion = precioReposicion;
     Stock = stock;
     CalificacionMedia = calificacionMedia;
     FechaLanzamiento = fechaLanzamiento;
@@ -33,7 +35,8 @@ public class Libro
     public string Autor { get; set; }
 
     [Required]
-    public decimal PrecioTotal { get; set; }
+    [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
+    public decimal PrecioCompra { get; set; }
 
     [Required]
     [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
@@ -63,6 +66,9 @@ public class Libro
 
     [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
     public DateTime FechaLanzamiento { get; set; }
+
+   
+
     
 
     
