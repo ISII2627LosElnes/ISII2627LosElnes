@@ -201,7 +201,7 @@ namespace AppForSEII.API.Data {
         new Libro {
             Titulo = "La sombra del viento",
             Autor = "Carlos Ruiz Zafón",
-            PrecioTotal = 20.50m,
+            PrecioCompra = 20.50m,
             PrecioReposicion = 15.00m,
             Stock = 10,
             TipoLibro = "Tapa Dura",
@@ -213,7 +213,7 @@ namespace AppForSEII.API.Data {
         new Libro {
             Titulo = "El juego del ángel",
             Autor = "Carlos Ruiz Zafón",
-            PrecioTotal = 22.00m,
+            PrecioCompra = 22.00m,
             PrecioReposicion = 16.50m,
             Stock = 8,
             TipoLibro = "Bolsillo",
@@ -225,7 +225,7 @@ namespace AppForSEII.API.Data {
         new Libro {
             Titulo = "Los detectives salvajes",
             Autor = "Roberto Bolaño",
-            PrecioTotal = 24.00m,
+            PrecioCompra = 24.00m,
             PrecioReposicion = 18.00m,
             Stock = 5,
             TipoLibro = "Tapa Dura",
@@ -237,7 +237,7 @@ namespace AppForSEII.API.Data {
         new Libro {
             Titulo = "Patria",
             Autor = "Fernando Aramburu",
-            PrecioTotal = 21.00m,
+            PrecioCompra = 21.00m,
             PrecioReposicion = 14.50m,
             Stock = 12,
             TipoLibro = "Bolsillo",
@@ -249,7 +249,7 @@ namespace AppForSEII.API.Data {
         new Libro {
             Titulo = "Harry Potter y la piedra filosofal",
             Autor = "J.K. Rowling",
-            PrecioTotal = 19.99m,
+            PrecioCompra = 19.99m,
             PrecioReposicion = 10.00m,
             Stock = 20,
             TipoLibro = "Tapa Dura",
