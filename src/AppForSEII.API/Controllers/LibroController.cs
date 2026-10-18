@@ -47,6 +47,35 @@ namespace AppForSEII.API.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [ProducesResponseType(typeof(IList<LibroParaComprarDTO>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetLibrosParaComprar(string? genero, decimal? precio)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+        
+            var libros = await _context.Libros
+                .Include(libro => libro.Genero)
+                .Include(libro => libro.Editorial)
+                .Where(libro => libro.Stock > 0 && 
+                                (genero == null || libro.Genero.Nombre.Equals(genero)) &&
+                                (precio == null || libro.PrecioTotal <= precio))
+                .Select(libro => new LibroParaComprarDTO(
+                    libro.Id,
+                    libro.Titulo,
+                    libro.PrecioTotal,
+                    libro.FechaLanzamiento,
+                    libro.Genero.Nombre,
+                    libro.Editorial.Nombre))
+                .ToListAsync();
+        
+            return Ok(libros);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
         [ProducesResponseType(typeof(IList<LibroParaReponerDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetLibrosParaReponer(string? autor, string? genero)
@@ -75,4 +104,17 @@ namespace AppForSEII.API.Controllers
             return Ok(libros);
         }   
     }
+
+    
+
+
+
+
+    
+
+
+
+
+
+
 }
