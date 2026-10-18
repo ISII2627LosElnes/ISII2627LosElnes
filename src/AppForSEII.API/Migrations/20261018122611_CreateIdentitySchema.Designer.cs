@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppForSEII.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261008081111_CreateIdentitySchema")]
+    [Migration("20261018122611_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />
@@ -197,10 +197,10 @@ namespace AppForSEII.API.Migrations
                     b.Property<int>("GeneroId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("PrecioReposicion")
+                    b.Property<decimal>("PrecioCompra")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PrecioTotal")
+                    b.Property<decimal>("PrecioReposicion")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Stock")
