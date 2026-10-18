@@ -194,10 +194,10 @@ namespace AppForSEII.API.Migrations
                     b.Property<int>("GeneroId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("PrecioReposicion")
+                    b.Property<decimal>("PrecioCompra")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PrecioTotal")
+                    b.Property<decimal>("PrecioReposicion")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Stock")
