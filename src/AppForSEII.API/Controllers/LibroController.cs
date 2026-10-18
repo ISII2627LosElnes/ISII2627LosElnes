@@ -103,6 +103,36 @@ namespace AppForSEII.API.Controllers
 
             return Ok(libros);
         }   
+
+
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(IList<LibroParaSubastarDTO>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetLibrosParaSubastar(string? titulo, string? editorial)
+        {
+            // 1. Al tener parámetros, la validación del modelo y el logger son necesarios[cite: 2]
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"{DateTime.Now} Parámetros de entrada no válidos al buscar libros para reponer.");
+                return BadRequest(ModelState);
+            }
+
+            var libros = await _context.Libros
+                .Include(libro => libro.Editorial)
+                .Where(libro => libro.Stock > 0 &&
+                                (titulo == null || libro.Titulo.Equals(titulo)) &&
+                                (editorial == null || libro.Editorial.Nombre.Equals(editorial)))
+                .Select(libro => new LibroParaSubastarDTO(
+                    libro.Id,
+                    libro.Titulo,
+                    libro.Editorial.Nombre,
+                    libro.Autor,
+                    libro.TipoLibro))
+                .ToListAsync();
+
+            return Ok(libros);
+        }
     }
 
     
