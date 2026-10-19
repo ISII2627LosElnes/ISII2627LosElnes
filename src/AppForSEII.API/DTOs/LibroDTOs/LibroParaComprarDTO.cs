@@ -26,4 +26,17 @@ public class LibroParaComprarDTO
     public string Genero { get; set; }
 
     public string Editorial { get; set; }
+
+    public bool Equals(LibroParaComprarDTO? other)
+    {
+        if (other == null) return false;
+        return Id == other.Id &&
+               Titulo == other.Titulo &&
+               PrecioTotal == other.PrecioTotal &&
+               FechaLanzamiento == other.FechaLanzamiento &&
+               Genero == other.Genero &&
+               Editorial == other.Editorial;
+    }
+
+ 
 }
