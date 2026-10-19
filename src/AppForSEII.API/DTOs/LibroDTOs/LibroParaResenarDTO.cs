@@ -33,4 +33,24 @@ public class LibroParaResenarDTO
 
     [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
     public DateTime FechaLanzamiento { get; set; }
+
+    public override bool Equals(object? obj)
+{
+    if (obj == null || obj.GetType() != typeof(LibroParaResenarDTO))
+    {
+        return false;
+    }
+
+    LibroParaResenarDTO otro = (LibroParaResenarDTO)obj;
+
+    return Id == otro.Id &&
+           Titulo == otro.Titulo &&
+           TipoLibro == otro.TipoLibro &&
+           Genero == otro.Genero &&
+           Editorial == otro.Editorial &&
+           Autor == otro.Autor &&
+           CalificacionMedia == otro.CalificacionMedia &&
+           FechaLanzamiento == otro.FechaLanzamiento;
+}
+
 }
