@@ -66,6 +66,60 @@ namespace AppForSEII.API.Data {
              logger.LogError(ex, "An error occurred seeding the ResenaItems in the Database.");
             }
 
+            try
+            {
+                SeedReposiciones(dbContext);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred seeding the Reposiciones in the Database.");
+            }
+
+            try
+            {
+                SeedReposicionItems(dbContext);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred seeding the ReposicionItems in the Database.");
+            }
+
+            try
+            {
+                SeedCompras(dbContext);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred seeding the Compras in the Database.");
+            }
+
+            try
+            {
+                SeedCompraItems(dbContext);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred seeding the CompraItems in the Database.");
+            }
+
+            try
+            {
+                SeedSubastas(dbContext);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred seeding the Subastas in the Database.");
+            }
+
+            try
+            {
+                SeedSubastaItems(dbContext);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred seeding the SubastaItems in the Database.");
+            }
+
         }
 
         public static void SeedRoles(RoleManager<IdentityRole> roleManager, List<string> roles) {
@@ -363,6 +417,294 @@ public static void SeedResenaItems(ApplicationDbContext dbContext)
     dbContext.SaveChanges();
 }
 
+public static void SeedReposiciones(ApplicationDbContext dbContext)
+{
+    // Reposición 1: Coste total 31.50 (1x La sombra del viento a 15.00 + 1x El juego del ángel a 16.50)
+    if (!dbContext.Reposiciones.Any(r => r.Id == "REP-001"))
+    {
+        dbContext.Reposiciones.Add(new Reposicion {
+            Id = "REP-001",
+            FechaReposicion = new DateTime(2026, 10, 15),
+            PrecioTotal = 31.50,
+            Comentario = "Reposición inicial de stock de Zafón"
+        });
+    }
+
+    // Reposición 2: Coste total 36.00 (2x Los detectives salvajes a 18.00)
+    if (!dbContext.Reposiciones.Any(r => r.Id == "REP-002"))
+    {
+        dbContext.Reposiciones.Add(new Reposicion {
+            Id = "REP-002",
+            FechaReposicion = new DateTime(2026, 10, 16),
+            PrecioTotal = 36.00,
+            Comentario = "Urgente: Reposición de libros de ficción"
+        });
+    }
+
+    // Reposición 3: Coste total 29.00 (2x Patria a 14.50)
+    if (!dbContext.Reposiciones.Any(r => r.Id == "REP-003"))
+    {
+        dbContext.Reposiciones.Add(new Reposicion {
+            Id = "REP-003",
+            FechaReposicion = new DateTime(2026, 10, 17),
+            PrecioTotal = 29.00,
+            Comentario = "Reposición de novela histórica"
+        });
+    }
+
+    // Reposición 4: Coste total 45.00 (3x Harry Potter a 10.00 + 1x La sombra del viento a 15.00)
+    if (!dbContext.Reposiciones.Any(r => r.Id == "REP-004"))
+    {
+        dbContext.Reposiciones.Add(new Reposicion {
+            Id = "REP-004",
+            FechaReposicion = new DateTime(2026, 10, 18),
+            PrecioTotal = 45.00,
+            Comentario = "Reposición de fantasía y misterio"
+        });
+    }
+
+    // Reposición 5: Coste total 49.00 (1x El juego del ángel a 16.50 + 1x Los detectives a 18.00 + 1x Patria a 14.50)
+    if (!dbContext.Reposiciones.Any(r => r.Id == "REP-005"))
+    {
+        dbContext.Reposiciones.Add(new Reposicion {
+            Id = "REP-005",
+            FechaReposicion = new DateTime(2026, 10, 19),
+            PrecioTotal = 49.00,
+            Comentario = "Reposición variada semanal"
+        });
+    }
+
+    dbContext.SaveChanges();
+}
+
+public static void SeedReposicionItems(ApplicationDbContext dbContext)
+{
+    // Buscamos todos los libros que vamos a reponer
+    var sombraDelViento = dbContext.Libros.FirstOrDefault(l => l.Titulo == "La sombra del viento");
+    var juegoDelAngel = dbContext.Libros.FirstOrDefault(l => l.Titulo == "El juego del ángel");
+    var detectivesSalvajes = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Los detectives salvajes");
+    var patria = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Patria");
+    var harryPotter = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Harry Potter y la piedra filosofal");
+
+    // Buscamos las reposiciones base que acabamos de crear
+    var rep1 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == "REP-001");
+    var rep2 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == "REP-002");
+    var rep3 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == "REP-003");
+    var rep4 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == "REP-004");
+    var rep5 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == "REP-005");
+
+    if (sombraDelViento == null || juegoDelAngel == null || detectivesSalvajes == null || 
+        patria == null || harryPotter == null || 
+        rep1 == null || rep2 == null || rep3 == null || rep4 == null || rep5 == null)
+    {
+        return;
+    }
+
+    // Items para la Reposición 1
+    if (!dbContext.ReposicionItems.Any(ri => ri.LibroId == sombraDelViento.Id && ri.ReposicionId == rep1.Id))
+        dbContext.ReposicionItems.Add(new ReposicionItem(1, sombraDelViento, rep1));
+    
+    if (!dbContext.ReposicionItems.Any(ri => ri.LibroId == juegoDelAngel.Id && ri.ReposicionId == rep1.Id))
+        dbContext.ReposicionItems.Add(new ReposicionItem(1, juegoDelAngel, rep1));
+
+    // Items para la Reposición 2
+    if (!dbContext.ReposicionItems.Any(ri => ri.LibroId == detectivesSalvajes.Id && ri.ReposicionId == rep2.Id))
+        dbContext.ReposicionItems.Add(new ReposicionItem(2, detectivesSalvajes, rep2));
+
+    // Items para la Reposición 3
+    if (!dbContext.ReposicionItems.Any(ri => ri.LibroId == patria.Id && ri.ReposicionId == rep3.Id))
+        dbContext.ReposicionItems.Add(new ReposicionItem(2, patria, rep3));
+
+    // Items para la Reposición 4
+    if (!dbContext.ReposicionItems.Any(ri => ri.LibroId == harryPotter.Id && ri.ReposicionId == rep4.Id))
+        dbContext.ReposicionItems.Add(new ReposicionItem(3, harryPotter, rep4));
+        
+    if (!dbContext.ReposicionItems.Any(ri => ri.LibroId == sombraDelViento.Id && ri.ReposicionId == rep4.Id))
+        dbContext.ReposicionItems.Add(new ReposicionItem(1, sombraDelViento, rep4));
+
+    // Items para la Reposición 5
+    if (!dbContext.ReposicionItems.Any(ri => ri.LibroId == juegoDelAngel.Id && ri.ReposicionId == rep5.Id))
+        dbContext.ReposicionItems.Add(new ReposicionItem(1, juegoDelAngel, rep5));
+        
+    if (!dbContext.ReposicionItems.Any(ri => ri.LibroId == detectivesSalvajes.Id && ri.ReposicionId == rep5.Id))
+        dbContext.ReposicionItems.Add(new ReposicionItem(1, detectivesSalvajes, rep5));
+        
+    if (!dbContext.ReposicionItems.Any(ri => ri.LibroId == patria.Id && ri.ReposicionId == rep5.Id))
+        dbContext.ReposicionItems.Add(new ReposicionItem(1, patria, rep5));
+
+    dbContext.SaveChanges();
+}
+
+public static void SeedCompras(ApplicationDbContext dbContext)
+{
+    if (!dbContext.Compras.Any(c => c.CodigoDescuento == "DESC10"))
+    {
+        dbContext.Compras.Add(new Compra
+        {
+            FechaCompra = new DateTime(2026, 10, 15),
+            PrecioTotal = 45.50m,
+            CodigoDescuento = "DESC10"
+        });
+    }
+
+    if (!dbContext.Compras.Any(c => c.PrecioTotal == 30.00m && c.CodigoDescuento == null))
+    {
+        dbContext.Compras.Add(new Compra
+        {
+            FechaCompra = new DateTime(2026, 10, 16),
+            PrecioTotal = 30.00m,
+            CodigoDescuento = null
+        });
+    }
+
+    dbContext.SaveChanges();
+}
+
+public static void SeedCompraItems(ApplicationDbContext dbContext)
+{
+    var sombraDelViento = dbContext.Libros.FirstOrDefault(l => l.Titulo == "La sombra del viento");
+    var juegoDelAngel = dbContext.Libros.FirstOrDefault(l => l.Titulo == "El juego del ángel");
+    var harryPotter = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Harry Potter y la piedra filosofal");
+
+    var compraConDescuento = dbContext.Compras.FirstOrDefault(c => c.CodigoDescuento == "DESC10");
+    var compraSinDescuento = dbContext.Compras.FirstOrDefault(c => c.PrecioTotal == 30.00m && c.CodigoDescuento == null);
+
+    if (sombraDelViento == null || juegoDelAngel == null || harryPotter == null ||
+        compraConDescuento == null || compraSinDescuento == null)
+    {
+        return;
+    }
+
+    if (!dbContext.CompraItems.Any(ci => ci.LibroId == sombraDelViento.Id && ci.CompraId == compraConDescuento.Id))
+    {
+        dbContext.CompraItems.Add(new CompraItem
+        {
+            Cantidad = 2,
+            LibroId = sombraDelViento.Id,
+            CompraId = compraConDescuento.Id
+        });
+    }
+
+    if (!dbContext.CompraItems.Any(ci => ci.LibroId == juegoDelAngel.Id && ci.CompraId == compraConDescuento.Id))
+    {
+        dbContext.CompraItems.Add(new CompraItem
+        {
+            Cantidad = 3,
+            LibroId = juegoDelAngel.Id,
+            CompraId = compraConDescuento.Id
+        });
+    }
+
+    if (!dbContext.CompraItems.Any(ci => ci.LibroId == harryPotter.Id && ci.CompraId == compraSinDescuento.Id))
+    {
+        dbContext.CompraItems.Add(new CompraItem
+        {
+            Cantidad = 2,
+            LibroId = harryPotter.Id,
+            CompraId = compraSinDescuento.Id
+        });
+    }
+
+    dbContext.SaveChanges();
+}
+
+
+public static void SeedSubastas(ApplicationDbContext dbContext)
+{
+    // Subasta 1: Precio 20.8, (2x Harry Potter y la Piedra Filosofal a 10.40)
+    if (!dbContext.Subastas.Any(r => r.Id == 001))
+    {
+        dbContext.Subastas.Add(new Subasta {
+            PrecioSubasta = 20.80,
+            FechaSubasta = new DateTime(2026, 10, 30)
+
+        });
+    }
+
+    // Subasta 2: Precio 51.2, (2x Patria a 15.60 + 1x Los detectives salvajes a 20.00)
+    if (!dbContext.Subastas.Any(r => r.Id == 002))
+    {
+        dbContext.Subastas.Add(new Subasta {
+            PrecioSubasta = 51.20,
+            FechaSubasta = new DateTime(2026, 11, 13)
+
+        });
+    }
+
+    // Subasta 3: Precio 13, (1x Harry Potter y la Piedra Filosofal a 13.00)
+    if (!dbContext.Subastas.Any(r => r.Id == 003))
+    {
+        dbContext.Subastas.Add(new Subasta {
+            PrecioSubasta = 13.00,
+            FechaSubasta = new DateTime(2026, 10, 27)
+
+        });
+    }
+
+    // Subasta 4: Precio 60.6, (1x Harry Potter y la Piedra Filosofal a 13.00 + 2x La sombra del viento a 16.00 + 1x Patria a 15.6)
+    if (!dbContext.Subastas.Any(r => r.Id == 004))
+    {
+        dbContext.Subastas.Add(new Subasta {
+            PrecioSubasta = 60.60,
+            FechaSubasta = new DateTime(2026, 12, 03)
+
+        });
+    }
+
+    dbContext.SaveChanges();
+}
+
+public static void SeedSubastaItems(ApplicationDbContext dbContext)
+{
+    // Buscamos todos los libros que vamos a subastar
+    var sombraDelViento = dbContext.Libros.FirstOrDefault(l => l.Titulo == "La sombra del viento");
+    var detectivesSalvajes = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Los detectives salvajes");
+    var patria = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Patria");
+    var harryPotter = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Harry Potter y la piedra filosofal");
+
+    // Buscamos las subastas base que acabamos de crear
+    var sub1 = dbContext.Subastas.FirstOrDefault(r => r.Id == 001);
+    var sub2 = dbContext.Subastas.FirstOrDefault(r => r.Id == 002);
+    var sub3 = dbContext.Subastas.FirstOrDefault(r => r.Id == 003);
+    var sub4 = dbContext.Subastas.FirstOrDefault(r => r.Id == 004);
+
+    if (sombraDelViento == null || detectivesSalvajes == null || 
+        patria == null || harryPotter == null || 
+        sub1 == null || sub2 == null || sub3 == null || sub4 == null)
+    {
+        return;
+    }
+
+    // Items para la subasta 1
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == harryPotter.Id && ri.SubastaId == sub1.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("", 20.80m, harryPotter, sub1));
+
+    // Items para la subasta 2
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == patria.Id && ri.SubastaId == sub2.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("Se han vendido 2 patrias", 31.20m, patria, sub2));
+
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == detectivesSalvajes.Id && ri.SubastaId == sub2.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("Se ha vendido 1 detective salvaje", 20.00m, detectivesSalvajes, sub2));
+
+    // Items para la subasta 3
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == harryPotter.Id && ri.SubastaId == sub3.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("", 13.00m, harryPotter, sub3));
+
+    // Items para la subasta 4
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == harryPotter.Id && ri.SubastaId == sub4.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("Se ha vendido 1 harry potter", 13.00m, harryPotter, sub4));
+        
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == sombraDelViento.Id && ri.SubastaId == sub4.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("Se han vendido 2 sombras del viento", 32.00m, sombraDelViento, sub4));
+
+    if (!dbContext.SubastaItems.Any(ri => ri.LibroId == patria.Id && ri.SubastaId == sub4.Id))
+        dbContext.SubastaItems.Add(new SubastaItem("", 15.60m, patria, sub4));
+
+
+    dbContext.SaveChanges();
+}
 
     }
+
+    
 }
