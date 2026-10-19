@@ -17,6 +17,8 @@ public class LibroParaReponerDTO
     public int Id { get; set; }
     public string Titulo { get; set; }
     public string Genero { get; set; }
+    
+    [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
     public DateTime FechaLanzamiento { get; set; }
     public decimal PrecioReposicion { get; set; }
     public string Autor { get; set; }
