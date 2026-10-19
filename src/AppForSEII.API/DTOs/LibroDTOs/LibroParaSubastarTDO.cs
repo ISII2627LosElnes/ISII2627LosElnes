@@ -18,4 +18,14 @@ public class LibroParaSubastarDTO
     public string Editorial { get; set; }
     public string Autor { get; set; }
     public string TipoLibro { get; set; }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is LibroParaSubastarDTO other &&
+               Id == other.Id &&
+               Titulo == other.Titulo &&
+               Editorial == other.Editorial &&
+               Autor == other.Autor &&
+               TipoLibro == other.TipoLibro;
+    }
 }
