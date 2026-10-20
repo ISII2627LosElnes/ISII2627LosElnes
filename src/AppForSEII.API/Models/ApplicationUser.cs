@@ -24,4 +24,5 @@ public class ApplicationUser : IdentityUser
     public string? Surname {get;set;}
 
     public IList<Resena> Resenas { get; set; } = new List<Resena>();
+    public IList<Reposicion> Reposiciones { get; set; } = new List<Reposicion>();
 }

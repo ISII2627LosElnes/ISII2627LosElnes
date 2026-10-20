@@ -25,6 +25,7 @@ public class Reposicion
     [StringLength(100, MinimumLength = 20, ErrorMessage = "El comentario debe tener entre 20 y 100 caracteres.")]
     public string? Comentario { get; set; }
     public IList<ReposicionItem> ReposicionItems { get; set; } = new List<ReposicionItem>();
+    public ApplicationUser Usuario { get; set; }
 
     //Equals y hashcode para comparar objetos Reposicion mediando el ID.
     public bool Equals(Reposicion? other) =>
