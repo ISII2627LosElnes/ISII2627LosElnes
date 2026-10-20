@@ -494,6 +494,16 @@ public static void SeedResenaItems(ApplicationDbContext dbContext)
 
 public static void SeedReposiciones(ApplicationDbContext dbContext)
 {
+    var samuel = dbContext.Users.FirstOrDefault(u => u.Email == "samuel@test.com");
+    var manuel = dbContext.Users.FirstOrDefault(u => u.Email == "manuel@test.com");
+    var ismael = dbContext.Users.FirstOrDefault(u => u.Email == "ismael@test.com");
+    var gabriel = dbContext.Users.FirstOrDefault(u => u.Email == "gabriel@test.com");
+
+    if (samuel == null || manuel == null || ismael == null || gabriel == null)
+    {
+        return;
+    }
+    
     // Reposición 1: Coste total 31.50 (1x La sombra del viento a 15.00 + 1x El juego del ángel a 16.50)
     if (!dbContext.Reposiciones.Any(r => r.Id == "REP-001"))
     {
@@ -501,7 +511,8 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
             Id = "REP-001",
             FechaReposicion = new DateTime(2026, 10, 15),
             PrecioTotal = 31.50,
-            Comentario = "Reposición inicial de stock de Zafón"
+            Comentario = "Reposición inicial de stock de Zafón",
+            Usuario = samuel
         });
     }
 
@@ -512,7 +523,8 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
             Id = "REP-002",
             FechaReposicion = new DateTime(2026, 10, 16),
             PrecioTotal = 36.00,
-            Comentario = "Urgente: Reposición de libros de ficción"
+            Comentario = "Urgente: Reposición de libros de ficción",
+            Usuario = manuel
         });
     }
 
@@ -523,7 +535,8 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
             Id = "REP-003",
             FechaReposicion = new DateTime(2026, 10, 17),
             PrecioTotal = 29.00,
-            Comentario = "Reposición de novela histórica"
+            Comentario = "Reposición de novela histórica",
+            Usuario = ismael
         });
     }
 
@@ -534,7 +547,8 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
             Id = "REP-004",
             FechaReposicion = new DateTime(2026, 10, 18),
             PrecioTotal = 45.00,
-            Comentario = "Reposición de fantasía y misterio"
+            Comentario = "Reposición de fantasía y misterio",
+            Usuario = gabriel
         });
     }
 
@@ -545,7 +559,8 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
             Id = "REP-005",
             FechaReposicion = new DateTime(2026, 10, 19),
             PrecioTotal = 49.00,
-            Comentario = "Reposición variada semanal"
+            Comentario = "Reposición variada semanal",
+            Usuario = samuel
         });
     }
 
