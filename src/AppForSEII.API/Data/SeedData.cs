@@ -168,6 +168,66 @@ namespace AppForSEII.API.Data {
                 }
             }
 
+                if (userManager.FindByNameAsync("samuel@test.com").Result == null)
+            {
+                ApplicationUser user = new ApplicationUser("4", "Samuel", "Martínez", "samuel@test.com");
+                user.EmailConfirmed = true;
+                user.PhoneNumber = "600000001";
+
+                var result = userManager.CreateAsync(user, "Password1234%");
+                result.Wait();
+
+                if (result.IsCompletedSuccessfully)
+                {
+                    userManager.AddToRoleAsync(user, roles[2]).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("manuel@test.com").Result == null)
+            {
+                ApplicationUser user = new ApplicationUser("5", "Manuel", "González", "manuel@test.com");
+                user.EmailConfirmed = true;
+                user.PhoneNumber = "600000002";
+
+                var result = userManager.CreateAsync(user, "Password1234%");
+                result.Wait();
+
+                if (result.IsCompletedSuccessfully)
+                {
+                    userManager.AddToRoleAsync(user, roles[2]).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("ismael@test.com").Result == null)
+            {
+                ApplicationUser user = new ApplicationUser("6", "Ismael", "Isvoranu", "ismael@test.com");
+                user.EmailConfirmed = true;
+                user.PhoneNumber = "600000003";
+
+                var result = userManager.CreateAsync(user, "Password1234%");
+                result.Wait();
+
+                if (result.IsCompletedSuccessfully)
+                {
+                    userManager.AddToRoleAsync(user, roles[2]).Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("gabriel@test.com").Result == null)
+            {
+                ApplicationUser user = new ApplicationUser("7", "Gabriel", "Esparcia", "gabriel@test.com");
+                user.EmailConfirmed = true;
+                user.PhoneNumber = "600000004";
+
+                var result = userManager.CreateAsync(user, "Password1234%");
+                result.Wait();
+
+                if (result.IsCompletedSuccessfully)
+                {
+                    userManager.AddToRoleAsync(user, roles[2]).Wait();
+                }
+            }
+
         }
 
         public static void SeedEditoriales(ApplicationDbContext dbContext) {
@@ -321,12 +381,23 @@ namespace AppForSEII.API.Data {
 }
 public static void SeedResenas(ApplicationDbContext dbContext)
 {
+    var samuel = dbContext.Users.FirstOrDefault(u => u.Email == "samuel@test.com");
+    var manuel = dbContext.Users.FirstOrDefault(u => u.Email == "manuel@test.com");
+    var ismael = dbContext.Users.FirstOrDefault(u => u.Email == "ismael@test.com");
+    var gabriel = dbContext.Users.FirstOrDefault(u => u.Email == "gabriel@test.com");
+
+    if (samuel == null || manuel == null || ismael == null || gabriel == null)
+    {
+        return;
+    }
+
     if (!dbContext.Resenas.Any(r => r.Titulo == "Reseña excelente"))
     {
         dbContext.Resenas.Add(new Resena
         {
             FechaResena = new DateTime(2026, 10, 10),
-            Titulo = "Reseña excelente"
+            Titulo = "Reseña excelente",
+            Usuario = samuel
         });
     }
 
@@ -335,7 +406,8 @@ public static void SeedResenas(ApplicationDbContext dbContext)
         dbContext.Resenas.Add(new Resena
         {
             FechaResena = new DateTime(2026, 10, 11),
-            Titulo = "Muy recomendable"
+            Titulo = "Muy recomendable",
+            Usuario = manuel
         });
     }
 
@@ -344,7 +416,8 @@ public static void SeedResenas(ApplicationDbContext dbContext)
         dbContext.Resenas.Add(new Resena
         {
             FechaResena = new DateTime(2026, 10, 12),
-            Titulo = "Lectura interesante"
+            Titulo = "Lectura interesante",
+            Usuario = ismael
         });
     }
 
@@ -353,7 +426,8 @@ public static void SeedResenas(ApplicationDbContext dbContext)
         dbContext.Resenas.Add(new Resena
         {
             FechaResena = new DateTime(2026, 10, 13),
-            Titulo = "Una gran lectura"
+            Titulo = "Una gran lectura",
+            Usuario = gabriel
         });
     }
 
@@ -362,7 +436,8 @@ public static void SeedResenas(ApplicationDbContext dbContext)
         dbContext.Resenas.Add(new Resena
         {
             FechaResena = new DateTime(2026, 10, 14),
-            Titulo = "Opinión del libro"
+            Titulo = "Opinión del libro",
+            Usuario = manuel
         });
     }
 
