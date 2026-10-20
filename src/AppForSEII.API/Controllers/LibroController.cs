@@ -80,7 +80,6 @@ namespace AppForSEII.API.Controllers
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetLibrosParaReponer(string? autor, string? genero)
         {
-            // 1. Al tener parámetros, la validación del modelo y el logger son necesarios[cite: 2]
             if (!ModelState.IsValid)
             {
                 _logger.LogError($"{DateTime.Now} Parámetros de entrada no válidos al buscar libros para reponer.");
@@ -90,8 +89,8 @@ namespace AppForSEII.API.Controllers
             var libros = await _context.Libros
                 .Include(libro => libro.Genero)
                 .Where(libro => libro.Stock == 0 &&
-                                (autor == null || libro.Autor == autor) &&
-                                (genero == null || libro.Genero.Nombre == genero))
+                                (autor == null || libro.Autor.Equals(autor)) &&
+                                (genero == null || libro.Genero.Nombre.Equals(genero)))
                 .Select(libro => new LibroParaReponerDTO(
                     libro.Id,
                     libro.Titulo,

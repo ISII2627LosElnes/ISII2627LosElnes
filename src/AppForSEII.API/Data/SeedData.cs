@@ -353,7 +353,7 @@ namespace AppForSEII.API.Data {
             Autor = "Fernando Aramburu",
             PrecioCompra = 21.00m,
             PrecioReposicion = 14.50m,
-            Stock = 12,
+            Stock = 0,
             TipoLibro = "Bolsillo",
             CalificacionMedia = 4.7m,
             FechaLanzamiento = new DateTime(2016, 9, 1),
