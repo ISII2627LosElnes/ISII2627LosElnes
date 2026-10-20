@@ -25,4 +25,6 @@ public Resena(int id, DateTime fechaResena, string titulo)
     public string Titulo { get; set; }
 
     public IList<ResenaItem> ResenaItems { get; set; } = new List<ResenaItem>();
+
+    public ApplicationUser Usuario { get; set; }
 }
