@@ -139,7 +139,7 @@ namespace AppForSEII.API.Data {
         public static void SeedUsers(UserManager<ApplicationUser> userManager, List<string> roles) {
             //first, it checks the user does not already exist in the DB
             if (userManager.FindByNameAsync("elena@uclm.es").Result == null) {
-                ApplicationUser user = new ApplicationUser("1", "Elena", "Navarro Martínez", "elena@uclm.es");
+                ApplicationUser user = new ApplicationUser("1", "Elena", "Navarro Martínez", "elena@uclm.es","Calle 123, ALbacete, España");
                 user.EmailConfirmed = true;
 
                 var result = userManager.CreateAsync(user, "Password1234%");
@@ -154,7 +154,7 @@ namespace AppForSEII.API.Data {
 
             if (userManager.FindByNameAsync("peter@uclm.es").Result == null) {
                 //A customer class has been defined because it has different attributes (purchase, rental, etc.)
-                ApplicationUser user = new ApplicationUser("3", "Peter", "Jackson", "peter@uclm.es");
+                ApplicationUser user = new ApplicationUser("3", "Peter", "Jackson", "peter@uclm.es", "Calle 456, Ciudad Real, España");
                 user.EmailConfirmed = true;
 
                 var result = userManager.CreateAsync(user, "OtherPass12$");
@@ -170,7 +170,7 @@ namespace AppForSEII.API.Data {
 
                 if (userManager.FindByNameAsync("samuel@test.com").Result == null)
             {
-                ApplicationUser user = new ApplicationUser("4", "Samuel", "Martínez", "samuel@test.com");
+                ApplicationUser user = new ApplicationUser("4", "Samuel", "Martínez", "samuel@test.com","Calle Hellín, Albacete, España");
                 user.EmailConfirmed = true;
                 user.PhoneNumber = "600000001";
 
@@ -185,7 +185,7 @@ namespace AppForSEII.API.Data {
 
             if (userManager.FindByNameAsync("manuel@test.com").Result == null)
             {
-                ApplicationUser user = new ApplicationUser("5", "Manuel", "González", "manuel@test.com");
+                ApplicationUser user = new ApplicationUser("5", "Manuel", "González", "manuel@test.com","Calle Talavera de la Reina, Toledo, España");
                 user.EmailConfirmed = true;
                 user.PhoneNumber = "600000002";
 
@@ -200,7 +200,7 @@ namespace AppForSEII.API.Data {
 
             if (userManager.FindByNameAsync("ismael@test.com").Result == null)
             {
-                ApplicationUser user = new ApplicationUser("6", "Ismael", "Isvoranu", "ismael@test.com");
+                ApplicationUser user = new ApplicationUser("6", "Ismael", "Isvoranu", "ismael@test.com","Calle Calea Victoriei, Bucarest ,Rumanía");
                 user.EmailConfirmed = true;
                 user.PhoneNumber = "600000003";
 
@@ -215,7 +215,7 @@ namespace AppForSEII.API.Data {
 
             if (userManager.FindByNameAsync("gabriel@test.com").Result == null)
             {
-                ApplicationUser user = new ApplicationUser("7", "Gabriel", "Esparcia", "gabriel@test.com");
+                ApplicationUser user = new ApplicationUser("7", "Gabriel", "Esparcia", "gabriel@test.com","Calle Isso, Isso ,España");
                 user.EmailConfirmed = true;
                 user.PhoneNumber = "600000004";
 
