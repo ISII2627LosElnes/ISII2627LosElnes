@@ -25,4 +25,6 @@ public class Subasta
     [System.ComponentModel.DataAnnotations.DataTypeAttribute(
     System.ComponentModel.DataAnnotations.DataType.Date)]
     public DateTime FechaSubasta { get; set; }
+    public IList<SubastaItem> SubastaItems { get; set; } = new List<SubastaItem>();
+    public ApplicationUser Usuario { get; set; }
 }
