@@ -627,13 +627,24 @@ public static void SeedReposicionItems(ApplicationDbContext dbContext)
 
 public static void SeedCompras(ApplicationDbContext dbContext)
 {
+    var samuel = dbContext.Users.FirstOrDefault(u => u.Email == "samuel@test.com");
+    var manuel = dbContext.Users.FirstOrDefault(u => u.Email == "manuel@test.com");
+    var ismael = dbContext.Users.FirstOrDefault(u => u.Email == "ismael@test.com");
+    var gabriel = dbContext.Users.FirstOrDefault(u => u.Email == "gabriel@test.com");
+
+    if (samuel == null || manuel == null || ismael == null || gabriel == null)
+    {
+        return;
+    }
+
     if (!dbContext.Compras.Any(c => c.CodigoDescuento == "DESC10"))
     {
         dbContext.Compras.Add(new Compra
         {
             FechaCompra = new DateTime(2026, 10, 15),
             PrecioTotal = 45.50m,
-            CodigoDescuento = "DESC10"
+            CodigoDescuento = "DESC10",
+            Usuario = samuel
         });
     }
 
@@ -643,7 +654,30 @@ public static void SeedCompras(ApplicationDbContext dbContext)
         {
             FechaCompra = new DateTime(2026, 10, 16),
             PrecioTotal = 30.00m,
-            CodigoDescuento = null
+            CodigoDescuento = null,
+            Usuario = manuel
+        });
+    }
+
+    if (!dbContext.Compras.Any(c => c.PrecioTotal == 25.00m && c.CodigoDescuento == "DESC10"))
+    {
+        dbContext.Compras.Add(new Compra
+        {
+            FechaCompra = new DateTime(2026, 10, 17),
+            PrecioTotal = 25.00m,
+            CodigoDescuento = "DESC10",
+            Usuario = ismael
+        });
+    }
+
+    if (!dbContext.Compras.Any(c => c.PrecioTotal == 40.00m && c.CodigoDescuento == null))
+    {
+        dbContext.Compras.Add(new Compra
+        {
+            FechaCompra = new DateTime(2026, 10, 18),
+            PrecioTotal = 40.00m,
+            CodigoDescuento = null,
+            Usuario = gabriel
         });
     }
 
@@ -655,6 +689,7 @@ public static void SeedCompraItems(ApplicationDbContext dbContext)
     var sombraDelViento = dbContext.Libros.FirstOrDefault(l => l.Titulo == "La sombra del viento");
     var juegoDelAngel = dbContext.Libros.FirstOrDefault(l => l.Titulo == "El juego del ángel");
     var harryPotter = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Harry Potter y la piedra filosofal");
+    var detectivesSalvajes = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Los detectives salvajes");
 
     var compraConDescuento = dbContext.Compras.FirstOrDefault(c => c.CodigoDescuento == "DESC10");
     var compraSinDescuento = dbContext.Compras.FirstOrDefault(c => c.PrecioTotal == 30.00m && c.CodigoDescuento == null);
@@ -691,6 +726,16 @@ public static void SeedCompraItems(ApplicationDbContext dbContext)
         {
             Cantidad = 2,
             LibroId = harryPotter.Id,
+            CompraId = compraSinDescuento.Id
+        });
+    }
+
+    if (!dbContext.CompraItems.Any(ci => ci.LibroId == detectivesSalvajes.Id && ci.CompraId == compraSinDescuento.Id))
+    {
+        dbContext.CompraItems.Add(new CompraItem
+        {
+            Cantidad = 4,
+            LibroId = detectivesSalvajes.Id,
             CompraId = compraSinDescuento.Id
         });
     }
