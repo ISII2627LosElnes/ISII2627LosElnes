@@ -503,8 +503,14 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
     {
         return;
     }
+
+    var visaSamuel = new Visa("PAGO-REP-001", "1234567890123456", new DateTime(2028, 12, 31));
+    var paypalManuel = new PayPal("PAGO-REP-002", "600000002");
+    var googlePayIsmael = new GooglePay("PAGO-REP-003", "ismael@test.com");
+    var visaGabriel = new Visa("PAGO-REP-004", "9876543210987654", new DateTime(2027, 10, 31));
+    var paypalSamuel2 = new PayPal("PAGO-REP-005", "600000001");
     
-    // Reposición 1: Coste total 31.50 (1x La sombra del viento a 15.00 + 1x El juego del ángel a 16.50)
+    
     if (!dbContext.Reposiciones.Any(r => r.Id == "REP-001"))
     {
         dbContext.Reposiciones.Add(new Reposicion {
@@ -512,11 +518,12 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
             FechaReposicion = new DateTime(2026, 10, 15),
             PrecioTotal = 31.50,
             Comentario = "Reposición inicial de stock de Zafón",
-            Usuario = samuel
+            Usuario = samuel,
+            MetodoPago = visaSamuel
         });
     }
 
-    // Reposición 2: Coste total 36.00 (2x Los detectives salvajes a 18.00)
+    
     if (!dbContext.Reposiciones.Any(r => r.Id == "REP-002"))
     {
         dbContext.Reposiciones.Add(new Reposicion {
@@ -524,11 +531,12 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
             FechaReposicion = new DateTime(2026, 10, 16),
             PrecioTotal = 36.00,
             Comentario = "Urgente: Reposición de libros de ficción",
-            Usuario = manuel
+            Usuario = manuel,
+            MetodoPago = paypalManuel
         });
     }
 
-    // Reposición 3: Coste total 29.00 (2x Patria a 14.50)
+    
     if (!dbContext.Reposiciones.Any(r => r.Id == "REP-003"))
     {
         dbContext.Reposiciones.Add(new Reposicion {
@@ -536,11 +544,12 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
             FechaReposicion = new DateTime(2026, 10, 17),
             PrecioTotal = 29.00,
             Comentario = "Reposición de novela histórica",
-            Usuario = ismael
+            Usuario = ismael,
+            MetodoPago = googlePayIsmael
         });
     }
 
-    // Reposición 4: Coste total 45.00 (3x Harry Potter a 10.00 + 1x La sombra del viento a 15.00)
+    
     if (!dbContext.Reposiciones.Any(r => r.Id == "REP-004"))
     {
         dbContext.Reposiciones.Add(new Reposicion {
@@ -548,11 +557,12 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
             FechaReposicion = new DateTime(2026, 10, 18),
             PrecioTotal = 45.00,
             Comentario = "Reposición de fantasía y misterio",
-            Usuario = gabriel
+            Usuario = gabriel,
+            MetodoPago = visaGabriel
         });
     }
 
-    // Reposición 5: Coste total 49.00 (1x El juego del ángel a 16.50 + 1x Los detectives a 18.00 + 1x Patria a 14.50)
+    
     if (!dbContext.Reposiciones.Any(r => r.Id == "REP-005"))
     {
         dbContext.Reposiciones.Add(new Reposicion {
@@ -560,7 +570,8 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
             FechaReposicion = new DateTime(2026, 10, 19),
             PrecioTotal = 49.00,
             Comentario = "Reposición variada semanal",
-            Usuario = samuel
+            Usuario = samuel,
+            MetodoPago = paypalSamuel2
         });
     }
 
