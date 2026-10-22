@@ -7,12 +7,13 @@ namespace AppForSEII.API.Models
             
         }
 
-    public Compra(int id, DateTime fechaCompra, decimal precioTotal, string codigoDescuento)
+    public Compra(int id, DateTime fechaCompra, decimal precioTotal, string codigoDescuento, MetodoPago metodoPago)
         {
             Id = id;
             FechaCompra = fechaCompra;
             PrecioTotal = precioTotal;
             CodigoDescuento = codigoDescuento;
+            MetodoPago = metodoPago;
         }
         
         [Key]
@@ -29,6 +30,8 @@ namespace AppForSEII.API.Models
         public IList<CompraItem> CompraItems { get; set; }= new List<CompraItem>();
 
         public ApplicationUser Usuario { get; set; }
+
+        public MetodoPago MetodoPago { get; set; }
 
     }
 }

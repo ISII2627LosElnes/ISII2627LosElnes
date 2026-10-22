@@ -643,6 +643,11 @@ public static void SeedCompras(ApplicationDbContext dbContext)
     var ismael = dbContext.Users.FirstOrDefault(u => u.Email == "ismael@test.com");
     var gabriel = dbContext.Users.FirstOrDefault(u => u.Email == "gabriel@test.com");
 
+    var visaSamuel = new Visa("PAGO-COMP-001", "1234567890123456", new DateTime(2028, 12, 31));
+    var paypalManuel = new PayPal("PAGO-COMP-002", "659286702");
+    var googlePayIsmael = new GooglePay("PAGO-COMP-003", "ismael@test.com");
+    var visaGabriel = new Visa("PAGO-COMP-004", "9876543210987654", new DateTime(2027, 10, 31));  
+
     if (samuel == null || manuel == null || ismael == null || gabriel == null)
     {
         return;
@@ -655,7 +660,8 @@ public static void SeedCompras(ApplicationDbContext dbContext)
             FechaCompra = new DateTime(2026, 10, 15),
             PrecioTotal = 45.50m,
             CodigoDescuento = "DESC10",
-            Usuario = samuel
+            Usuario = samuel,
+            MetodoPago = visaSamuel
         });
     }
 
@@ -666,7 +672,8 @@ public static void SeedCompras(ApplicationDbContext dbContext)
             FechaCompra = new DateTime(2026, 10, 16),
             PrecioTotal = 30.00m,
             CodigoDescuento = null,
-            Usuario = manuel
+            Usuario = manuel,
+            MetodoPago = paypalManuel
         });
     }
 
@@ -677,7 +684,8 @@ public static void SeedCompras(ApplicationDbContext dbContext)
             FechaCompra = new DateTime(2026, 10, 17),
             PrecioTotal = 25.00m,
             CodigoDescuento = "DESC10",
-            Usuario = ismael
+            Usuario = ismael,
+            MetodoPago = googlePayIsmael
         });
     }
 
@@ -688,7 +696,8 @@ public static void SeedCompras(ApplicationDbContext dbContext)
             FechaCompra = new DateTime(2026, 10, 18),
             PrecioTotal = 40.00m,
             CodigoDescuento = null,
-            Usuario = gabriel
+            Usuario = gabriel,
+            MetodoPago = visaGabriel
         });
     }
 
