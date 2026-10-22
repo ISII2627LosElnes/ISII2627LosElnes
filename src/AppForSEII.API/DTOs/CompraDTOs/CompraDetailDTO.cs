@@ -2,7 +2,7 @@ namespace AppForSEII.API.CompraDTOs;
 
 public class ComprasDetailDTO
 {
-    public ComprasDetailDTO(string nombre, string apellidos, string direccion, string telefono, DateTime fechaCompra, decimal precioTotal, string? codigoDescuento, IList<CompraItemDTO> compras)
+    public ComprasDetailDTO(string nombre, string apellidos, string direccion, string telefono, DateTime fechaCompra, decimal precioTotal, string? codigoDescuento, IList<CompraItemDTO> compras, string metodoPago)
     {
         Nombre = nombre;
         Apellidos = apellidos;
@@ -12,6 +12,7 @@ public class ComprasDetailDTO
         PrecioTotal = precioTotal;
         CodigoDescuento = codigoDescuento;
         Compraitems = compras;
+        MetodoPago = metodoPago;
     }
 
     public string Nombre { get; set; }
@@ -21,6 +22,8 @@ public class ComprasDetailDTO
     public DateTime FechaCompra { get; set; }
     public decimal PrecioTotal { get; set; }
     public string? CodigoDescuento { get; set; }
+    public string MetodoPago { get; set; }
+
     public IList<CompraItemDTO> Compraitems { get; set; }
 
     public override bool Equals(object? obj)
@@ -39,6 +42,7 @@ public class ComprasDetailDTO
                FechaCompra == otro.FechaCompra &&
                PrecioTotal == otro.PrecioTotal &&
                CodigoDescuento == otro.CodigoDescuento &&
+               MetodoPago == otro.MetodoPago &&
                Compraitems.SequenceEqual(otro.Compraitems);
     }
 }
