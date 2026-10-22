@@ -30,7 +30,6 @@ public class SubastasController : ControllerBase
             .Include(s => s.Usuario)
             .Include (s => s.SubastaItems)
                .ThenInclude(si => si.Libro)
-                    .ThenInclude(l => l.Editorial)
             .Where(s => s.Id == id)
             .Select(s => new SubastaDetailDTO(
                 s.Usuario.Name,
