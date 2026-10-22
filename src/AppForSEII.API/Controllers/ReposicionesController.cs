@@ -47,7 +47,10 @@ public class ReposicionesController : ControllerBase
                     ri.Libro.Titulo,
                     ri.Libro.Autor,
                     ri.CantidadReposicion
-                )).ToList()
+                )).ToList(),
+                r.MetodoPago is Visa ? "Visa" :
+                r.MetodoPago is PayPal ? "PayPal" :
+                r.MetodoPago is GooglePay ? "GooglePay" : "Desconocido"
             ))
             .FirstOrDefaultAsync();
 
