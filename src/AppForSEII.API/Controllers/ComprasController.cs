@@ -51,7 +51,11 @@ public class ComprasController : ControllerBase
                     ci.Libro.Genero.Nombre,
                     ci.Libro.Editorial.Nombre,
                     ci.Cantidad
-                )).ToList()
+                )).ToList(),
+                c.MetodoPago is Visa? "Visa" : 
+                c.MetodoPago is GooglePay? "Google Pay" : 
+                c.MetodoPago is PayPal? "PayPal" : "Desconocido"
+
             ))
             .FirstOrDefaultAsync();
 
