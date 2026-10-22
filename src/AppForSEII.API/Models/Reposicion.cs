@@ -6,12 +6,13 @@ public class Reposicion
     {
     }
 
-    public Reposicion(string id, DateTime fechaReposicion, double precioTotal, string comentario, IList<ReposicionItem> reposicionItems)
+    public Reposicion(string id, DateTime fechaReposicion, double precioTotal, string comentario, IList<ReposicionItem> reposicionItems, MetodoPago metodoPago)
     {
         Id = id;
         FechaReposicion = fechaReposicion;
         PrecioTotal = precioTotal;
         Comentario = comentario;
+        MetodoPago = metodoPago;
         ReposicionItems = reposicionItems;
     }
 
@@ -26,6 +27,7 @@ public class Reposicion
     public string? Comentario { get; set; }
     public IList<ReposicionItem> ReposicionItems { get; set; } = new List<ReposicionItem>();
     public ApplicationUser Usuario { get; set; }
+    public MetodoPago MetodoPago { get; set; }
 
     //Equals y hashcode para comparar objetos Reposicion mediando el ID.
     public bool Equals(Reposicion? other) =>
