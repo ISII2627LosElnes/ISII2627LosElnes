@@ -766,43 +766,53 @@ public static void SeedCompraItems(ApplicationDbContext dbContext)
 
 public static void SeedSubastas(ApplicationDbContext dbContext)
 {
+    var samuel = dbContext.Users.FirstOrDefault(u => u.Email == "samuel@test.com");
+    var manuel = dbContext.Users.FirstOrDefault(u => u.Email == "manuel@test.com");
+    var ismael = dbContext.Users.FirstOrDefault(u => u.Email == "ismael@test.com");
+    var gabriel = dbContext.Users.FirstOrDefault(u => u.Email == "gabriel@test.com");
+
+    if (samuel == null || manuel == null || ismael == null || gabriel == null)
+    {
+        return;
+    }
+
     // Subasta 1: Precio 20.8, (2x Harry Potter y la Piedra Filosofal a 10.40)
-    if (!dbContext.Subastas.Any(r => r.Id == 001))
+    if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 10, 28) && s.Usuario.Email == samuel.Email))
     {
         dbContext.Subastas.Add(new Subasta {
             PrecioSubasta = 20.80,
-            FechaSubasta = new DateTime(2026, 10, 30)
-
+            FechaSubasta = new DateTime(2026, 10, 30),
+            Usuario = samuel
         });
     }
 
     // Subasta 2: Precio 51.2, (2x Patria a 15.60 + 1x Los detectives salvajes a 20.00)
-    if (!dbContext.Subastas.Any(r => r.Id == 002))
+    if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 10, 30) && s.Usuario.Email == gabriel.Email))
     {
         dbContext.Subastas.Add(new Subasta {
             PrecioSubasta = 51.20,
-            FechaSubasta = new DateTime(2026, 11, 13)
-
+            FechaSubasta = new DateTime(2026, 11, 13),
+            Usuario = gabriel
         });
     }
 
     // Subasta 3: Precio 13, (1x Harry Potter y la Piedra Filosofal a 13.00)
-    if (!dbContext.Subastas.Any(r => r.Id == 003))
+    if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 11, 15) && s.Usuario.Email == manuel.Email))
     {
         dbContext.Subastas.Add(new Subasta {
             PrecioSubasta = 13.00,
-            FechaSubasta = new DateTime(2026, 10, 27)
-
+            FechaSubasta = new DateTime(2026, 10, 27),
+            Usuario = manuel
         });
     }
 
     // Subasta 4: Precio 60.6, (1x Harry Potter y la Piedra Filosofal a 13.00 + 2x La sombra del viento a 16.00 + 1x Patria a 15.6)
-    if (!dbContext.Subastas.Any(r => r.Id == 004))
+    if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 12, 20) && s.Usuario.Email == ismael.Email))
     {
         dbContext.Subastas.Add(new Subasta {
             PrecioSubasta = 60.60,
-            FechaSubasta = new DateTime(2026, 12, 03)
-
+            FechaSubasta = new DateTime(2026, 12, 03),
+            Usuario = ismael
         });
     }
 
