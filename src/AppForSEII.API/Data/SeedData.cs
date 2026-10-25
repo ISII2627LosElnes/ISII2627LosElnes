@@ -787,7 +787,8 @@ public static void SeedSubastas(ApplicationDbContext dbContext)
         dbContext.Subastas.Add(new Subasta {
             PrecioSubasta = 20.80,
             FechaSubasta = new DateTime(2026, 10, 30),
-            Usuario = samuel
+            Usuario = samuel,
+            MetodoPago = visaSamuel
         });
     }
 
@@ -797,7 +798,8 @@ public static void SeedSubastas(ApplicationDbContext dbContext)
         dbContext.Subastas.Add(new Subasta {
             PrecioSubasta = 51.20,
             FechaSubasta = new DateTime(2026, 11, 13),
-            Usuario = gabriel
+            Usuario = gabriel,
+            MetodoPago = visaGabriel
         });
     }
 
@@ -807,7 +809,8 @@ public static void SeedSubastas(ApplicationDbContext dbContext)
         dbContext.Subastas.Add(new Subasta {
             PrecioSubasta = 13.00,
             FechaSubasta = new DateTime(2026, 10, 27),
-            Usuario = manuel
+            Usuario = manuel,
+            MetodoPago = paypalManuel
         });
     }
 
@@ -817,7 +820,8 @@ public static void SeedSubastas(ApplicationDbContext dbContext)
         dbContext.Subastas.Add(new Subasta {
             PrecioSubasta = 60.60,
             FechaSubasta = new DateTime(2026, 12, 03),
-            Usuario = ismael
+            Usuario = ismael,
+            MetodoPago = googlePayIsmael
         });
     }
 
