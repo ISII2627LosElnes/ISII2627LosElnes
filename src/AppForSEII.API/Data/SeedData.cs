@@ -776,6 +776,11 @@ public static void SeedSubastas(ApplicationDbContext dbContext)
         return;
     }
 
+    var visaSamuel = new Visa("PAGO-SUB-001", "1234567890123456", new DateTime(2028, 12, 31));
+    var paypalManuel = new PayPal("PAGO-SUB-002", "659286702");
+    var googlePayIsmael = new GooglePay("PAGO-SUB-003", "ismael@test.com");
+    var visaGabriel = new Visa("PAGO-SUB-004", "9876543210987654", new DateTime(2027, 10, 31));
+
     // Subasta 1: Precio 20.8, (2x Harry Potter y la Piedra Filosofal a 10.40)
     if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 10, 28) && s.Usuario.Email == samuel.Email))
     {
