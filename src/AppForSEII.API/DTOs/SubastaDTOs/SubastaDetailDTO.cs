@@ -2,7 +2,7 @@ namespace AppForSEII.API.DTOs.SubastaDTOs;
 
 public class SubastaDetailDTO
 {
-    public SubastaDetailDTO(string nombre, string apellidos, string telefono, DateTime fechaSubasta, double precioSubasta,IList<SubastaItemDTO> subastas)
+    public SubastaDetailDTO(string nombre, string apellidos, string telefono, DateTime fechaSubasta, double precioSubasta,IList<SubastaItemDTO> subastas, string metodoPago)
     {
         Nombre = nombre;
         Apellidos = apellidos;
@@ -10,6 +10,7 @@ public class SubastaDetailDTO
         FechaSubasta = fechaSubasta;
         PrecioSubasta = precioSubasta;
         SubastaItems = subastas;
+        MetodoPago = metodoPago;
     }
 
     public string Nombre { get; set; }
@@ -18,6 +19,7 @@ public class SubastaDetailDTO
     public DateTime FechaSubasta { get; set; }
     public double PrecioSubasta { get; set; }
     public IList<SubastaItemDTO> SubastaItems { get; set; }
+    public string MetodoPago {get; set; }
 
     public override bool Equals(object? obj)
 {

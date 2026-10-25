@@ -41,7 +41,10 @@ public class SubastasController : ControllerBase
                     si.Libro.Titulo,
                     si.Libro.Autor,
                     si.Descripcion
-                )).ToList()
+                )).ToList(),
+                s.MetodoPago is Visa ? "Visa" :
+                s.MetodoPago is PayPal ? "PayPal" :
+                s.MetodoPago is GooglePay ? "GooglePay" : "Desconocido"
             ))
             .FirstOrDefaultAsync();
 
