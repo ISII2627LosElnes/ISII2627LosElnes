@@ -30,9 +30,8 @@ public class ApplicationUser : IdentityUser
 
     public IList<Resena> Resenas { get; set; } = new List<Resena>();
     public IList<Reposicion> Reposiciones { get; set; } = new List<Reposicion>();
-     public IList<Compra> Compras { get; set; } = new List<Compra>();
-
-    
+    public IList<Compra> Compras { get; set; } = new List<Compra>();
+    public IList<Subasta> Subastas { get; set; } = new List<Subasta>();
 
     
 }
