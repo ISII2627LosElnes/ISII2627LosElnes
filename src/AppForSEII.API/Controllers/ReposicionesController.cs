@@ -29,7 +29,7 @@ public class ReposicionesController : ControllerBase
     [Route("[action]")]
     [ProducesResponseType(typeof(IList<ReposicionDetailDTO>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
-    public async Task<IActionResult> GetReciboReposicion(string id)
+    public async Task<IActionResult> GetReciboReposicion(int id)
     {
         var reposicion = await _context.Reposiciones
             .Include(r => r.Usuario)

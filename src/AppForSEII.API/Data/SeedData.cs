@@ -511,10 +511,9 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
     var paypalSamuel2 = new PayPal("PAGO-REP-005", "600000001");
     
     
-    if (!dbContext.Reposiciones.Any(r => r.Id == "REP-001"))
+    if (!dbContext.Reposiciones.Any(r => r.Id == 1))
     {
         dbContext.Reposiciones.Add(new Reposicion {
-            Id = "REP-001",
             FechaReposicion = new DateTime(2026, 10, 15),
             PrecioTotal = 31.50,
             Comentario = "Reposición inicial de stock de Zafón",
@@ -524,10 +523,9 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
     }
 
     
-    if (!dbContext.Reposiciones.Any(r => r.Id == "REP-002"))
+    if (!dbContext.Reposiciones.Any(r => r.Id == 2))
     {
         dbContext.Reposiciones.Add(new Reposicion {
-            Id = "REP-002",
             FechaReposicion = new DateTime(2026, 10, 16),
             PrecioTotal = 36.00,
             Comentario = "Urgente: Reposición de libros de ficción",
@@ -537,10 +535,9 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
     }
 
     
-    if (!dbContext.Reposiciones.Any(r => r.Id == "REP-003"))
+    if (!dbContext.Reposiciones.Any(r => r.Id == 3))
     {
         dbContext.Reposiciones.Add(new Reposicion {
-            Id = "REP-003",
             FechaReposicion = new DateTime(2026, 10, 17),
             PrecioTotal = 29.00,
             Comentario = "Reposición de novela histórica",
@@ -550,10 +547,9 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
     }
 
     
-    if (!dbContext.Reposiciones.Any(r => r.Id == "REP-004"))
+    if (!dbContext.Reposiciones.Any(r => r.Id == 4))
     {
         dbContext.Reposiciones.Add(new Reposicion {
-            Id = "REP-004",
             FechaReposicion = new DateTime(2026, 10, 18),
             PrecioTotal = 45.00,
             Comentario = "Reposición de fantasía y misterio",
@@ -563,10 +559,9 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
     }
 
     
-    if (!dbContext.Reposiciones.Any(r => r.Id == "REP-005"))
+    if (!dbContext.Reposiciones.Any(r => r.Id == 5))
     {
         dbContext.Reposiciones.Add(new Reposicion {
-            Id = "REP-005",
             FechaReposicion = new DateTime(2026, 10, 19),
             PrecioTotal = 49.00,
             Comentario = "Reposición variada semanal",
@@ -588,11 +583,11 @@ public static void SeedReposicionItems(ApplicationDbContext dbContext)
     var harryPotter = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Harry Potter y la piedra filosofal");
 
     // Buscamos las reposiciones base que acabamos de crear
-    var rep1 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == "REP-001");
-    var rep2 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == "REP-002");
-    var rep3 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == "REP-003");
-    var rep4 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == "REP-004");
-    var rep5 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == "REP-005");
+    var rep1 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == 1);
+    var rep2 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == 2);
+    var rep3 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == 3);
+    var rep4 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == 4);
+    var rep5 = dbContext.Reposiciones.FirstOrDefault(r => r.Id == 5);
 
     if (sombraDelViento == null || juegoDelAngel == null || detectivesSalvajes == null || 
         patria == null || harryPotter == null || 

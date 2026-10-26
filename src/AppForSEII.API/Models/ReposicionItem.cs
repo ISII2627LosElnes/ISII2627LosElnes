@@ -24,7 +24,7 @@ public class ReposicionItem
 
     public int LibroId { get; set; }
 
-    public string ReposicionId { get; set; }
+    public int ReposicionId { get; set; }
 
     public Libro Libro { get; set; }
 
