@@ -257,8 +257,11 @@ namespace AppForSEII.API.Migrations
 
             modelBuilder.Entity("AppForSEII.API.Models.Reposicion", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comentario")
                         .HasMaxLength(100)
@@ -292,8 +295,8 @@ namespace AppForSEII.API.Migrations
                     b.Property<int>("LibroId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ReposicionId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ReposicionId")
+                        .HasColumnType("int");
 
                     b.Property<int>("CantidadReposicion")
                         .HasColumnType("int");
