@@ -288,7 +288,8 @@ namespace AppForSEII.API.Migrations
                 name: "Reposiciones",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FechaReposicion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PrecioTotal = table.Column<double>(type: "float", nullable: false),
                     Comentario = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -396,7 +397,7 @@ namespace AppForSEII.API.Migrations
                 columns: table => new
                 {
                     LibroId = table.Column<int>(type: "int", nullable: false),
-                    ReposicionId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReposicionId = table.Column<int>(type: "int", nullable: false),
                     CantidadReposicion = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

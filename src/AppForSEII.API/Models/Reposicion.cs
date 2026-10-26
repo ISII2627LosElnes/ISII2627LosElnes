@@ -6,7 +6,7 @@ public class Reposicion
     {
     }
 
-    public Reposicion(string id, DateTime fechaReposicion, double precioTotal, string comentario, IList<ReposicionItem> reposicionItems, MetodoPago metodoPago)
+    public Reposicion(int id, DateTime fechaReposicion, double precioTotal, string comentario, IList<ReposicionItem> reposicionItems, MetodoPago metodoPago)
     {
         Id = id;
         FechaReposicion = fechaReposicion;
@@ -17,7 +17,7 @@ public class Reposicion
     }
 
     [Key]
-    public string Id { get; set; }
+    public int Id { get; set; }
     [System.ComponentModel.DataAnnotations.DataTypeAttribute(System.ComponentModel.DataAnnotations.DataType.Date)]
     public DateTime FechaReposicion { get; set; }
 
@@ -31,15 +31,11 @@ public class Reposicion
 
     //Equals y hashcode para comparar objetos Reposicion mediando el ID.
     public bool Equals(Reposicion? other) =>
-        other is not null &&
-        (ReferenceEquals(this, other) ||
-         (Id is not null && other.Id is not null &&
-          StringComparer.Ordinal.Equals(Id, other.Id)));
+        other is not null && Id == other.Id;
 
     public override bool Equals(object? obj) =>
         obj is Reposicion other && Equals(other);
 
-    public override int GetHashCode() =>
-        Id is null ? 0 : StringComparer.Ordinal.GetHashCode(Id);
+    public override int GetHashCode() => Id.GetHashCode();
     
 }
