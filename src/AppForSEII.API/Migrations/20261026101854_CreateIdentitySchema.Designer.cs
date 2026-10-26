@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppForSEII.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261019115438_CreateIdentitySchema")]
+    [Migration("20261026101854_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
         /// <inheritdoc />
@@ -32,6 +32,10 @@ namespace AppForSEII.API.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -113,10 +117,21 @@ namespace AppForSEII.API.Migrations
                     b.Property<DateTime>("FechaCompra")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("MetodoPagoId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<decimal>("PrecioTotal")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("MetodoPagoId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Compras");
                 });
@@ -255,10 +270,22 @@ namespace AppForSEII.API.Migrations
                     b.Property<DateTime>("FechaReposicion")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("MetodoPagoId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<double>("PrecioTotal")
                         .HasColumnType("float");
 
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("MetodoPagoId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Reposiciones");
                 });
@@ -297,7 +324,13 @@ namespace AppForSEII.API.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Resenas");
                 });
@@ -335,10 +368,22 @@ namespace AppForSEII.API.Migrations
                     b.Property<DateTime>("FechaSubasta")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("MetodoPagoId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<double>("PrecioSubasta")
                         .HasColumnType("float");
 
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("MetodoPagoId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Subastas");
                 });
@@ -535,6 +580,23 @@ namespace AppForSEII.API.Migrations
                     b.HasDiscriminator().HasValue("Visa");
                 });
 
+            modelBuilder.Entity("AppForSEII.API.Models.Compra", b =>
+                {
+                    b.HasOne("AppForSEII.API.Models.MetodoPago", "MetodoPago")
+                        .WithMany()
+                        .HasForeignKey("MetodoPagoId");
+
+                    b.HasOne("AppForSEII.API.Models.ApplicationUser", "Usuario")
+                        .WithMany("Compras")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MetodoPago");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("AppForSEII.API.Models.CompraItem", b =>
                 {
                     b.HasOne("AppForSEII.API.Models.Compra", "Compra")
@@ -573,6 +635,25 @@ namespace AppForSEII.API.Migrations
                     b.Navigation("Genero");
                 });
 
+            modelBuilder.Entity("AppForSEII.API.Models.Reposicion", b =>
+                {
+                    b.HasOne("AppForSEII.API.Models.MetodoPago", "MetodoPago")
+                        .WithMany()
+                        .HasForeignKey("MetodoPagoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppForSEII.API.Models.ApplicationUser", "Usuario")
+                        .WithMany("Reposiciones")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MetodoPago");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("AppForSEII.API.Models.ReposicionItem", b =>
                 {
                     b.HasOne("AppForSEII.API.Models.Libro", "Libro")
@@ -590,6 +671,17 @@ namespace AppForSEII.API.Migrations
                     b.Navigation("Libro");
 
                     b.Navigation("Reposicion");
+                });
+
+            modelBuilder.Entity("AppForSEII.API.Models.Resena", b =>
+                {
+                    b.HasOne("AppForSEII.API.Models.ApplicationUser", "Usuario")
+                        .WithMany("Resenas")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.ResenaItem", b =>
@@ -611,6 +703,25 @@ namespace AppForSEII.API.Migrations
                     b.Navigation("Resena");
                 });
 
+            modelBuilder.Entity("AppForSEII.API.Models.Subasta", b =>
+                {
+                    b.HasOne("AppForSEII.API.Models.MetodoPago", "MetodoPago")
+                        .WithMany()
+                        .HasForeignKey("MetodoPagoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppForSEII.API.Models.ApplicationUser", "Usuario")
+                        .WithMany("Subastas")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MetodoPago");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("AppForSEII.API.Models.SubastaItem", b =>
                 {
                     b.HasOne("AppForSEII.API.Models.Libro", "Libro")
@@ -620,7 +731,7 @@ namespace AppForSEII.API.Migrations
                         .IsRequired();
 
                     b.HasOne("AppForSEII.API.Models.Subasta", "Subasta")
-                        .WithMany()
+                        .WithMany("SubastaItems")
                         .HasForeignKey("SubastaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -681,6 +792,17 @@ namespace AppForSEII.API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("AppForSEII.API.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Compras");
+
+                    b.Navigation("Reposiciones");
+
+                    b.Navigation("Resenas");
+
+                    b.Navigation("Subastas");
+                });
+
             modelBuilder.Entity("AppForSEII.API.Models.Compra", b =>
                 {
                     b.Navigation("CompraItems");
@@ -715,6 +837,11 @@ namespace AppForSEII.API.Migrations
             modelBuilder.Entity("AppForSEII.API.Models.Resena", b =>
                 {
                     b.Navigation("ResenaItems");
+                });
+
+            modelBuilder.Entity("AppForSEII.API.Models.Subasta", b =>
+                {
+                    b.Navigation("SubastaItems");
                 });
 #pragma warning restore 612, 618
         }
