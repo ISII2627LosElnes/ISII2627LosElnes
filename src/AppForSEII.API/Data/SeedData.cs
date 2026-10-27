@@ -780,7 +780,7 @@ public static void SeedSubastas(ApplicationDbContext dbContext)
     if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 10, 28) && s.Usuario.Email == samuel.Email))
     {
         dbContext.Subastas.Add(new Subasta {
-            PrecioSubasta = 20.80,
+            PrecioSubasta = 20.80m,
             FechaSubasta = new DateTime(2026, 10, 30),
             Usuario = samuel,
             MetodoPago = visaSamuel
@@ -791,7 +791,7 @@ public static void SeedSubastas(ApplicationDbContext dbContext)
     if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 10, 30) && s.Usuario.Email == gabriel.Email))
     {
         dbContext.Subastas.Add(new Subasta {
-            PrecioSubasta = 51.20,
+            PrecioSubasta = 51.20m,
             FechaSubasta = new DateTime(2026, 11, 13),
             Usuario = gabriel,
             MetodoPago = visaGabriel
@@ -802,7 +802,7 @@ public static void SeedSubastas(ApplicationDbContext dbContext)
     if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 11, 15) && s.Usuario.Email == manuel.Email))
     {
         dbContext.Subastas.Add(new Subasta {
-            PrecioSubasta = 13.00,
+            PrecioSubasta = 13.00m,
             FechaSubasta = new DateTime(2026, 10, 27),
             Usuario = manuel,
             MetodoPago = paypalManuel
@@ -813,7 +813,7 @@ public static void SeedSubastas(ApplicationDbContext dbContext)
     if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 12, 20) && s.Usuario.Email == ismael.Email))
     {
         dbContext.Subastas.Add(new Subasta {
-            PrecioSubasta = 60.60,
+            PrecioSubasta = 60.60m,
             FechaSubasta = new DateTime(2026, 12, 03),
             Usuario = ismael,
             MetodoPago = googlePayIsmael
