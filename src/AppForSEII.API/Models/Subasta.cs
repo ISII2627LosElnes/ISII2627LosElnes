@@ -8,7 +8,7 @@ public class Subasta
     }
 
     // Constructor con parámetros
-    public Subasta(int id, double precioSubasta, DateTime fechaSubasta, MetodoPago metodoPago)
+    public Subasta(int id, decimal precioSubasta, DateTime fechaSubasta, MetodoPago metodoPago)
     {
         Id = id;
         PrecioSubasta = precioSubasta;
@@ -21,7 +21,7 @@ public class Subasta
     [Key]
     public int Id { get; set; }
 
-    public double PrecioSubasta { get; set; }
+    public decimal PrecioSubasta { get; set; }
 
     [System.ComponentModel.DataAnnotations.DataTypeAttribute(
     System.ComponentModel.DataAnnotations.DataType.Date)]
@@ -45,7 +45,7 @@ public class Subasta
         return Id == other.Id &&
                PrecioSubasta.Equals(other.PrecioSubasta) &&
                FechaSubasta.Equals(other.FechaSubasta) &&
-               System.Collections.Generic.EqualityComparer<MetodoPago>.Default.Equals(MetodoPago, other.MetodoPago);
+               MetodoPago.Equals(other.MetodoPago);
     }
 
     public override int GetHashCode()

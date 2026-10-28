@@ -53,5 +53,82 @@ public class ResenasController : ControllerBase
             }
             return Ok(resena);
     }
+
+    [HttpPost]
+    [Route("[action]")]
+    [ProducesResponseType(typeof(ResenaDetailDTO), (int)HttpStatusCode.Created)]//devuelve el OK 201 + el detalle porque al hacer el post te enseña lo que has hecho
+    [ProducesResponseType(typeof(string),(int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType(typeof(string),(int)HttpStatusCode.Conflict)]
+    public async Task<ActionResult> CreateResena(ResenaForCreateDTO resenaForCreate)
+    {
+        //Primer bloque: validaciones de los flujos alternativos.
+            //flujo alternativo 1-4 (comprobar que se haya seleccionado al menos un libro)
+        if (resenaForCreate.ResenaItems == null || resenaForCreate.ResenaItems.Count == 0)
+        {
+            ModelState.AddModelError("ResenaItems", "Debes seleccionar al menos un libro.");
+        }
+            //comprobar que el usuario esté registrado (precondición)
+            var user = _context.ApplicationUsers.FirstOrDefault(au => au.Name == resenaForCreate.Nombre && au.Surname == resenaForCreate.Apellidos);
+            if (user == null)
+                ModelState.AddModelError("ResenaApplicationUser", "¡Error! El usuario no está registrado");
+            //devolver los errores todos juntos
+        if (ModelState.ErrorCount > 0)
+        {
+            return BadRequest(new ValidationProblemDetails(ModelState));
+        }
+
+        //actualizar los datos del usuario 
+        user.PhoneNumber = resenaForCreate.Telefono;
+        user.Address = resenaForCreate.Direccion;
+        //segundo bloque: comprobar disponibilidad de los libros (no hace falta en reseñas)
+       
+        //tercer bloque:crear el objeto reseña con todos lo que nos ha dado el parámetro de entrada, tambien hay que hacer los items
+            //primero la resena
+        Resena resena = new Resena{Titulo=resenaForCreate.TituloResena, FechaResena = DateTime.Now, Usuario = user};
+            //despues todos los items
+            foreach (var item in resenaForCreate.ResenaItems)
+            {
+                //buscamos el libro por el titulo 
+                var libro = _context.Libros
+                    .FirstOrDefault(l => l.Titulo == item.Titulo);
+
+                if (libro != null)
+                {
+                    libro.CalificacionMedia=(libro.CalificacionMedia + item.Calificacion)/2;
+                    var resenaItem = new ResenaItem(libro, item.Descripcion, item.Calificacion,resena);
+
+                    resena.ResenaItems.Add(resenaItem);
+                }
+            }   
+
+        //cuarto bloque: inserción en labase de datos, a partir del context. 
+        _context.Resenas.Add(resena);
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error al guardar la reseña");
+            return Conflict("¡ERROR! No se ha podido guardar la reseña.");
+        }
+        //quinto bloque: crear el details y devolverlo con el OK
+        //primero hacemos una lista con cada resenaitem creado
+        var resenaDetail = new ResenaDetailDTO(
+        user.Name,
+        user.Surname,
+        user.PhoneNumber,
+        resena.FechaResena,
+        resenaForCreate.ResenaItems
+        );
+        //devolver la resena creada
+        return CreatedAtAction("GetDetailsForResenas", new {id=resena.Id}, resenaDetail);
+
+
+    }
+
+
+
+    
     
 }
