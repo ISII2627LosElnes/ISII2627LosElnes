@@ -30,7 +30,7 @@ public class ReposicionesController : ControllerBase
     [Route("[action]")]
     [ProducesResponseType(typeof(IList<ReposicionDetailDTO>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
-    public async Task<IActionResult> GetReciboReposicion(int id)
+    public async Task<IActionResult> GetDetailsForReposiciones(int id)
     {
         var reposicion = await _context.Reposiciones
             .Include(r => r.Usuario)
@@ -118,12 +118,13 @@ public class ReposicionesController : ControllerBase
 
         //Aquí compruebo los libros y cambio el precio total.
         double precioTotalCalculado = 0;
-        var detallesItemsParaRecibo = new List<ReposicionItemDTO>();
+        var detallesItemsParaDetails = new List<ReposicionItemDTO>();
         // Extraemos los títulos de los libros del carrito en lugar de los IDs
         var titulosLibros = reposicionDTO.ReposicionItems.Select(ri => ri.Titulo).ToList();
         
         // Buscamos en la base de datos comparando por el Título
         var libros = await _context.Libros.Where(l => titulosLibros.Contains(l.Titulo)).ToListAsync();
+
         foreach (var itemDTO in reposicionDTO.ReposicionItems)
         {
             // Enlazamos usando itemDTO.Titulo
@@ -139,17 +140,17 @@ public class ReposicionesController : ControllerBase
             nuevaReposicion.ReposicionItems.Add(reposicionItem);
             // Cálculo seguro con datos de BDD usando itemDTO.Cantidad
             precioTotalCalculado += (double)libro.PrecioReposicion * itemDTO.Cantidad;
+            nuevaReposicion.PrecioTotal = precioTotalCalculado;
             
             // Actualizamos Stock usando itemDTO.Cantidad
             libro.Stock += itemDTO.Cantidad;
             // Preparamos DTO de salida usando itemDTO.Cantidad
-            detallesItemsParaRecibo.Add(new ReposicionItemDTO(libro.Titulo, libro.Autor, itemDTO.Cantidad));
+            detallesItemsParaDetails.Add(new ReposicionItemDTO(libro.Titulo, libro.Autor, itemDTO.Cantidad));
         }
         if (ModelState.ErrorCount > 0) 
         {
             return BadRequest(new ValidationProblemDetails(ModelState));
         }
-        
 
         
         // 6. Insertar en la Base de Datos
@@ -163,16 +164,16 @@ public class ReposicionesController : ControllerBase
             _logger.LogError(ex, "Error al procesar la reposición en la base de datos.");
             return Conflict("Error al procesar la reposición en la base de datos: " + ex.Message);
         }
-        // 7. Devolver el Recibo (ReposicionDetailDTO)
+        // 7. Devolver el DetailsFor (ReposicionDetailDTO)
         var reposicionDetail = new ReposicionDetailDTO(
             reposicionDTO.Nombre,
             reposicionDTO.Apellido,
             reposicionDTO.Telefono,
             nuevaReposicion.FechaReposicion,
             nuevaReposicion.PrecioTotal,
-            detallesItemsParaRecibo,
+            detallesItemsParaDetails,
             metodoPagoString
             );
-        return CreatedAtAction(nameof(GetReciboReposicion), new { id = nuevaReposicion.Id }, reposicionDetail);
+        return CreatedAtAction(nameof(GetDetailsForReposiciones), new { id = nuevaReposicion.Id }, reposicionDetail);
     }
 }
