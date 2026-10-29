@@ -61,13 +61,13 @@ public class ResenasController : ControllerBase
     [ProducesResponseType(typeof(string),(int)HttpStatusCode.Conflict)]
     public async Task<ActionResult> CreateResena(ResenaForCreateDTO resenaForCreate)
     {
-        //Primer bloque: validaciones de los flujos alternativos.
+        //primer bloque: validaciones de los flujos alternativos del archivo de CU
             //flujo alternativo 1-4 (comprobar que se haya seleccionado al menos un libro)
         if (resenaForCreate.ResenaItems == null || resenaForCreate.ResenaItems.Count == 0)
         {
             ModelState.AddModelError("ResenaItems", "Debes seleccionar al menos un libro.");
         }
-            //comprobar que el usuario esté registrado (precondición)
+            //comprobar que el usuario esté registrado (precondición que sale abajo en el archivo)
             var user = _context.ApplicationUsers.FirstOrDefault(au => au.Name == resenaForCreate.Nombre && au.Surname == resenaForCreate.Apellidos);
             if (user == null)
                 ModelState.AddModelError("ResenaApplicationUser", "¡Error! El usuario no está registrado");
@@ -84,7 +84,8 @@ public class ResenasController : ControllerBase
        
         //tercer bloque:crear el objeto reseña con todos lo que nos ha dado el parámetro de entrada, tambien hay que hacer los items
             //primero la resena
-        Resena resena = new Resena{Titulo=resenaForCreate.TituloResena, FechaResena = DateTime.Now, Usuario = user};
+        Resena resena = new Resena(0, DateTime.Now, resenaForCreate.TituloResena);//pongo 0 porque es obligatorio ponerlo, pero luego se genera bien en la BDD
+        resena.Usuario = user;
             //despues todos los items
             foreach (var item in resenaForCreate.ResenaItems)
             {
@@ -121,7 +122,7 @@ public class ResenasController : ControllerBase
         resena.FechaResena,
         resenaForCreate.ResenaItems
         );
-        //devolver la resena creada
+        //devolver la reseña creada
         return CreatedAtAction("GetDetailsForResenas", new {id=resena.Id}, resenaDetail);
 
 
