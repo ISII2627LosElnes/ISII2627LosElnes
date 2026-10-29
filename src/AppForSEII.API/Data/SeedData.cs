@@ -361,6 +361,42 @@ namespace AppForSEII.API.Data {
             Genero = novela
         },
         new Libro {
+            Titulo = "En el blanco",
+            Autor = "Ken Follet",
+            PrecioCompra = 21.00m,
+            PrecioReposicion = 14.50m,
+            Stock = 0,
+            TipoLibro = "Bolsillo",
+            CalificacionMedia = 4.7m,
+            FechaLanzamiento = new DateTime(2016, 9, 1),
+            Editorial = tusquets,
+            Genero = misterio
+        },
+        new Libro {
+            Titulo = "Berserk",
+            Autor = "Kentaro Miura",
+            PrecioCompra = 21.00m,
+            PrecioReposicion = 14.50m,
+            Stock = 0,
+            TipoLibro = "Bolsillo",
+            CalificacionMedia = 4.7m,
+            FechaLanzamiento = new DateTime(2016, 9, 1),
+            Editorial = tusquets,
+            Genero = ficcion
+        },
+        new Libro {
+            Titulo = "Cinco semanas en globo",
+            Autor = "Julio Verne",
+            PrecioCompra = 21.00m,
+            PrecioReposicion = 14.50m,
+            Stock = 0,
+            TipoLibro = "Bolsillo",
+            CalificacionMedia = 4.7m,
+            FechaLanzamiento = new DateTime(2016, 9, 1),
+            Editorial = tusquets,
+            Genero = novela
+        },
+        new Libro {
             Titulo = "Harry Potter y la piedra filosofal",
             Autor = "J.K. Rowling",
             PrecioCompra = 19.99m,
