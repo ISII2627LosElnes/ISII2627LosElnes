@@ -83,7 +83,8 @@ namespace AppForSEII.API.Migrations
                 name: "MetodoPagos",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NumeroTelefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -266,7 +267,7 @@ namespace AppForSEII.API.Migrations
                     PrecioTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CodigoDescuento = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MetodoPagoId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    MetodoPagoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -281,7 +282,8 @@ namespace AppForSEII.API.Migrations
                         name: "FK_Compras_MetodoPagos_MetodoPagoId",
                         column: x => x.MetodoPagoId,
                         principalTable: "MetodoPagos",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -294,7 +296,7 @@ namespace AppForSEII.API.Migrations
                     PrecioTotal = table.Column<double>(type: "float", nullable: false),
                     Comentario = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MetodoPagoId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    MetodoPagoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -319,10 +321,10 @@ namespace AppForSEII.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PrecioSubasta = table.Column<double>(type: "float", nullable: false),
+                    PrecioSubasta = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     FechaSubasta = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MetodoPagoId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    MetodoPagoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -2,7 +2,7 @@ namespace AppForSEII.API.ReposicionDTOs
 {
     public class ReposicionForCreateDTO
     {
-        public ReposicionForCreateDTO(string nombre, string apellido, string telefono, string metodoPago, List<ReposicionItemDTO> reposicionItems, string? comentario)
+        public ReposicionForCreateDTO(string nombre, string apellido, string telefono, int metodoPago, List<ReposicionItemDTO> reposicionItems, string? comentario)
         {
             Nombre = nombre;
             Apellido = apellido;
@@ -19,7 +19,7 @@ namespace AppForSEII.API.ReposicionDTOs
         [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, introduzca su teléfono")]
         public string Telefono { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Por favor, seleccione un método de pago")]
-        public string MetodoPago { get; set; }
+        public int MetodoPago { get; set; }
         [Required]
         public List<ReposicionItemDTO> ReposicionItems { get; set; }
         
