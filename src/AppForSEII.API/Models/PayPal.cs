@@ -3,7 +3,7 @@ namespace AppForSEII.API.Models;
 public class PayPal: MetodoPago
 {
 
-    public PayPal(string id, string numeroTelefono): base(id)
+    public PayPal(int id, string numeroTelefono): base(id)
     {
         NumeroTelefono = numeroTelefono;
     }

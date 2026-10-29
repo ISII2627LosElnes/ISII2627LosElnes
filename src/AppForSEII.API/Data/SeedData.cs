@@ -504,14 +504,14 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
         return;
     }
 
-    var visaSamuel = new Visa("PAGO-REP-001", "1234567890123456", new DateTime(2028, 12, 31));
-    var paypalManuel = new PayPal("PAGO-REP-002", "600000002");
-    var googlePayIsmael = new GooglePay("PAGO-REP-003", "ismael@test.com");
-    var visaGabriel = new Visa("PAGO-REP-004", "9876543210987654", new DateTime(2027, 10, 31));
-    var paypalSamuel2 = new PayPal("PAGO-REP-005", "600000001");
+    var visaSamuel = new Visa(0, "1234567890123456", new DateTime(2028, 12, 31));
+    var paypalManuel = new PayPal(0, "600000002");
+    var googlePayIsmael = new GooglePay(0, "ismael@test.com");
+    var visaGabriel = new Visa(0, "9876543210987654", new DateTime(2027, 10, 31));
+    var paypalSamuel2 = new PayPal(0, "600000001");
     
     
-    if (!dbContext.Reposiciones.Any(r => r.Id == 1))
+    if (!dbContext.Reposiciones.Any(r => r.FechaReposicion == new DateTime(2026, 10, 15)))
     {
         dbContext.Reposiciones.Add(new Reposicion {
             FechaReposicion = new DateTime(2026, 10, 15),
@@ -523,7 +523,7 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
     }
 
     
-    if (!dbContext.Reposiciones.Any(r => r.Id == 2))
+    if (!dbContext.Reposiciones.Any(r => r.FechaReposicion == new DateTime(2026, 10, 16)))
     {
         dbContext.Reposiciones.Add(new Reposicion {
             FechaReposicion = new DateTime(2026, 10, 16),
@@ -535,7 +535,7 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
     }
 
     
-    if (!dbContext.Reposiciones.Any(r => r.Id == 3))
+    if (!dbContext.Reposiciones.Any(r => r.FechaReposicion == new DateTime(2026, 10, 17)))
     {
         dbContext.Reposiciones.Add(new Reposicion {
             FechaReposicion = new DateTime(2026, 10, 17),
@@ -547,7 +547,7 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
     }
 
     
-    if (!dbContext.Reposiciones.Any(r => r.Id == 4))
+    if (!dbContext.Reposiciones.Any(r => r.FechaReposicion == new DateTime(2026, 10, 18)))
     {
         dbContext.Reposiciones.Add(new Reposicion {
             FechaReposicion = new DateTime(2026, 10, 18),
@@ -559,7 +559,7 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
     }
 
     
-    if (!dbContext.Reposiciones.Any(r => r.Id == 5))
+    if (!dbContext.Reposiciones.Any(r => r.FechaReposicion == new DateTime(2026, 10, 19)))
     {
         dbContext.Reposiciones.Add(new Reposicion {
             FechaReposicion = new DateTime(2026, 10, 19),
@@ -638,10 +638,10 @@ public static void SeedCompras(ApplicationDbContext dbContext)
     var ismael = dbContext.Users.FirstOrDefault(u => u.Email == "ismael@test.com");
     var gabriel = dbContext.Users.FirstOrDefault(u => u.Email == "gabriel@test.com");
 
-    var visaSamuel = new Visa("PAGO-COMP-001", "1234567890123456", new DateTime(2028, 12, 31));
-    var paypalManuel = new PayPal("PAGO-COMP-002", "659286702");
-    var googlePayIsmael = new GooglePay("PAGO-COMP-003", "ismael@test.com");
-    var visaGabriel = new Visa("PAGO-COMP-004", "9876543210987654", new DateTime(2027, 10, 31));  
+    var visaSamuel = new Visa(0, "1234567890123456", new DateTime(2028, 12, 31));
+    var paypalManuel = new PayPal(0, "659286702");
+    var googlePayIsmael = new GooglePay(0, "ismael@test.com");
+    var visaGabriel = new Visa(0, "9876543210987654", new DateTime(2027, 10, 31));  
 
     if (samuel == null || manuel == null || ismael == null || gabriel == null)
     {
@@ -771,10 +771,10 @@ public static void SeedSubastas(ApplicationDbContext dbContext)
         return;
     }
 
-    var visaSamuel = new Visa("PAGO-SUB-001", "1234567890123456", new DateTime(2028, 12, 31));
-    var paypalManuel = new PayPal("PAGO-SUB-002", "659286702");
-    var googlePayIsmael = new GooglePay("PAGO-SUB-003", "ismael@test.com");
-    var visaGabriel = new Visa("PAGO-SUB-004", "9876543210987654", new DateTime(2027, 10, 31));
+    var visaSamuel = new Visa(0, "1234567890123456", new DateTime(2028, 12, 31));
+    var paypalManuel = new PayPal(0, "659286702");
+    var googlePayIsmael = new GooglePay(0, "ismael@test.com");
+    var visaGabriel = new Visa(0, "9876543210987654", new DateTime(2027, 10, 31));
 
     // Subasta 1: Precio 20.8, (2x Harry Potter y la Piedra Filosofal a 10.40)
     if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 10, 28) && s.Usuario.Email == samuel.Email))

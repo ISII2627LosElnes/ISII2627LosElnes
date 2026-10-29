@@ -2,7 +2,7 @@ namespace AppForSEII.API.Models;
 
 public class Visa : MetodoPago
 {
-    public Visa(string id, string numeroTarjeta, DateTime fechaCaducidad) : base(id)
+    public Visa(int id, string numeroTarjeta, DateTime fechaCaducidad) : base(id)
     {
         NumeroTarjeta = numeroTarjeta;
         FechaCaducidad = fechaCaducidad;

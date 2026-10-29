@@ -114,8 +114,8 @@ namespace AppForSEII.API.Migrations
                     b.Property<DateTime>("FechaCompra")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("MetodoPagoId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("MetodoPagoId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("PrecioTotal")
                         .HasColumnType("decimal(18,2)");
@@ -238,8 +238,11 @@ namespace AppForSEII.API.Migrations
 
             modelBuilder.Entity("AppForSEII.API.Models.MetodoPago", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -270,9 +273,8 @@ namespace AppForSEII.API.Migrations
                     b.Property<DateTime>("FechaReposicion")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("MetodoPagoId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("MetodoPagoId")
+                        .HasColumnType("int");
 
                     b.Property<double>("PrecioTotal")
                         .HasColumnType("float");
@@ -368,12 +370,11 @@ namespace AppForSEII.API.Migrations
                     b.Property<DateTime>("FechaSubasta")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("MetodoPagoId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("MetodoPagoId")
+                        .HasColumnType("int");
 
-                    b.Property<double>("PrecioSubasta")
-                        .HasColumnType("float");
+                    b.Property<decimal>("PrecioSubasta")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UsuarioId")
                         .IsRequired()
@@ -584,7 +585,9 @@ namespace AppForSEII.API.Migrations
                 {
                     b.HasOne("AppForSEII.API.Models.MetodoPago", "MetodoPago")
                         .WithMany()
-                        .HasForeignKey("MetodoPagoId");
+                        .HasForeignKey("MetodoPagoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AppForSEII.API.Models.ApplicationUser", "Usuario")
                         .WithMany("Compras")
