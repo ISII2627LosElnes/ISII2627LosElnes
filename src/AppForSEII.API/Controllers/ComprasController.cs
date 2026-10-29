@@ -86,9 +86,15 @@ public class ComprasController : ControllerBase
         if (metodoPago == null)
             return BadRequest("El método de pago no es válido.");
 
-        var cliente = await _userManager.FindByEmailAsync("peter@uclm.es");
-        if (cliente == null) 
-            return NotFound("Usuario no encontrado.");
+        // Compruebo que el usuario existe y lo guardo para usarlo posteriormente.
+        var cliente = await _context.Users.FirstOrDefaultAsync(c => 
+                c.Name == compraForCreate.Nombre && 
+                c.Surname == compraForCreate.Apellidos);
+
+        if (cliente == null)
+        {
+            return BadRequest($"No existe el usuario con el nombre {compraForCreate.Nombre} y apellido {compraForCreate.Apellidos} introducido en la base de datos");
+        }
 
         // Actualizar el perfil del cliente con los datos del formulario
         cliente.Name = compraForCreate.Nombre;
@@ -98,14 +104,14 @@ public class ComprasController : ControllerBase
         await _userManager.UpdateAsync(cliente);
 
         // Crear la Compra 
-        var nuevaCompra = new Compra
-        {
-            FechaCompra = DateTime.Now,
-            CodigoDescuento = compraForCreate.CodigoDescuento,
-            Usuario = cliente,       
-            MetodoPago = metodoPago, 
-            PrecioTotal = 0m
-        };
+      var nuevaCompra = new Compra(
+            0,                               // id: 0 para que la BD lo autogenere
+            DateTime.Now,                    // fechaCompra
+            0m,                              // precioTotal: empieza en 0
+            compraForCreate.CodigoDescuento, // codigoDescuento
+            cliente,                         // usuario 
+            metodoPago                       // metodoPago 
+        );
 
         var itemsDTO = new List<CompraItemDTO>();
 

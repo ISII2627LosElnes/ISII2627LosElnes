@@ -7,12 +7,13 @@ namespace AppForSEII.API.Models
             
         }
 
-    public Compra(int id, DateTime fechaCompra, decimal precioTotal, string codigoDescuento, MetodoPago metodoPago)
+    public Compra(int id, DateTime fechaCompra, decimal precioTotal, string codigoDescuento, ApplicationUser usuario, MetodoPago metodoPago)
         {
             Id = id;
             FechaCompra = fechaCompra;
             PrecioTotal = precioTotal;
             CodigoDescuento = codigoDescuento;
+            Usuario = usuario;
             MetodoPago = metodoPago;
         }
         
@@ -32,6 +33,26 @@ namespace AppForSEII.API.Models
         public ApplicationUser Usuario { get; set; }
 
         public MetodoPago MetodoPago { get; set; }
+
+
+        public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != typeof(Compra))
+        {
+            return false;
+        }
+
+        Compra otra = (Compra)obj;
+
+        return Id == otra.Id &&
+               FechaCompra == otra.FechaCompra &&
+               PrecioTotal == otra.PrecioTotal &&
+               CodigoDescuento == otra.CodigoDescuento &&
+               (Usuario != null ? Usuario.Equals(otra.Usuario) : otra.Usuario == null) &&
+               (MetodoPago != null ? MetodoPago.Equals(otra.MetodoPago) : otra.MetodoPago == null) &&
+               CompraItems.SequenceEqual(otra.CompraItems);
+    }
+        
 
     }
 }
