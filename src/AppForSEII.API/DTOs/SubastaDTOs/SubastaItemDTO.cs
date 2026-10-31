@@ -2,18 +2,20 @@ namespace AppForSEII.API.DTOs.SubastaDTOs;
 
 public class SubastaItemDTO
 {
-    public SubastaItemDTO(string titulo, string autor, string? descripcion, decimal precioPuja)
+    public SubastaItemDTO(string titulo, string autor, string? descripcion, decimal precioPuja, int cantidad)
     {
         Titulo = titulo;
         Autor = autor;
         Descripcion = descripcion;
         PrecioPuja = precioPuja;
+        Cantidad = cantidad;
     }
 
     public string Titulo { get; set; }
     public string Autor { get; set; }
     public string? Descripcion { get; set; }
     public decimal PrecioPuja { get; set; }
+    public int Cantidad { get; set; }
 
         public override bool Equals(object? obj)
     {
@@ -27,7 +29,8 @@ public class SubastaItemDTO
         return Titulo == otro.Titulo &&
             Autor == otro.Autor &&
             Descripcion == otro.Descripcion &&
-            PrecioPuja == otro.PrecioPuja;
+            PrecioPuja == otro.PrecioPuja &&
+            Cantidad == otro.Cantidad;
     }
 
 }

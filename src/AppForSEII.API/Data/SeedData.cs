@@ -846,28 +846,28 @@ public static void SeedSubastaItems(ApplicationDbContext dbContext)
 
     // Items para la subasta 1
     if (!dbContext.SubastaItems.Any(ri => ri.LibroId == harryPotter.Id && ri.SubastaId == sub1.Id))
-        dbContext.SubastaItems.Add(new SubastaItem("", 20.80m, harryPotter, sub1));
+        dbContext.SubastaItems.Add(new SubastaItem("", 20.80m, harryPotter, sub1, 2));
 
     // Items para la subasta 2
     if (!dbContext.SubastaItems.Any(ri => ri.LibroId == patria.Id && ri.SubastaId == sub2.Id))
-        dbContext.SubastaItems.Add(new SubastaItem("Se han vendido 2 patrias", 31.20m, patria, sub2));
+        dbContext.SubastaItems.Add(new SubastaItem("Se han vendido 2 patrias", 31.20m, patria, sub2, 2));
 
     if (!dbContext.SubastaItems.Any(ri => ri.LibroId == detectivesSalvajes.Id && ri.SubastaId == sub2.Id))
-        dbContext.SubastaItems.Add(new SubastaItem("Se ha vendido 1 detective salvaje", 20.00m, detectivesSalvajes, sub2));
+        dbContext.SubastaItems.Add(new SubastaItem("Se ha vendido 1 detective salvaje", 20.00m, detectivesSalvajes, sub2, 1));
 
     // Items para la subasta 3
     if (!dbContext.SubastaItems.Any(ri => ri.LibroId == harryPotter.Id && ri.SubastaId == sub3.Id))
-        dbContext.SubastaItems.Add(new SubastaItem("", 13.00m, harryPotter, sub3));
+        dbContext.SubastaItems.Add(new SubastaItem("", 13.00m, harryPotter, sub3, 1));
 
     // Items para la subasta 4
     if (!dbContext.SubastaItems.Any(ri => ri.LibroId == harryPotter.Id && ri.SubastaId == sub4.Id))
-        dbContext.SubastaItems.Add(new SubastaItem("Se ha vendido 1 harry potter", 13.00m, harryPotter, sub4));
+        dbContext.SubastaItems.Add(new SubastaItem("Se ha vendido 1 harry potter", 13.00m, harryPotter, sub4, 1));
         
     if (!dbContext.SubastaItems.Any(ri => ri.LibroId == sombraDelViento.Id && ri.SubastaId == sub4.Id))
-        dbContext.SubastaItems.Add(new SubastaItem("Se han vendido 2 sombras del viento", 32.00m, sombraDelViento, sub4));
+        dbContext.SubastaItems.Add(new SubastaItem("Se han vendido 2 sombras del viento", 32.00m, sombraDelViento, sub4, 2));
 
     if (!dbContext.SubastaItems.Any(ri => ri.LibroId == patria.Id && ri.SubastaId == sub4.Id))
-        dbContext.SubastaItems.Add(new SubastaItem("", 15.60m, patria, sub4));
+        dbContext.SubastaItems.Add(new SubastaItem("", 15.60m, patria, sub4, 1));
 
 
     dbContext.SaveChanges();
