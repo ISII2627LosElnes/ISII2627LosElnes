@@ -2,12 +2,12 @@ namespace AppForSEII.API.DTOs.SubastaDTOs
 {
     public class SubastaForCreateDTO : IEquatable<SubastaForCreateDTO>
     {
-        public SubastaForCreateDTO(string nombre, string apellidos, string telefono, string metodoPago, string? descripcion, IList<SubastaItemDTO> subastaItems)
+        public SubastaForCreateDTO(string nombre, string apellidos, string telefono, int metodoPago, string? descripcion, IList<SubastaItemDTO> subastaItems)
         {
             Nombre = nombre ?? throw new ArgumentNullException(nameof(nombre));
             Apellidos = apellidos ?? throw new ArgumentNullException(nameof(apellidos));
             Telefono = telefono ?? throw new ArgumentNullException(nameof(telefono));
-            MetodoPago = metodoPago ?? throw new ArgumentNullException(nameof(metodoPago));
+            MetodoPago = metodoPago;
             Descripcion = descripcion;
             SubastaItems = subastaItems ?? throw new ArgumentNullException(nameof(subastaItems));
         }
@@ -28,7 +28,7 @@ namespace AppForSEII.API.DTOs.SubastaDTOs
         public string Telefono { get; set; }
 
         [Required]
-        public string MetodoPago { get; set; }
+        public int MetodoPago { get; set; }
 
         [StringLength(100, MinimumLength = 20, ErrorMessage = "Longitud mínima de 20 caracteres")]
         public string? Descripcion { get; set; }

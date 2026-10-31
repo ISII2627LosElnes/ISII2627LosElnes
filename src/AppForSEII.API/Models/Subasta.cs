@@ -8,12 +8,13 @@ public class Subasta
     }
 
     // Constructor con parámetros
-    public Subasta(int id, decimal precioSubasta, DateTime fechaSubasta, MetodoPago metodoPago)
+    public Subasta(int id, decimal precioSubasta, DateTime fechaSubasta, MetodoPago metodoPago, ApplicationUser usuario)
     {
         Id = id;
         PrecioSubasta = precioSubasta;
         FechaSubasta = fechaSubasta;
         MetodoPago = metodoPago;
+        Usuario = usuario;
     }
     
 

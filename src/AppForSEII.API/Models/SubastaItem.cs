@@ -8,7 +8,7 @@ public class SubastaItem
     {
     }
 
-    public SubastaItem(string? descripcion, decimal precioPuja, Libro libro, Subasta subasta)
+    public SubastaItem(string? descripcion, decimal precioPuja, Libro libro, Subasta subasta, int cantidadSubasta)
     {
         Descripcion = descripcion;
         PrecioPuja = precioPuja;
@@ -16,6 +16,7 @@ public class SubastaItem
         LibroId = libro.Id;
         SubastaId = subasta.Id;
         Subasta = subasta;
+        CantidadSubasta = cantidadSubasta;
     }
 
     
@@ -30,4 +31,5 @@ public class SubastaItem
     public int LibroId { get; set; }
 
     public int SubastaId { get; set; }
+    public int CantidadSubasta { get; set; }
 }
