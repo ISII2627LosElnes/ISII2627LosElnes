@@ -135,6 +135,13 @@ public class ReposicionesController : ControllerBase
                 ModelState.AddModelError("ReposicionItems", $"El libro con título '{itemDTO.Titulo}' no existe en el catálogo.");
                 continue;
             }
+
+            //Comprobamos el stock para ver si es 0 o más y si es más de 0 se le comenta al 
+            if (libro.Stock > 0){
+                ModelState.AddModelError("ReposicionItems", $"No se puede reponer el libro '{libro.Titulo}' porque actualmente hay stock disponible ({libro.Stock} unidades). Solo se pueden reponer libros con stock = 0.");
+                continue;
+            }
+
             // Generamos el item usando itemDTO.Cantidad (como se llama en tu DTO)
             var reposicionItem = new ReposicionItem(itemDTO.Cantidad, libro, nuevaReposicion);
             nuevaReposicion.ReposicionItems.Add(reposicionItem);
