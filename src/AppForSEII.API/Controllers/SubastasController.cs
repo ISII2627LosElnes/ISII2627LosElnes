@@ -42,7 +42,8 @@ public class SubastasController : ControllerBase
                     si.Libro.Titulo,
                     si.Libro.Autor,
                     si.Descripcion,
-                    si.PrecioPuja
+                    si.PrecioPuja,
+                    si.CantidadSubasta
                 )).ToList()
             ))
             .FirstOrDefaultAsync();
@@ -66,8 +67,8 @@ public class SubastasController : ControllerBase
             if (subastaForCreate.SubastaItems == null || subastaForCreate.SubastaItems.Count == 0)
                 ModelState.AddModelError("SubastaItems", "Error! Debes seleccionar al menos un libro para inciar la puja");
 
-            //if (subastaForCreate.PrecioTotal < 0)
-              //  ModelState.AddModelError("SubastaItems", "Error! Debes seleccionar al menos un libro para inciar la puja");
+            if (subastaForCreate.PrecioTotal < 0)
+                ModelState.AddModelError("SubastaItems", "Error! Debes seleccionar al menos un libro para inciar la puja");
 
             if (subastaForCreate.Nombre.IsNullOrEmpty())
                 ModelState.AddModelError("Nombre", "Error! Debes rellenar tu nombre");
@@ -78,22 +79,21 @@ public class SubastasController : ControllerBase
             if (subastaForCreate.Telefono.IsNullOrEmpty())
                 ModelState.AddModelError("Telefono", "Error! Debes rellenar tu teléfono");
 
-            if (subastaForCreate.MetodoPago.IsNullOrEmpty())
-                ModelState.AddModelError("MetodoPago", "Error! Debes elegir tu método de pago");
+            var metodoPago = await _context.MetodoPagos.FindAsync(subastaForCreate.MetodoPago);
+            if (metodoPago == null)
+                return BadRequest("El método de pago no es válido.");
 
 
             // comprobaciones necesarias
-            var user = _context.ApplicationUsers.FirstOrDefault(au => au.UserName == subastaForCreate.Nombre);
+            var user = await _context.Users.FirstOrDefaultAsync(s => 
+                s.Name == subastaForCreate.Nombre && 
+                s.Surname == subastaForCreate.Apellidos);
 
             if (user == null)
                 ModelState.AddModelError("SubastaApplicationUser", "Error! Usuario no registrado");
 
             if (ModelState.ErrorCount > 0)
                 return BadRequest(new ValidationProblemDetails(ModelState));
-
-            var metodoPago = await _context.MetodoPagos.FindAsync(subastaForCreate.MetodoPago);
-            if (metodoPago == null)
-                return BadRequest("El método de pago no es válido.");
 
 
             var tituloLibro = subastaForCreate.SubastaItems.Select(si => si.Titulo).ToList();
@@ -113,29 +113,43 @@ public class SubastasController : ControllerBase
 
             //crear Subasta + SubastaItems
             var subasta = new Subasta(0, subastaForCreate.PrecioTotal, DateTime.Now,
-            metodoPago)
-            {
-                Usuario = user
-            };
+            metodoPago, user);
 
 
+            //procesar item (bloque del else)
             foreach (var item in subastaForCreate.SubastaItems) {
                 var libro = libros.FirstOrDefault(l => l.Titulo == item.Titulo);
-                //if item.Title is not in the database
-                if (libro == null)  {
+                //1. comrpobar si el libro buscado por título no se encuentra en la base de datos
+                if (libro == null || libro.Stock <= 0)  {
                     ModelState.AddModelError("SubastaItems", $"Error! Libro titulado '{item.Titulo}' no está disponible para ser subastado");
                 }
                 else {
+                    // 2. Comprobar si hay suficiente stock disponible
+                    if(item.Cantidad > libro.Stock){
+                        ModelState.AddModelError("SubastaItems", $"Error! No hay suficiente stock para el libro '{item.Titulo}'. Solicitados: {item.Cantidad}, Disponibles: {libro.Stock}.");
+                    }
+
+                    // 3. Comprobar precio de puja
                     if(item.PrecioPuja <= 0)
                     {
                         ModelState.AddModelError("SubastaItems", $"Error! El precio de la puja para {item.Titulo} debe ser mayor de 0");
                     }
 
-                    subasta.SubastaItems.Add(new SubastaItem(item.Descripcion, item.PrecioPuja, libro, subasta));
-                }
-            }
-            subasta.PrecioSubasta = subasta.SubastaItems.Sum(si => si.PrecioPuja);
+                    // 4. Solo procesar el ítem si cumple con el stock y el precio de puja válidos
+                    if(item.Cantidad <= libro.Stock && item.PrecioPuja > 0)
+                    {
+                        var subastaItem = new SubastaItem(item.Descripcion, item.PrecioPuja, 
+                        libro, subasta, item.Cantidad);
+                        subasta.SubastaItems.Add(subastaItem);
 
+                        // Actualizamos Stock usando itemDTO.Cantidad unicamente si la validación es correcta
+                        libro.Stock -= item.Cantidad;
+                    }
+                } 
+            }
+
+            //recalcular el total acumulado de las pujas
+            subasta.PrecioSubasta = subasta.SubastaItems.Sum(si => si.PrecioPuja);
 
             //if there is any problem because of the available quantity of movies or because the movie does not exist
             if (ModelState.ErrorCount > 0) {
