@@ -22,4 +22,20 @@ public class LibroParaReponerDTO
     public DateTime FechaLanzamiento { get; set; }
     public decimal PrecioReposicion { get; set; }
     public string Autor { get; set; }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is LibroParaReponerDTO dTO &&
+               Id == dTO.Id &&
+               Titulo == dTO.Titulo &&
+               Genero == dTO.Genero &&
+               FechaLanzamiento == dTO.FechaLanzamiento &&
+               PrecioReposicion == dTO.PrecioReposicion &&
+               Autor == dTO.Autor;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Titulo, Genero, FechaLanzamiento, PrecioReposicion, Autor);
+    }
 }
