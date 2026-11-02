@@ -546,64 +546,45 @@ public static void SeedReposiciones(ApplicationDbContext dbContext)
     var visaGabriel = new Visa(0, "9876543210987654", new DateTime(2027, 10, 31));
     var paypalSamuel2 = new PayPal(0, "600000001");
     
-    
+    // Reposición 1
     if (!dbContext.Reposiciones.Any(r => r.FechaReposicion == new DateTime(2026, 10, 15)))
     {
-        dbContext.Reposiciones.Add(new Reposicion {
-            FechaReposicion = new DateTime(2026, 10, 15),
-            PrecioTotal = 31.50,
-            Comentario = "Reposición inicial de stock de Zafón",
-            Usuario = samuel,
-            MetodoPago = visaSamuel
-        });
+        dbContext.Reposiciones.Add(
+            // Uso del constructor: id, fecha, precio, comentario, lista vacía, método de pago, usuario
+            new Reposicion(0, new DateTime(2026, 10, 15), 31.50, "Reposición inicial de stock de Zafón", new List<ReposicionItem>(), visaSamuel, samuel)
+        );
     }
 
-    
+    // Reposición 2
     if (!dbContext.Reposiciones.Any(r => r.FechaReposicion == new DateTime(2026, 10, 16)))
     {
-        dbContext.Reposiciones.Add(new Reposicion {
-            FechaReposicion = new DateTime(2026, 10, 16),
-            PrecioTotal = 36.00,
-            Comentario = "Urgente: Reposición de libros de ficción",
-            Usuario = manuel,
-            MetodoPago = paypalManuel
-        });
+        dbContext.Reposiciones.Add(
+            new Reposicion(0, new DateTime(2026, 10, 16), 36.00, "Urgente: Reposición de libros de ficción", new List<ReposicionItem>(), paypalManuel, manuel)
+        );
     }
 
-    
+    // Reposición 3
     if (!dbContext.Reposiciones.Any(r => r.FechaReposicion == new DateTime(2026, 10, 17)))
     {
-        dbContext.Reposiciones.Add(new Reposicion {
-            FechaReposicion = new DateTime(2026, 10, 17),
-            PrecioTotal = 29.00,
-            Comentario = "Reposición de novela histórica",
-            Usuario = ismael,
-            MetodoPago = googlePayIsmael
-        });
+        dbContext.Reposiciones.Add(
+            new Reposicion(0, new DateTime(2026, 10, 17), 29.00, "Reposición de novela histórica", new List<ReposicionItem>(), googlePayIsmael, ismael)
+        );
     }
 
-    
+    // Reposición 4
     if (!dbContext.Reposiciones.Any(r => r.FechaReposicion == new DateTime(2026, 10, 18)))
     {
-        dbContext.Reposiciones.Add(new Reposicion {
-            FechaReposicion = new DateTime(2026, 10, 18),
-            PrecioTotal = 45.00,
-            Comentario = "Reposición de fantasía y misterio",
-            Usuario = gabriel,
-            MetodoPago = visaGabriel
-        });
+        dbContext.Reposiciones.Add(
+            new Reposicion(0, new DateTime(2026, 10, 18), 45.00, "Reposición de fantasía y misterio", new List<ReposicionItem>(), visaGabriel, gabriel)
+        );
     }
 
-    
+    // Reposición 5
     if (!dbContext.Reposiciones.Any(r => r.FechaReposicion == new DateTime(2026, 10, 19)))
     {
-        dbContext.Reposiciones.Add(new Reposicion {
-            FechaReposicion = new DateTime(2026, 10, 19),
-            PrecioTotal = 49.00,
-            Comentario = "Reposición variada semanal",
-            Usuario = samuel,
-            MetodoPago = paypalSamuel2
-        });
+        dbContext.Reposiciones.Add(
+            new Reposicion(0, new DateTime(2026, 10, 19), 49.00, "Reposición variada semanal", new List<ReposicionItem>(), paypalSamuel2, samuel)
+        );
     }
 
     dbContext.SaveChanges();

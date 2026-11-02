@@ -106,15 +106,11 @@ public class ReposicionesController : ControllerBase
                                   metodoPagoEncontrar is GooglePay ? "GooglePay" : "Desconocido";
         
         //Aquí creo la reposición
-        var nuevaReposicion = new Reposicion
-        {
-            FechaReposicion = DateTime.Now,
-            PrecioTotal = 0, // Se calcula posteriormente
-            Comentario = reposicionDTO.Comentario, 
-            Usuario = usuario,
-            ReposicionItems = new List<ReposicionItem>(),
-            MetodoPago = metodoPagoEncontrar
-        };
+        //El id se crea de forma automática.
+        //El precio total se calcula posteriormente.
+        //La lista de reposiciones se actualiza posteriormente.
+        Reposicion nuevaReposicion = new Reposicion(0, DateTime.Now, 0, reposicionDTO.Comentario, new List<ReposicionItem>(), metodoPagoEncontrar, usuario);
+        
 
         //Aquí compruebo los libros y cambio el precio total.
         double precioTotalCalculado = 0;
