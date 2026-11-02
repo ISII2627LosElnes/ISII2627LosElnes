@@ -26,6 +26,32 @@ public class Libro
     CalificacionMedia = calificacionMedia;
     FechaLanzamiento = fechaLanzamiento;
 }
+ //añadimos otro constructor para el testing. no modificamos el anterior para evitar conflictos con las clases donde se use
+  public Libro(
+    int id,
+    string titulo,
+    string tipoLibro,
+    string autor,
+    decimal precioCompra,
+    decimal precioReposicion,
+    int stock,
+    decimal calificacionMedia,
+    DateTime fechaLanzamiento,
+    Genero genero,
+    Editorial editorial)
+{
+    Id = id;
+    Titulo = titulo;
+    TipoLibro = tipoLibro;
+    Autor = autor;
+    PrecioCompra = precioCompra;
+    PrecioReposicion = precioReposicion;
+    Stock = stock;
+    CalificacionMedia = calificacionMedia;
+    FechaLanzamiento = fechaLanzamiento;
+    Genero= genero;
+    Editorial= editorial;
+}
     [Key]
     public int Id { get; set; }
     [Required]
