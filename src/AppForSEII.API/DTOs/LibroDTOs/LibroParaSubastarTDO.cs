@@ -28,4 +28,9 @@ public class LibroParaSubastarDTO
                Autor == other.Autor &&
                TipoLibro == other.TipoLibro;
     }
+
+    public override int GetHashCode()
+    {
+    return HashCode.Combine(Id, Titulo, Editorial, Autor, TipoLibro);
+    }
 }
