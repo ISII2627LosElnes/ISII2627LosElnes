@@ -122,7 +122,7 @@ public class GetLibrosParaComprar_test : AppForSEII4SqliteUT
         {
             Assert.Equal(expectedLibros[i].Id, libroDTOsActual[i].Id);
             Assert.Equal(expectedLibros[i].Titulo, libroDTOsActual[i].Titulo);
-            Assert.Equal(expectedLibros[i].PrecioTotal, libroDTOsActual[i].PrecioTotal);
+            Assert.Equal(expectedLibros[i].PrecioCompra, libroDTOsActual[i].PrecioCompra);
         }
     }
 
