@@ -35,6 +35,7 @@ public class ReposicionDetailDTO
                Telefono == otro.Telefono &&
                FechaReposicion == otro.FechaReposicion &&
                PrecioTotal == otro.PrecioTotal &&
+               MetodoPago == otro.MetodoPago &&
                ReposicionItems.SequenceEqual(otro.ReposicionItems);
     }
 }
