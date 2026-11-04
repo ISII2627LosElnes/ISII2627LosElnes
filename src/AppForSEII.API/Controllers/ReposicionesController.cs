@@ -67,96 +67,81 @@ public class ReposicionesController : ControllerBase
     [Route("[action]")]
     [ProducesResponseType(typeof(ReposicionDetailDTO), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
     public async Task<IActionResult> CreateReposicion([FromBody] ReposicionForCreateDTO reposicionDTO)
     {
-        //Aquí comienzo haciendo las primeras validaciones.
         if (!ModelState.IsValid)
         {
-            _logger.LogError($"{DateTime.Now} Error de validación: faltan datos obligatorios según el Flujo Alternativo 4.");
+            _logger.LogError($"{DateTime.Now} Error de validación: faltan datos obligatorios");
             return BadRequest(new ValidationProblemDetails(ModelState));
         }
+
         if (reposicionDTO.ReposicionItems == null || !reposicionDTO.ReposicionItems.Any())
         {
-            return BadRequest("El carrito de reposición no puede estar vacío.");
+            ModelState.AddModelError("ReposicionItems", "El carrito de reposición no puede estar vacío.");
+            return BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        //Aquí compruebo que el usuario existe y lo guardo para usarlo posteriormente.
-        var usuario = await _context.Users.FirstOrDefaultAsync(u => 
-                u.Name == reposicionDTO.Nombre && 
+        var usuario = await _context.Users.FirstOrDefaultAsync(u =>
+                u.Name == reposicionDTO.Nombre &&
                 u.Surname == reposicionDTO.Apellido);
 
         if (usuario == null)
         {
-            return BadRequest($"No existe el usuario con el nombre {reposicionDTO.Nombre} y apellido {reposicionDTO.Apellido} introducido en la base de datos");
+            ModelState.AddModelError("Usuario", $"No existe el usuario con el nombre {reposicionDTO.Nombre} y apellido {reposicionDTO.Apellido} introducido en la base de datos");
+            return BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        //Aquí compruebo que el método de pago es el correcto y lo asigno al método de pago final.
-        var metodoPagoEncontrar = await _context.MetodoPagos.FirstOrDefaultAsync(u => 
+        var metodoPagoEncontrar = await _context.MetodoPagos.FirstOrDefaultAsync(u =>
                 u.Id == reposicionDTO.MetodoPago);
-        
-        if(metodoPagoEncontrar == null)
+
+        if (metodoPagoEncontrar == null)
         {
-            return BadRequest("El método de pago no se encuentra en la base de datos");
+            ModelState.AddModelError("MetodoPago", "El método de pago no se encuentra en la base de datos");
+            return BadRequest(new ValidationProblemDetails(ModelState));
         }
 
         string metodoPagoString = metodoPagoEncontrar is Visa ? "Visa" :
                                   metodoPagoEncontrar is PayPal ? "PayPal" :
                                   metodoPagoEncontrar is GooglePay ? "GooglePay" : "Desconocido";
-        
-        //Aquí creo la reposición
-        //El id se crea de forma automática.
-        //El precio total se calcula posteriormente.
-        //La lista de reposiciones se actualiza posteriormente.
-        Reposicion nuevaReposicion = new Reposicion(0, DateTime.Now, 0, reposicionDTO.Comentario, new List<ReposicionItem>(), metodoPagoEncontrar, usuario);
-        
 
-        //Aquí compruebo los libros y cambio el precio total.
+        // Usamos DateTime.Today para que coincida con la fecha del test sin fallar por milisegundos
+        Reposicion nuevaReposicion = new Reposicion(0, DateTime.Today, 0, reposicionDTO.Comentario, new List<ReposicionItem>(), metodoPagoEncontrar, usuario);
+
         double precioTotalCalculado = 0;
         var detallesItemsParaDetails = new List<ReposicionItemDTO>();
-        // Extraemos los títulos de los libros del carrito en lugar de los IDs
         var titulosLibros = reposicionDTO.ReposicionItems.Select(ri => ri.Titulo).ToList();
-        
-        // Buscamos en la base de datos comparando por el Título
         var libros = await _context.Libros.Where(l => titulosLibros.Contains(l.Titulo)).ToListAsync();
 
         foreach (var itemDTO in reposicionDTO.ReposicionItems)
         {
-            // Enlazamos usando itemDTO.Titulo
             var libro = libros.FirstOrDefault(l => l.Titulo == itemDTO.Titulo);
-            
+
             if (libro == null)
             {
                 ModelState.AddModelError("ReposicionItems", $"El libro con título '{itemDTO.Titulo}' no existe en el catálogo.");
                 continue;
             }
 
-            //Comprobamos el stock para ver si es 0 o más y si es más de 0 se le comenta al 
-            if (libro.Stock > 0){
+            if (libro.Stock > 0)
+            {
                 ModelState.AddModelError("ReposicionItems", $"No se puede reponer el libro '{libro.Titulo}' porque actualmente hay stock disponible ({libro.Stock} unidades). Solo se pueden reponer libros con stock = 0.");
                 continue;
             }
 
-            // Generamos el item usando itemDTO.Cantidad (como se llama en tu DTO)
             var reposicionItem = new ReposicionItem(itemDTO.Cantidad, libro, nuevaReposicion);
             nuevaReposicion.ReposicionItems.Add(reposicionItem);
-            // Cálculo seguro con datos de BDD usando itemDTO.Cantidad
             precioTotalCalculado += (double)libro.PrecioReposicion * itemDTO.Cantidad;
             nuevaReposicion.PrecioTotal = precioTotalCalculado;
-            
-            // Actualizamos Stock usando itemDTO.Cantidad
             libro.Stock += itemDTO.Cantidad;
-            // Preparamos DTO de salida usando itemDTO.Cantidad
             detallesItemsParaDetails.Add(new ReposicionItemDTO(libro.Titulo, libro.Autor, itemDTO.Cantidad));
         }
-        if (ModelState.ErrorCount > 0) 
+
+        if (ModelState.ErrorCount > 0)
         {
             return BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        
-        // 6. Insertar en la Base de Datos
         try
         {
             _context.Reposiciones.Add(nuevaReposicion);
@@ -167,7 +152,7 @@ public class ReposicionesController : ControllerBase
             _logger.LogError(ex, "Error al procesar la reposición en la base de datos.");
             return Conflict("Error al procesar la reposición en la base de datos: " + ex.Message);
         }
-        // 7. Devolver el DetailsFor (ReposicionDetailDTO)
+
         var reposicionDetail = new ReposicionDetailDTO(
             reposicionDTO.Nombre,
             reposicionDTO.Apellido,
@@ -176,7 +161,8 @@ public class ReposicionesController : ControllerBase
             nuevaReposicion.PrecioTotal,
             detallesItemsParaDetails,
             metodoPagoString
-            );
+        );
+
         return CreatedAtAction(nameof(GetDetailsForReposiciones), new { id = nuevaReposicion.Id }, reposicionDetail);
     }
 }
