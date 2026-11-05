@@ -426,7 +426,8 @@ namespace AppForSEII.API.Migrations
                     LibroId = table.Column<int>(type: "int", nullable: false),
                     SubastaId = table.Column<int>(type: "int", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    PrecioPuja = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    PrecioPuja = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CantidadSubasta = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

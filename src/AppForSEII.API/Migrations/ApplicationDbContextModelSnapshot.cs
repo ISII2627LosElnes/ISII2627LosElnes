@@ -397,6 +397,9 @@ namespace AppForSEII.API.Migrations
                     b.Property<int>("SubastaId")
                         .HasColumnType("int");
 
+                    b.Property<int>("CantidadSubasta")
+                        .HasColumnType("int");
+
                     b.Property<string>("Descripcion")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
