@@ -70,12 +70,6 @@ public class ReposicionesController : ControllerBase
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
     public async Task<IActionResult> CreateReposicion([FromBody] ReposicionForCreateDTO reposicionDTO)
     {
-        if (!ModelState.IsValid)
-        {
-            _logger.LogError($"{DateTime.Now} Error de validación: faltan datos obligatorios");
-            return BadRequest(new ValidationProblemDetails(ModelState));
-        }
-
         if (reposicionDTO.ReposicionItems == null || !reposicionDTO.ReposicionItems.Any())
         {
             ModelState.AddModelError("ReposicionItems", "El carrito de reposición no puede estar vacío.");
@@ -101,9 +95,8 @@ public class ReposicionesController : ControllerBase
             return BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        string metodoPagoString = metodoPagoEncontrar is Visa ? "Visa" :
-                                  metodoPagoEncontrar is PayPal ? "PayPal" :
-                                  metodoPagoEncontrar is GooglePay ? "GooglePay" : "Desconocido";
+        //Cojo el método de pago para que el details no muestre el id sino el tipo de método de pago 
+        string metodoPagoString = metodoPagoEncontrar.GetType().Name;
 
         // Usamos DateTime.Today para que coincida con la fecha del test sin fallar por milisegundos
         Reposicion nuevaReposicion = new Reposicion(0, DateTime.Today, 0, reposicionDTO.Comentario, new List<ReposicionItem>(), metodoPagoEncontrar, usuario);
