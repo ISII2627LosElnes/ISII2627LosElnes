@@ -5,6 +5,9 @@ using AppForSEII.API.ReposicionDTOs;
 using AppForSEII.API.Models;
 using System.Diagnostics.Contracts;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Microsoft.AspNetCore.Mvc;
 
 public class CreateReposicion_test : AppForSEII4SqliteUT
 {
@@ -71,16 +74,18 @@ public class CreateReposicion_test : AppForSEII4SqliteUT
         // Caso 6: stock es mayor a 0
         var stockMayor0 = new ReposicionForCreateDTO("Héctor", "Fernández", "600777666", 12, new List<ReposicionItemDTO> { new ReposicionItemDTO("La Sombra del Viento", "Carlos Ruiz Zafón", 2) }, "Comentario válido de más de veinte caracteres");
 
+        //Caso 7: cantidad de libro es 0 o menor que 0
+        var cantidadMenorIgual0 = new ReposicionForCreateDTO("Héctor", "Fernández", "600777666", 12, new List<ReposicionItemDTO> { new ReposicionItemDTO("El Señor de los Anillos", "J.R.R. Tolkien", 0) }, "Comentario válido de más de veinte caracteres");
+
         var objetosADevolver = new List<object[]>
         {
             new object[] { reposicionItemNull, "El carrito de reposición no puede estar vacío." },
             new object[] { reposicionItemCero, "El carrito de reposición no puede estar vacío." },
-            // CORREGIDO: ahora espera "Jesus" y "Díaz" igual que enviamos en usuarioNull
             new object[] { usuarioNull, "No existe el usuario con el nombre Jesus y apellido Díaz introducido en la base de datos" },
             new object[] { metodoPagoNull, "El método de pago no se encuentra en la base de datos" },
-            // CORREGIDO: ahora espera 'Libro no válido' igual que enviamos en libroNull
             new object[] { libroNull, "El libro con título 'Libro no válido' no existe en el catálogo." },
-            new object[] { stockMayor0, "No se puede reponer el libro 'La Sombra del Viento' porque actualmente hay stock disponible (5 unidades). Solo se pueden reponer libros con stock = 0." }
+            new object[] { stockMayor0, "No se puede reponer el libro 'La Sombra del Viento' porque actualmente hay stock disponible (5 unidades). Solo se pueden reponer libros con stock = 0." },
+            new object[] { cantidadMenorIgual0, "No se puede reponer el libro 'El Señor de los Anillos' porque actualmente la cantidad que se quiere reponer es menor o igual a 0" }
         };
 
         return objetosADevolver;
@@ -131,7 +136,7 @@ public class CreateReposicion_test : AppForSEII4SqliteUT
             DateTime.Today,
             30.0,
             new List<ReposicionItemDTO> { new ReposicionItemDTO("El Señor de los Anillos", "J.R.R. Tolkien", 2) },
-            "PayPal"
+            "PayPal" // Fíjate que el controlador hace metodoPagoEncontrar.GetType().Name, por lo que devuelve la clase "PayPal"
         );
 
         // Act

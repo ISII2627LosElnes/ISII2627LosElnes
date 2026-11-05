@@ -122,6 +122,12 @@ public class ReposicionesController : ControllerBase
                 continue;
             }
 
+            if (itemDTO.Cantidad <= 0)
+            {
+                ModelState.AddModelError("ReposicionItems", $"No se puede reponer el libro '{libro.Titulo}' porque actualmente la cantidad que se quiere reponer es menor o igual a 0");
+                continue;
+            }
+
             var reposicionItem = new ReposicionItem(itemDTO.Cantidad, libro, nuevaReposicion);
             nuevaReposicion.ReposicionItems.Add(reposicionItem);
             precioTotalCalculado += (double)libro.PrecioReposicion * itemDTO.Cantidad;
