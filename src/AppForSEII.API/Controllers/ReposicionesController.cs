@@ -97,7 +97,6 @@ public class ReposicionesController : ControllerBase
 
         //Cojo el método de pago para que el details no muestre el id sino el tipo de método de pago 
         string metodoPagoString = metodoPagoEncontrar.GetType().Name;
-        Console.WriteLine(metodoPagoString);
 
         // Usamos DateTime.Today para que coincida con la fecha del test sin fallar por milisegundos
         Reposicion nuevaReposicion = new Reposicion(0, DateTime.Today, 0, reposicionDTO.Comentario, new List<ReposicionItem>(), metodoPagoEncontrar, usuario);
