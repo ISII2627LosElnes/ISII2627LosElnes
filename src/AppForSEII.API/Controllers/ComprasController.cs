@@ -129,6 +129,9 @@ public class ComprasController : ControllerBase
             if (libro.Stock < item.Cantidad)
                 return BadRequest($"No hay stock suficiente para '{libro.Titulo}'.");
 
+            if (item.Cantidad <= 0)
+                return BadRequest($"La cantidad para '{libro.Titulo}' debe ser mayor que cero.");
+
             // Descontar el stock y acumular el precio total
             libro.Stock -= item.Cantidad;
             nuevaCompra.PrecioTotal += (libro.PrecioCompra * item.Cantidad);

@@ -101,6 +101,14 @@ public class CreateCompra_test : AppForSEII4SqliteUT
             LibrosSeleccionados = new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = 51 } }
         };
 
+        //Caspo 6: cantidad negativa
+        var cantidadNegativa = new CompraForCreateDTO
+        {
+            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Batcueva, 1",
+            Telefono = "611222333", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
+            LibrosSeleccionados = new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = -5 } }
+        };
+
         // Los objetos a devolver
         var objetosADevolver = new List<object[]>
         {
@@ -108,7 +116,8 @@ public class CreateCompra_test : AppForSEII4SqliteUT
             new object[] { librosCero, "Debe seleccionar al menos un libro." },
             new object[] { metodoPagoInexistente, "El método de pago no es válido." },
             new object[] { usuarioInexistente, "No existe el usuario con el nombre Clark" },
-            new object[] { stockInsuficiente, "No hay stock suficiente para 'Dune'." }
+            new object[] { stockInsuficiente, "No hay stock suficiente para 'Dune'." },
+            new object[] { cantidadNegativa, "La cantidad para 'Dune' debe ser mayor que cero." }
         };
 
         return objetosADevolver;
