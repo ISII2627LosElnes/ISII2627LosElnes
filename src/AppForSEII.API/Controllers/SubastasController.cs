@@ -64,17 +64,14 @@ public class SubastasController : ControllerBase
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
         public async Task<ActionResult> CreateSubasta(SubastaForCreateDTO subastaForCreate) {
             //validación de datos recibidos (flujos alternativas)
-            //comprobación de datos obligatorios de inicio sesión
-            if (!ModelState.IsValid)
-                ModelState.AddModelError("SubastaForCreate", "Error de validación: faltan datos obligatorios según el Flujo Alternativo 5.");
-
+            //comprobación de datos obligatorios de inicio sesión6y
             //comprobación de libros seleccionados, si existen o si se han seleccionado
-            if (subastaForCreate.SubastaItems == null || subastaForCreate.SubastaItems.Count == 0)
+            if (subastaForCreate.SubastaItems.Count == 0)
                 ModelState.AddModelError("SubastaItems", "Error! Debes seleccionar al menos un libro para inciar la puja");
 
             //comprobación de precio puja válido
-            if (subastaForCreate.PrecioTotal < 0)
-                ModelState.AddModelError("SubastaItems", "Error! Debes poner una puja mayor a 0");
+            /*if (subastaForCreate.PrecioTotal < 0)
+                ModelState.AddModelError("SubastaItems", "Error! Debes poner una puja mayor a 0");*/
 
             var metodoPago = await _context.MetodoPagos.FindAsync(subastaForCreate.MetodoPago);
             if (metodoPago == null)
@@ -98,12 +95,12 @@ public class SubastasController : ControllerBase
             var tituloLibro = subastaForCreate.SubastaItems.Select(si => si.Titulo).ToList();
 
             var libros = await _context.Libros
-            .Where(s => tituloLibro.Contains(s.Titulo) && s.Stock > 0)
+            .Where(s => tituloLibro.Contains(s.Titulo)/* && s.Stock > 0*/)
             .ToListAsync();
 
 
             //crear Subasta + SubastaItems
-            var subasta = new Subasta(0, subastaForCreate.PrecioTotal, DateTime.Now,
+            var subasta = new Subasta(0, subastaForCreate.PrecioTotal, DateTime.Today,
             metodoPago, user);
 
 
@@ -112,22 +109,26 @@ public class SubastasController : ControllerBase
                 var libro = libros.FirstOrDefault(l => l.Titulo == item.Titulo);
                 //1. comrpobar si el libro buscado por título no se encuentra en la base de datos
                 if (libro == null)  {
-                    return BadRequest($"Error! Libro titulado '{item.Titulo}' no está disponible para ser subastado");
+                    ModelState.AddModelError("SubastaItems", $"Error! Libro titulado '{item.Titulo}' no está disponible para ser subastado");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
                 }
 
-                if (item.Cantidad <= 0) {
-                    return BadRequest($"Error! Debes seleccionar al menos 1 unidad.");
-                }
+                /*if (item.Cantidad <= 0) {
+                    ModelState.AddModelError("SubastaItems", $"Error! Debes seleccionar al menos 1 unidad.");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }*/
 
-                // 2. Comprobar si hay suficiente stock disponible
-                if(item.Cantidad > libro.Stock){
-                    return BadRequest($"Error! No hay suficiente stock para el libro '{item.Titulo}'. Solicitados: {item.Cantidad}, Disponibles: {libro.Stock}.");
+                // 2. Comprobar si hay stock disponible
+                if(libro.Stock <= 0){
+                    ModelState.AddModelError("SubastaItem", $"Error! Libro titulado '{item.Titulo}' no está disponible para ser subastado");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
                 }
 
                 // 3. Comprobar precio de puja
                 if(item.PrecioPuja <= 0)
                 {
-                    return BadRequest($"Error! El precio de la puja para {item.Titulo} debe ser mayor de 0");
+                    ModelState.AddModelError("SubastaItems", $"Error! El precio de la puja para '{item.Titulo}' debe ser mayor de 0");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
                 }
 
                 // 4. Solo procesar el ítem si cumple con el stock y el precio de puja válidos
@@ -136,12 +137,13 @@ public class SubastasController : ControllerBase
                     libro, subasta, item.Cantidad);
                     subasta.SubastaItems.Add(subastaItem);
 
+                    //recalcular el total acumulado de las pujas
+                    subasta.PrecioSubasta = subasta.SubastaItems.Sum(si => si.PrecioPuja);
+
                     // Actualizamos Stock usando itemDTO.Cantidad unicamente si la validación es correcta
-                    libro.Stock -= item.Cantidad;
+                    libro.Stock -= 1;
             }
 
-            //recalcular el total acumulado de las pujas
-            subasta.PrecioSubasta = subasta.SubastaItems.Sum(si => si.PrecioPuja);
 
             //guardamos en la variable _context para luego meterla a la base de datos
             _context.Subastas.Add(subasta);
