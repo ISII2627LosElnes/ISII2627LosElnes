@@ -30,15 +30,15 @@ public class GetDetailsForResenas_test : AppForSEII4SqliteUT
 
         var usuarios = new List<ApplicationUser>
         {
-          new ApplicationUser("1", "Dexter", "Morgan", "BayHarbourButcher","Calle Miami Metro, 10")  
+          new ApplicationUser("1", "Dexter", "Morgan", "BayHarbourButcher","Calle Miami Metro, 10", "600777666"),  
         };
-        usuarios[0].PhoneNumber="600777666";
+      
 
         var resenas = new List<Resena>
         {
-          new Resena(1,new DateTime(2026,10,20),"Muy entretenido")  
+          new Resena(1,new DateTime(2026,10,20),"Muy entretenido",usuarios[0])  
         };
-        resenas[0].Usuario=usuarios[0];
+       
 
         var resenaItems = new List<ResenaItem>
         {

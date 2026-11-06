@@ -19,6 +19,20 @@ public class ApplicationUser : IdentityUser
 
     }
 
+    //añado constructor sobrecargado para poder crear un usuario con el phone number
+     public ApplicationUser(string id, string name, string surname, string userName,string address, string phoneNumber)
+    {
+        Id = id;
+        Name = name;
+        Surname = surname;
+        UserName = userName;
+        Email = userName;
+        Address = address;
+        PhoneNumber = phoneNumber;
+
+    }
+
+
     [StringLength(50)]
     public string? Name {get;set;}
 
