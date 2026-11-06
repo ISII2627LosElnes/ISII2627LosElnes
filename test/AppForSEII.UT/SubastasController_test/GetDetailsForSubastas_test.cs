@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 public class GetDetailsForSubastas_test : AppForSEII4SqliteUT
 {
+    //aquí me creo instancias cualesquiera de los distintos atributos necesarios para hacer pruebas 
     public GetDetailsForSubastas_test()
     {
         var editoriales = new List<Editorial>
@@ -67,14 +68,15 @@ public class GetDetailsForSubastas_test : AppForSEII4SqliteUT
     [Fact]
     public async Task GetDetailsForSubastas_NotFound_test()
     {
-        //arrange
-        var mock = new Mock<ILogger<SubastasController>>();
+        //arrange --> preparación de la prueba
+        var mock = new Mock<ILogger<SubastasController>>();  //solo sirve para crear el logger luego
         ILogger<SubastasController> logger = mock.Object;
         var controller = new SubastasController(_context, logger);
-        //act
-        var result=await controller.GetDetailsForSubastas(100); //id que no existe
-        //assert
 
+        //act --> ejecución de la prueba
+        var result=await controller.GetDetailsForSubastas(100); //id que no existe
+        
+        //assert --> evaluación del resultado de la prueba
         //comprueba que el controlador devuelve un notfound con contenido (por eso es object, porque el notfound devuelve un mensaje string con el error)
         Assert.IsType<NotFoundObjectResult>(result);
     }
@@ -82,18 +84,18 @@ public class GetDetailsForSubastas_test : AppForSEII4SqliteUT
     [Fact]
     public async Task GetDetailsForSubastas_Found_test()
     {
-        //arrange
-          var mock = new Mock<ILogger<SubastasController>>();
+        //arrange --> preparación de la prueba
+        var mock = new Mock<ILogger<SubastasController>>();
         ILogger<SubastasController> logger = mock.Object;
         var controller = new SubastasController(_context, logger);
         var subastaEsperada= new SubastaDetailDTO("Mark", "Evans", "410747629", new DateTime(2026,12,21), 19.4m, new List<SubastaItemDTO>());
         subastaEsperada.SubastaItems.Add(new SubastaItemDTO("Cronicas de la torre","Laura Gallego", "Libro muy interesante, con buen trasfondo", 10, 1));
         subastaEsperada.SubastaItems.Add(new SubastaItemDTO("Caperucita roja", "Charles", "Demasiado complicado de entender", 4.7m, 2));
-        //act
+
+        //act --> ejecución de la prueba
         var result = await controller.GetDetailsForSubastas(1);
 
-        //assert
-
+        //assert --> evaluación del resultado de la prueba
         //comprueba que el resultado devuelto por el controlador es un okobject result
         var okResult = Assert.IsType<OkObjectResult>(result);
         //extrae el objeto devuelto del ok y comprueba que es un subastadetaildto

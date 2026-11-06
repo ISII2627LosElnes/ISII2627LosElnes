@@ -27,18 +27,19 @@ public class SubastasController : ControllerBase
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetDetailsForSubastas(int id)
     {
+        //el include es como un join, son las clases necesarias para sacar los datos
         var subasta = await _context.Subastas
             .Include(s => s.Usuario)
             .Include (s => s.SubastaItems)
                .ThenInclude(si => si.Libro)
             .Where(s => s.Id == id)
-            .Select(s => new SubastaDetailDTO(
+            .Select(s => new SubastaDetailDTO(   //aquí obtengo los detalles de la subasta, sin entrar al item
                 s.Usuario.Name,
                 s.Usuario.Surname,
                 s.Usuario.PhoneNumber,
                 s.FechaSubasta,
                 s.PrecioSubasta,
-                s.SubastaItems.Select(si => new SubastaItemDTO(
+                s.SubastaItems.Select(si => new SubastaItemDTO(  //aquí obtengo los detalles del item en sí
                     si.Libro.Titulo,
                     si.Libro.Autor,
                     si.Descripcion,
@@ -64,7 +65,6 @@ public class SubastasController : ControllerBase
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.Conflict)]
         public async Task<ActionResult> CreateSubasta(SubastaForCreateDTO subastaForCreate) {
             //validación de datos recibidos (flujos alternativas)
-            //comprobación de datos obligatorios de inicio sesión6y
             //comprobación de libros seleccionados, si existen o si se han seleccionado
             if (subastaForCreate.SubastaItems.Count == 0)
                 ModelState.AddModelError("SubastaItems", "Error! Debes seleccionar al menos un libro para inciar la puja");
@@ -92,10 +92,12 @@ public class SubastasController : ControllerBase
                 return BadRequest(new ValidationProblemDetails(ModelState));
 
 
+            //me guardo el título del libro(s) de la subasta en una lista para compararlos luego
             var tituloLibro = subastaForCreate.SubastaItems.Select(si => si.Titulo).ToList();
 
+            //guardo los libros que coincidan con los títulos obtenidos antes en una lista async
             var libros = await _context.Libros
-            .Where(s => tituloLibro.Contains(s.Titulo)/* && s.Stock > 0*/)
+            .Where(s => tituloLibro.Contains(s.Titulo)/* && s.Stock > 0*/)  //stock no se comprueba aquí
             .ToListAsync();
 
 
@@ -104,10 +106,10 @@ public class SubastasController : ControllerBase
             metodoPago, user);
 
 
-            //procesar item (bloque del else)
+            //procesar item
             foreach (var item in subastaForCreate.SubastaItems) {
                 var libro = libros.FirstOrDefault(l => l.Titulo == item.Titulo);
-                //1. comrpobar si el libro buscado por título no se encuentra en la base de datos
+                //1. comprobar si el libro buscado por título no se encuentra en la base de datos
                 if (libro == null)  {
                     ModelState.AddModelError("SubastaItems", $"Error! Libro titulado '{item.Titulo}' no está disponible para ser subastado");
                     return BadRequest(new ValidationProblemDetails(ModelState));
@@ -167,5 +169,8 @@ public class SubastasController : ControllerBase
 
             return CreatedAtAction("GetDetailsForSubastas", new { id = subasta.Id }, subastaDetail);
         }
+
+        /*caso de prueba para POST en swagger
+        */
     
 }
