@@ -110,7 +110,7 @@ namespace AppForSEII.API.Controllers
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetLibrosParaSubastar(string? titulo, string? editorial)
         {
-            // 1. Al tener parámetros, la validación del modelo y el logger son necesarios[cite: 2]
+            // 1. Al tener parámetros, la validación del modelo y el logger son necesarios
             if (!ModelState.IsValid)
             {
                 _logger.LogError($"{DateTime.Now} Parámetros de entrada no válidos al buscar libros para reponer.");

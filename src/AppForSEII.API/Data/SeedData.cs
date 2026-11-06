@@ -637,48 +637,55 @@ public static void SeedSubastas(ApplicationDbContext dbContext)
     var googlePayIsmael = new GooglePay(0, "ismael@test.com");
     var visaGabriel = new Visa(0, "9876543210987654", new DateTime(2027, 10, 31));
 
+
+    //AL PONER ID=0, EL SISTEMA ENTIENDE QUE ES UN OBJETO NUEVO, Y ASIGNA DINÁMICAMENTE EL ID
+
     // Subasta 1: Precio 20.8, (2x Harry Potter y la Piedra Filosofal a 10.40)
     if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 10, 28) && s.Usuario.Email == samuel.Email))
     {
-        dbContext.Subastas.Add(new Subasta {
-            PrecioSubasta = 20.80m,
-            FechaSubasta = new DateTime(2026, 10, 30),
-            Usuario = samuel,
-            MetodoPago = visaSamuel
-        });
+        dbContext.Subastas.Add(new Subasta (
+            0,
+            20.80m,
+            new DateTime(2026, 10, 30),
+            visaSamuel,
+            samuel
+        ));
     }
 
     // Subasta 2: Precio 51.2, (2x Patria a 15.60 + 1x Los detectives salvajes a 20.00)
     if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 10, 30) && s.Usuario.Email == gabriel.Email))
     {
-        dbContext.Subastas.Add(new Subasta {
-            PrecioSubasta = 51.20m,
-            FechaSubasta = new DateTime(2026, 11, 13),
-            Usuario = gabriel,
-            MetodoPago = visaGabriel
-        });
+        dbContext.Subastas.Add(new Subasta (
+            0,
+            51.20m,
+            new DateTime(2026, 11, 13),
+            visaGabriel,
+            gabriel
+        ));
     }
 
     // Subasta 3: Precio 13, (1x Harry Potter y la Piedra Filosofal a 13.00)
     if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 11, 15) && s.Usuario.Email == manuel.Email))
     {
-        dbContext.Subastas.Add(new Subasta {
-            PrecioSubasta = 13.00m,
-            FechaSubasta = new DateTime(2026, 10, 27),
-            Usuario = manuel,
-            MetodoPago = paypalManuel
-        });
+        dbContext.Subastas.Add(new Subasta (
+            0,
+            13.00m,
+            new DateTime(2026, 10, 27),
+            paypalManuel,
+            manuel
+        ));
     }
 
     // Subasta 4: Precio 60.6, (1x Harry Potter y la Piedra Filosofal a 13.00 + 2x La sombra del viento a 16.00 + 1x Patria a 15.6)
     if (!dbContext.Subastas.Any(s => s.FechaSubasta == new DateTime(2026, 12, 20) && s.Usuario.Email == ismael.Email))
     {
-        dbContext.Subastas.Add(new Subasta {
-            PrecioSubasta = 60.60m,
-            FechaSubasta = new DateTime(2026, 12, 03),
-            Usuario = ismael,
-            MetodoPago = googlePayIsmael
-        });
+        dbContext.Subastas.Add(new Subasta (
+            0,
+            60.60m,
+            new DateTime(2026, 12, 03),
+            googlePayIsmael,
+            ismael
+        ));
     }
 
     dbContext.SaveChanges();
@@ -707,7 +714,7 @@ public static void SeedSubastaItems(ApplicationDbContext dbContext)
 
     // Items para la subasta 1
     if (!dbContext.SubastaItems.Any(ri => ri.LibroId == harryPotter.Id && ri.SubastaId == sub1.Id))
-        dbContext.SubastaItems.Add(new SubastaItem("", 20.80m, harryPotter, sub1, 2));
+        dbContext.SubastaItems.Add(new SubastaItem("", 20.80m, harryPotter, sub1, 2));  //la descripción es opcional ("")
 
     // Items para la subasta 2
     if (!dbContext.SubastaItems.Any(ri => ri.LibroId == patria.Id && ri.SubastaId == sub2.Id))

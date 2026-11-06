@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 public class CreateSubasta_test : AppForSEII4SqliteUT
 {
+    //aquí me creo instancias cualesquiera de los distintos atributos necesarios para hacer pruebas
     public CreateSubasta_test()
     {
         var editoriales = new List<Editorial>
@@ -56,45 +57,40 @@ public class CreateSubasta_test : AppForSEII4SqliteUT
             new SubastaItemDTO("Juego de tronos", "George", "Una obra que hay que consumir sí o sí", 15m, 2)
         };
 
-        // Caso 1: subastaItem es null
-        //var subastaItemNull = new SubastaForCreateDTO("Mark", "Evans", "410723429", 1, "Comentario válido de más de veinte caracteres", 7.5m, null);
-
-        // Caso 2: subastaItem está vacío
+        // Caso 1: subastaItem está vacío
         var subastaItemCero = new SubastaForCreateDTO("Mark", "Evans", "410723429", 1, "Comentario válido de más de veinte caracteres", new List<SubastaItemDTO>());
 
-        //Caso 3: PrecioTotal < 0
-        //var precioMenor0 = new SubastaForCreateDTO("Mark", "Evans", "410723429", 1, "Comentario válido de más de veinte caracteres", -2m, itemsValidos);
-
-        // Caso 4: método de pago no existe
+        // Caso 2: método de pago no existe
         var metodoPagoNull = new SubastaForCreateDTO("Mark", "Evans", "410723429", 600, "Comentario válido de más de veinte caracteres", itemsValidos);
 
-        // Caso 5: usuario no existe ("Axel" "Blaze")
+        // Caso 3: usuario no existe ("Axel" "Blaze")
         var usuarioNull = new SubastaForCreateDTO("Axel", "Blaze", "414563429", 1, "Comentario válido de más de veinte caracteres", itemsValidos);
 
-        // Caso 6: libro no existe ("Libro no válido")
+        // Caso 4: libro no existe ("Libro no válido")
         var libroNull = new SubastaForCreateDTO("Mark", "Evans", "410723429", 1, "Comentario válido de más de veinte caracteres", new List<SubastaItemDTO> { new SubastaItemDTO("Los 7 enenitos", "Michael Jackson", "Muy recomendado para niños", 5m, 1)});
 
-        //Caso 7: no se selecciona ninguna unidad para subastar
-        //var sinItemsSeleccionados = new SubastaForCreateDTO("Mark", "Evans", "410723429", 1, "Comentario válido de más de veinte caracteres", 7.5m, );
-
-        // Caso 8: stock insuficiente
+        // Caso 5: stock insuficiente
         var stockInsuficiente = new SubastaForCreateDTO("Mark", "Evans", "410723429", 1, "Comentario válido de más de veinte caracteres", new List<SubastaItemDTO> { new SubastaItemDTO("Cronicas de la torre", "Laura Gallego", "De españoles para españoles", 14m, 1)});
 
-        //Caso 9: precio de la puja <= 0
-        var precioMenorA0 = new SubastaForCreateDTO("Mark", "Evans", "410723429", 1, "Comentario válido de más de veinte caracteres", new List<SubastaItemDTO> { new SubastaItemDTO("Caperucita roja", "Charles", "Recomendado para niños", -4m, 1)});
+        //Caso 6: precio de la puja <= 0
+        var precioPujaMenorA0 = new SubastaForCreateDTO("Mark", "Evans", "410723429", 1, "Comentario válido de más de veinte caracteres", new List<SubastaItemDTO> { new SubastaItemDTO("Caperucita roja", "Charles", "Recomendado para niños", -4m, 1)});
 
         var objetosADevolver = new List<object[]>
         {
-            //new object[] { subastaItemNull, "Error! Debes seleccionar al menos un libro para inciar la puja" },
+            //caso en el no se selecciona ningún item
             new object[] { subastaItemCero, "Error! Debes seleccionar al menos un libro para inciar la puja" },
-            //new object[] { precioMenor0, "Error! Debes poner una puja mayor a 0" },
             // CORREGIDO: ahora espera "Axel" y "Blaze" igual que enviamos en usuarioNull
+            //caso en el que no se incluye un método de pago válido
             new object[] { metodoPagoNull, "Error! El método de pago no es válido." },
+            // CORREGIDO: ahora espera "Axel" y "Blaze" igual que enviamos en usuarioNull
+            //caso en el que se mete un usuario incorrecto
             new object[] { usuarioNull, "Error! Usuario no registrado" },
             // CORREGIDO: ahora espera 'Libro no válido' igual que enviamos en libroNull
             new object[] { libroNull, "Error! Libro titulado 'Los 7 enenitos' no está disponible para ser subastado" },
+            //caso en el que no hay stock disponible
             new object[] { stockInsuficiente, "Error! Libro titulado 'Cronicas de la torre' no está disponible para ser subastado" },
-            new object[] { precioMenorA0, "Error! El precio de la puja para 'Caperucita roja' debe ser mayor de 0" }
+            //caso en el se mete un precio de puja menor igual a 0
+            new object[] { precioPujaMenorA0, "Error! El precio de la puja para 'Caperucita roja' debe ser mayor de 0" }
         };
 
         return objetosADevolver;
@@ -104,12 +100,12 @@ public class CreateSubasta_test : AppForSEII4SqliteUT
     [MemberData(nameof(TestCasesForCreateSubasta))]
     public async Task CreateSubasta_Error_test(SubastaForCreateDTO subastaDTO, string errorEsperado)
     {
-        // Arrange
+        // Arrange --> preparación de la prueba
         var mock = new Mock<ILogger<SubastasController>>();
         ILogger<SubastasController> logger = mock.Object;
         var controller = new SubastasController(_context, logger);
 
-        // Act
+        // Act --> ejecución de la prueba
         var result = await controller.CreateSubasta(subastaDTO);
 
         // Assert
@@ -123,12 +119,12 @@ public class CreateSubasta_test : AppForSEII4SqliteUT
     [Fact]
     public async Task CreateSubasta_Success_test()
     {
-        // Arrange
+        // Arrange --> preparación de la prueba
         var mock = new Mock<ILogger<SubastasController>>();
         ILogger<SubastasController> logger = mock.Object;
         var controller = new SubastasController(_context, logger);
 
-        // Creamos el DTO de entrada ReposicionForCreateDTO
+        // Creamos el DTO de entrada SubastaForCreateDTO
         var subastaDTO = new SubastaForCreateDTO(
             "Mark",
             "Evans",
@@ -138,21 +134,21 @@ public class CreateSubasta_test : AppForSEII4SqliteUT
             new List<SubastaItemDTO> { new SubastaItemDTO("Caperucita roja", "Charles", "Una obra que hay que consumir sí o sí", 15m, 2) }
         );
 
-        //Creamos el detail de salida
+        //Creamos el detail de salida. Lo comparamos al final con la salida real.
         var detailDTOEsperado = new SubastaDetailDTO(
             "Mark",
             "Evans",
             "410723429",
-            DateTime.Today,
+            DateTime.Today,  //importante que sea .Today, para que coincida siempre
             15m,
             new List<SubastaItemDTO> { new SubastaItemDTO("Caperucita roja", "Charles", "Una obra que hay que consumir sí o sí", 15m, 2) }
         );
 
-        // Act
+        // Act --> ejecución de la prueba
         var result = await controller.CreateSubasta(subastaDTO);
 
-        // Assert
-        var resultCreado = Assert.IsType<CreatedAtActionResult>(result);
+        // Assert --> evaluación del resultado de la prueba
+        var resultCreado = Assert.IsType<CreatedAtActionResult>(result); //compruebo que sea del tipo adecuado
         var subastaDetailDTOReal = Assert.IsType<SubastaDetailDTO>(resultCreado.Value);
 
         Assert.Equal(detailDTOEsperado, subastaDetailDTOReal);
