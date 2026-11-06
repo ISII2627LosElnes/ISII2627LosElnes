@@ -548,52 +548,29 @@ public static void SeedCompras(ApplicationDbContext dbContext)
         return;
     }
 
+    //Copra 1 
     if (!dbContext.Compras.Any(c => c.CodigoDescuento == "DESC10"))
     {
-        dbContext.Compras.Add(new Compra
-        {
-            FechaCompra = new DateTime(2026, 10, 15),
-            PrecioTotal = 45.50m,
-            CodigoDescuento = "DESC10",
-            Usuario = samuel,
-            MetodoPago = visaSamuel
-        });
+        dbContext.Compras.Add(new Compra(0,new DateTime(2026, 10, 15), 45.50m, "DESC10", samuel, visaSamuel));
     }
 
+    //Compra 2
     if (!dbContext.Compras.Any(c => c.PrecioTotal == 30.00m && c.CodigoDescuento == null))
     {
-        dbContext.Compras.Add(new Compra
-        {
-            FechaCompra = new DateTime(2026, 10, 16),
-            PrecioTotal = 30.00m,
-            CodigoDescuento = null,
-            Usuario = manuel,
-            MetodoPago = paypalManuel
-        });
+        dbContext.Compras.Add(new Compra (0,new DateTime(2026, 10, 16), 30.00m, null, manuel, paypalManuel));
+        
     }
-
+    
+    //Compra 3
     if (!dbContext.Compras.Any(c => c.PrecioTotal == 25.00m && c.CodigoDescuento == "DESC10"))
     {
-        dbContext.Compras.Add(new Compra
-        {
-            FechaCompra = new DateTime(2026, 10, 17),
-            PrecioTotal = 25.00m,
-            CodigoDescuento = "DESC10",
-            Usuario = ismael,
-            MetodoPago = googlePayIsmael
-        });
+        dbContext.Compras.Add(new Compra(0,new DateTime(2026, 10, 17), 25.00m, "DESC10", ismael, googlePayIsmael));
     }
 
+    //Compra 4
     if (!dbContext.Compras.Any(c => c.PrecioTotal == 40.00m && c.CodigoDescuento == null))
     {
-        dbContext.Compras.Add(new Compra
-        {
-            FechaCompra = new DateTime(2026, 10, 18),
-            PrecioTotal = 40.00m,
-            CodigoDescuento = null,
-            Usuario = gabriel,
-            MetodoPago = visaGabriel
-        });
+        dbContext.Compras.Add(new Compra (0,new DateTime(2026, 10, 18), 40.00m, null, gabriel, visaGabriel));
     }
 
     dbContext.SaveChanges();
@@ -615,44 +592,28 @@ public static void SeedCompraItems(ApplicationDbContext dbContext)
         return;
     }
 
+    //Items para la compra 1
     if (!dbContext.CompraItems.Any(ci => ci.LibroId == sombraDelViento.Id && ci.CompraId == compraConDescuento.Id))
     {
-        dbContext.CompraItems.Add(new CompraItem
-        {
-            Cantidad = 2,
-            LibroId = sombraDelViento.Id,
-            CompraId = compraConDescuento.Id
-        });
+        dbContext.CompraItems.Add(new CompraItem(1,4,sombraDelViento,compraConDescuento));
     }
 
+    //Items para la compra 2    
     if (!dbContext.CompraItems.Any(ci => ci.LibroId == juegoDelAngel.Id && ci.CompraId == compraConDescuento.Id))
     {
-        dbContext.CompraItems.Add(new CompraItem
-        {
-            Cantidad = 3,
-            LibroId = juegoDelAngel.Id,
-            CompraId = compraConDescuento.Id
-        });
+        dbContext.CompraItems.Add(new CompraItem(2,3,juegoDelAngel,compraConDescuento));
     }
 
+    //Items para la compra 3
     if (!dbContext.CompraItems.Any(ci => ci.LibroId == harryPotter.Id && ci.CompraId == compraSinDescuento.Id))
     {
-        dbContext.CompraItems.Add(new CompraItem
-        {
-            Cantidad = 2,
-            LibroId = harryPotter.Id,
-            CompraId = compraSinDescuento.Id
-        });
+        dbContext.CompraItems.Add(new CompraItem(3,5,harryPotter,compraSinDescuento));
     }
 
+    //Items para la compra 4
     if (!dbContext.CompraItems.Any(ci => ci.LibroId == detectivesSalvajes.Id && ci.CompraId == compraSinDescuento.Id))
     {
-        dbContext.CompraItems.Add(new CompraItem
-        {
-            Cantidad = 4,
-            LibroId = detectivesSalvajes.Id,
-            CompraId = compraSinDescuento.Id
-        });
+        dbContext.CompraItems.Add(new CompraItem(4,4,detectivesSalvajes,compraSinDescuento));
     }
 
     dbContext.SaveChanges();
