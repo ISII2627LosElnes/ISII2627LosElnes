@@ -13,6 +13,16 @@ public Resena(int id, DateTime fechaResena, string titulo)
     FechaResena = fechaResena;
     Titulo = titulo;
 }
+
+//añado constructor sobrecargado para poder crear una reseña con un usuario
+
+public Resena(int id, DateTime fechaResena, string titulo, ApplicationUser usuario)
+{
+    Id = id;
+    FechaResena = fechaResena;
+    Titulo = titulo;
+    Usuario = usuario;
+}
     [Key]
     public int Id { get; set; }
 

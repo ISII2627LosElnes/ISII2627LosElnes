@@ -30,9 +30,9 @@ public class CreateResena_test : AppForSEII4SqliteUT
 
         var usuarios = new List<ApplicationUser>
         {
-          new ApplicationUser("1", "Dexter", "Morgan", "BayHarbourButcher","Calle Miami Metro, 10")  
+          new ApplicationUser("1", "Dexter", "Morgan", "BayHarbourButcher","Calle Miami Metro, 10", "600777666"),  
         };
-        usuarios[0].PhoneNumber="600777666";
+      
 
 
         _context.AddRange(usuarios);

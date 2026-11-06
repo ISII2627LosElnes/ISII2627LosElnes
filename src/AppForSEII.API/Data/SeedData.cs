@@ -170,9 +170,9 @@ namespace AppForSEII.API.Data {
 
                 if (userManager.FindByNameAsync("samuel@test.com").Result == null)
             {
-                ApplicationUser user = new ApplicationUser("4", "Samuel", "Martínez", "samuel@test.com","Calle Hellín, Albacete, España");
+                ApplicationUser user = new ApplicationUser("4", "Samuel", "Martínez", "samuel@test.com","Calle Hellín, Albacete, España","600000001");
                 user.EmailConfirmed = true;
-                user.PhoneNumber = "600000001";
+             
 
                 var result = userManager.CreateAsync(user, "Password1234%");
                 result.Wait();
@@ -185,9 +185,8 @@ namespace AppForSEII.API.Data {
 
             if (userManager.FindByNameAsync("manuel@test.com").Result == null)
             {
-                ApplicationUser user = new ApplicationUser("5", "Manuel", "González", "manuel@test.com","Calle Talavera de la Reina, Toledo, España");
+                ApplicationUser user = new ApplicationUser("5", "Manuel", "González", "manuel@test.com","Calle Talavera de la Reina, Toledo, España", "600000002");
                 user.EmailConfirmed = true;
-                user.PhoneNumber = "600000002";
 
                 var result = userManager.CreateAsync(user, "Password1234%");
                 result.Wait();
@@ -200,9 +199,8 @@ namespace AppForSEII.API.Data {
 
             if (userManager.FindByNameAsync("ismael@test.com").Result == null)
             {
-                ApplicationUser user = new ApplicationUser("6", "Ismael", "Isvoranu", "ismael@test.com","Calle Calea Victoriei, Bucarest ,Rumanía");
+                ApplicationUser user = new ApplicationUser("6", "Ismael", "Isvoranu", "ismael@test.com","Calle Calea Victoriei, Bucarest ,Rumanía", "600000003");
                 user.EmailConfirmed = true;
-                user.PhoneNumber = "600000003";
 
                 var result = userManager.CreateAsync(user, "Password1234%");
                 result.Wait();
@@ -215,10 +213,9 @@ namespace AppForSEII.API.Data {
 
             if (userManager.FindByNameAsync("gabriel@test.com").Result == null)
             {
-                ApplicationUser user = new ApplicationUser("7", "Gabriel", "Esparcia", "gabriel@test.com","Calle Isso, Isso ,España");
+                ApplicationUser user = new ApplicationUser("7", "Gabriel", "Esparcia", "gabriel@test.com","Calle Isso, Isso ,España","600000004");
                 user.EmailConfirmed = true;
-                user.PhoneNumber = "600000004";
-
+              
                 var result = userManager.CreateAsync(user, "Password1234%");
                 result.Wait();
 
@@ -279,7 +276,7 @@ namespace AppForSEII.API.Data {
             // Comprueba si el género ya existe
             if (!dbContext.Generos.Any(g => g.Nombre == genero)) {
                 // Usa el método nativo .Add() en lugar de SQL directo
-                dbContext.Generos.Add(new Genero { Nombre = genero });
+                dbContext.Generos.Add(new Genero(0, genero));
                 guardarCambios = true;
             }
         }
@@ -290,7 +287,7 @@ namespace AppForSEII.API.Data {
         }
     }
 
-    public static void SeedLibros(ApplicationDbContext dbContext) {
+   public static void SeedLibros(ApplicationDbContext dbContext) {
     // Comprobamos si ya hay libros para no duplicarlos
     if (dbContext.Libros.Any()) {
         return; 
@@ -312,103 +309,14 @@ namespace AppForSEII.API.Data {
 
     // Creamos la lista de libros asignando los IDs de las referencias encontradas
     var libros = new List<Libro> {
-        new Libro {
-            Titulo = "La sombra del viento",
-            Autor = "Carlos Ruiz Zafón",
-            PrecioCompra = 20.50m,
-            PrecioReposicion = 15.00m,
-            Stock = 10,
-            TipoLibro = "Tapa Dura",
-            CalificacionMedia = 4.8m,
-            FechaLanzamiento = new DateTime(2001, 4, 1),
-            Editorial = planeta,
-            Genero = misterio
-        },
-        new Libro {
-            Titulo = "El juego del ángel",
-            Autor = "Carlos Ruiz Zafón",
-            PrecioCompra = 22.00m,
-            PrecioReposicion = 16.50m,
-            Stock = 8,
-            TipoLibro = "Bolsillo",
-            CalificacionMedia = 4.5m,
-            FechaLanzamiento = new DateTime(2008, 4, 17),
-            Editorial = planeta,
-            Genero = ficcion
-        },
-        new Libro {
-            Titulo = "Los detectives salvajes",
-            Autor = "Roberto Bolaño",
-            PrecioCompra = 24.00m,
-            PrecioReposicion = 18.00m,
-            Stock = 5,
-            TipoLibro = "Tapa Dura",
-            CalificacionMedia = 4.6m,
-            FechaLanzamiento = new DateTime(1998, 1, 1),
-            Editorial = anagrama,
-            Genero = ficcion
-        },
-        new Libro {
-            Titulo = "Patria",
-            Autor = "Fernando Aramburu",
-            PrecioCompra = 21.00m,
-            PrecioReposicion = 14.50m,
-            Stock = 0,
-            TipoLibro = "Bolsillo",
-            CalificacionMedia = 4.7m,
-            FechaLanzamiento = new DateTime(2016, 9, 1),
-            Editorial = tusquets,
-            Genero = novela
-        },
-        new Libro {
-            Titulo = "En el blanco",
-            Autor = "Ken Follet",
-            PrecioCompra = 21.00m,
-            PrecioReposicion = 14.50m,
-            Stock = 0,
-            TipoLibro = "Bolsillo",
-            CalificacionMedia = 4.7m,
-            FechaLanzamiento = new DateTime(2016, 9, 1),
-            Editorial = tusquets,
-            Genero = misterio
-        },
-        new Libro {
-            Titulo = "Berserk",
-            Autor = "Kentaro Miura",
-            PrecioCompra = 21.00m,
-            PrecioReposicion = 14.50m,
-            Stock = 0,
-            TipoLibro = "Bolsillo",
-            CalificacionMedia = 4.7m,
-            FechaLanzamiento = new DateTime(2016, 9, 1),
-            Editorial = tusquets,
-            Genero = ficcion
-        },
-        new Libro {
-            Titulo = "Cinco semanas en globo",
-            Autor = "Julio Verne",
-            PrecioCompra = 21.00m,
-            PrecioReposicion = 14.50m,
-            Stock = 0,
-            TipoLibro = "Bolsillo",
-            CalificacionMedia = 4.7m,
-            FechaLanzamiento = new DateTime(2016, 9, 1),
-            Editorial = tusquets,
-            Genero = novela
-        },
-        new Libro {
-            Titulo = "Harry Potter y la piedra filosofal",
-            Autor = "J.K. Rowling",
-            PrecioCompra = 19.99m,
-            PrecioReposicion = 10.00m,
-            Stock = 20,
-            TipoLibro = "Tapa Dura",
-            CalificacionMedia = 4.9m,
-            FechaLanzamiento = new DateTime(1997, 6, 26),
-            Editorial = salamandra,
-            Genero
-             = fantasia
-        }
+        new Libro(0, "La sombra del viento", "Tapa Dura", "Carlos Ruiz Zafón", 20.50m, 15.00m, 10, 4.8m, new DateTime(2001, 4, 1), misterio, planeta),
+        new Libro(0, "El juego del ángel", "Bolsillo", "Carlos Ruiz Zafón", 22.00m, 16.50m, 8, 4.5m, new DateTime(2008, 4, 17), ficcion, planeta),
+        new Libro(0, "Los detectives salvajes", "Tapa Dura", "Roberto Bolaño", 24.00m, 18.00m, 5, 4.6m, new DateTime(1998, 1, 1), ficcion, anagrama),
+        new Libro(0, "Patria", "Bolsillo", "Fernando Aramburu", 21.00m, 14.50m, 0, 4.7m, new DateTime(2016, 9, 1), novela, tusquets),
+        new Libro(0, "En el blanco", "Bolsillo", "Ken Follet", 21.00m, 14.50m, 0, 4.7m, new DateTime(2016, 9, 1), misterio, tusquets),
+        new Libro(0, "Berserk", "Bolsillo", "Kentaro Miura", 21.00m, 14.50m, 0, 4.7m, new DateTime(2016, 9, 1), ficcion, tusquets),
+        new Libro(0, "Cinco semanas en globo", "Bolsillo", "Julio Verne", 21.00m, 14.50m, 0, 4.7m, new DateTime(2016, 9, 1), novela, tusquets),
+        new Libro(0, "Harry Potter y la piedra filosofal", "Tapa Dura", "J.K. Rowling", 19.99m, 10.00m, 20, 4.9m, new DateTime(1997, 6, 26), fantasia, salamandra)
     };
 
     // Añadimos todos de golpe y guardamos los cambios en la BD
@@ -429,52 +337,27 @@ public static void SeedResenas(ApplicationDbContext dbContext)
 
     if (!dbContext.Resenas.Any(r => r.Titulo == "Reseña excelente"))
     {
-        dbContext.Resenas.Add(new Resena
-        {
-            FechaResena = new DateTime(2026, 10, 10),
-            Titulo = "Reseña excelente",
-            Usuario = samuel
-        });
+        dbContext.Resenas.Add(new Resena(0, new DateTime(2026, 10, 10), "Reseña excelente", samuel));
     }
 
     if (!dbContext.Resenas.Any(r => r.Titulo == "Muy recomendable"))
     {
-        dbContext.Resenas.Add(new Resena
-        {
-            FechaResena = new DateTime(2026, 10, 11),
-            Titulo = "Muy recomendable",
-            Usuario = manuel
-        });
+        dbContext.Resenas.Add(new Resena(0, new DateTime(2026, 10, 11), "Muy recomendable", manuel));
     }
 
     if (!dbContext.Resenas.Any(r => r.Titulo == "Lectura interesante"))
     {
-        dbContext.Resenas.Add(new Resena
-        {
-            FechaResena = new DateTime(2026, 10, 12),
-            Titulo = "Lectura interesante",
-            Usuario = ismael
-        });
+        dbContext.Resenas.Add(new Resena(0, new DateTime(2026, 10, 12), "Lectura interesante", ismael));
     }
 
     if (!dbContext.Resenas.Any(r => r.Titulo == "Una gran lectura"))
     {
-        dbContext.Resenas.Add(new Resena
-        {
-            FechaResena = new DateTime(2026, 10, 13),
-            Titulo = "Una gran lectura",
-            Usuario = gabriel
-        });
+        dbContext.Resenas.Add(new Resena(0, new DateTime(2026, 10, 13), "Una gran lectura", gabriel));
     }
 
     if (!dbContext.Resenas.Any(r => r.Titulo == "Opinión del libro"))
     {
-        dbContext.Resenas.Add(new Resena
-        {
-            FechaResena = new DateTime(2026, 10, 14),
-            Titulo = "Opinión del libro",
-            Usuario = manuel
-        });
+       dbContext.Resenas.Add(new Resena(0, new DateTime(2026, 10, 14), "Opinión del libro", manuel));
     }
 
     dbContext.SaveChanges();

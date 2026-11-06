@@ -84,8 +84,8 @@ public class ResenasController : ControllerBase
        
         //tercer bloque:crear el objeto reseña con todos lo que nos ha dado el parámetro de entrada, tambien hay que hacer los items
             //primero la resena
-        Resena resena = new Resena(0, DateTime.Today, resenaForCreate.TituloResena);//pongo 0 porque es obligatorio ponerlo, pero luego se genera bien en la BDD
-        resena.Usuario = user;
+        Resena resena = new Resena(0, DateTime.Today, resenaForCreate.TituloResena, user);//pongo 0 porque es obligatorio ponerlo, pero luego se genera bien en la BDD
+    
             //despues todos los items
             foreach (var item in resenaForCreate.ResenaItems)
             {
