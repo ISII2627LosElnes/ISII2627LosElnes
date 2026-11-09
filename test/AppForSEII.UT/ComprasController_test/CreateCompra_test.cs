@@ -33,7 +33,7 @@ public class CreateCompra_test : AppForSEII4SqliteUT
 
         var usuarios = new List<ApplicationUser>
         {
-            new ApplicationUser("67", "Bruce", "Wayne", "batman@gotham.es", "Batcueva, 1")
+            new ApplicationUser("67", "Bruce", "Wayne", "batman@gotham.es", "Calle Batcueva, 1")
         };
         usuarios[0].PhoneNumber = "611222333";
         usuarios[0].EmailConfirmed = true;
@@ -64,7 +64,7 @@ public class CreateCompra_test : AppForSEII4SqliteUT
         // Caso 1: librosSeleccionados nulo
         var librosNull = new CompraForCreateDTO
         {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Batcueva, 1",
+            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Calle Batcueva, 1",
             Telefono = "611222333", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
             LibrosSeleccionados = null!
         };
@@ -72,7 +72,7 @@ public class CreateCompra_test : AppForSEII4SqliteUT
         // Caso 2: librosSeleccionados.count = 0
         var librosCero = new CompraForCreateDTO
         {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Batcueva, 1",
+            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Calle Batcueva, 1",
             Telefono = "611222333", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
             LibrosSeleccionados = new List<CompraItemForCreateDTO>()
         };
@@ -80,7 +80,7 @@ public class CreateCompra_test : AppForSEII4SqliteUT
         // Caso 3: método de pago inexistente
         var metodoPagoInexistente = new CompraForCreateDTO
         {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Batcueva, 1",
+            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Calle Batcueva, 1",
             Telefono = "611222333", MetodoPagoId = 999, CodigoDescuento = "GOTHAM20",
             LibrosSeleccionados = new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = 2 } }
         };
@@ -96,7 +96,7 @@ public class CreateCompra_test : AppForSEII4SqliteUT
         // Caso 5: stock insuficiente
         var stockInsuficiente = new CompraForCreateDTO
         {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Batcueva, 1",
+            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Calle Batcueva, 1",
             Telefono = "611222333", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
             LibrosSeleccionados = new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = 51 } }
         };
@@ -104,9 +104,17 @@ public class CreateCompra_test : AppForSEII4SqliteUT
         //Caspo 6: cantidad negativa
         var cantidadNegativa = new CompraForCreateDTO
         {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Batcueva, 1",
+            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Calle Batcueva, 1",
             Telefono = "611222333", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
             LibrosSeleccionados = new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = -5 } }
+        };
+
+        //Caso Exámen Sprint 2: La dirección no contiene la palabra "Calle"
+          var direccionSinCalle = new CompraForCreateDTO
+        {
+            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Batcueva, 1",
+            Telefono = "611222333", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
+            LibrosSeleccionados = new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = 2 } }
         };
 
         // Los objetos a devolver
@@ -117,7 +125,8 @@ public class CreateCompra_test : AppForSEII4SqliteUT
             new object[] { metodoPagoInexistente, "El método de pago no es válido." },
             new object[] { usuarioInexistente, "No existe el usuario con el nombre Clark" },
             new object[] { stockInsuficiente, "No hay stock suficiente para 'Dune'." },
-            new object[] { cantidadNegativa, "La cantidad para 'Dune' debe ser mayor que cero." }
+            new object[] { cantidadNegativa, "La cantidad para 'Dune' debe ser mayor que cero." },
+            new object[] { direccionSinCalle, "¡Error! La dirección de envío debe contener la palabra Calle" }
         };
 
         return objetosADevolver;
@@ -157,7 +166,7 @@ public class CreateCompra_test : AppForSEII4SqliteUT
         // preparamos el dto que vamos a usar de parámetro
         var compraDTO = new CompraForCreateDTO
         {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Batcueva, 2",
+            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Calle Batcueva, 2",
             Telefono = "622333444", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
             LibrosSeleccionados = new List<CompraItemForCreateDTO>
             {
@@ -177,7 +186,7 @@ public class CreateCompra_test : AppForSEII4SqliteUT
 
         // ahora el detaildto que debería devolver
         var DetailDTOEsperado = new ComprasDetailDTO(
-            "Bruce", "Wayne", "Batcueva, 2", "622333444",
+            "Bruce", "Wayne", "Calle Batcueva, 2", "622333444",
             compraDetailDTOReal.FechaCompra, 87.00m, "GOTHAM20",
             new List<CompraItemDTO>
             {
