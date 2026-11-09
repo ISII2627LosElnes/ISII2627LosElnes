@@ -46,21 +46,26 @@ public class CreateResena_test : AppForSEII4SqliteUT
     public static IEnumerable<object[]> TestCasesForCreateResena()
     {
         //caso 1: resenaitems nulo
-        var resenaItemNull= new ResenaForCreateDTO("Dexter","Morgan","Calle Miami Metro, 10","600777666","Muy buen libro",null);
+        var resenaItemNull= new ResenaForCreateDTO("Dexter","Morgan","Calle Miami Metro, 10","600777666","Resena: muy bueno",null);
         //caso2: resenaitems.count=0
-         var resenaItemCero= new ResenaForCreateDTO("Dexter","Morgan","Calle Miami Metro, 10","600777666","Muy buen libro",new List<ResenaItemDTO>());
+         var resenaItemCero= new ResenaForCreateDTO("Dexter","Morgan","Calle Miami Metro, 10","600777666","Resena: muy bueno",new List<ResenaItemDTO>());
         //estas dos cubren el mismo if, que tiene las dos condiciones con un or
 
         //caso 3: usuario inexistente
-        var usuarioInexistente = new ResenaForCreateDTO("Patrick","Jane","Calle Red John, 10", "600700800", "No me gustó",
+        var usuarioInexistente = new ResenaForCreateDTO("Patrick","Jane","Calle Red John, 10", "600700800", "Resena: malisimo",
          new List<ResenaItemDTO> {new ResenaItemDTO("La leyenda de las tierras raras", "Ediciones Martínez Roca", "Tapa Blanda", 4, "Me ha gustado muchísimo este libro") });
+
+        //caso 4 examen: titulo no empieza por resena
+        var tituloNoEmpieza = new ResenaForCreateDTO("Dexter","Morgan","Calle Miami Metro, 10","600777666","Muy mal libro",
+        new List<ResenaItemDTO> {new ResenaItemDTO("La leyenda de las tierras raras", "Ediciones Martínez Roca", "Tapa Blanda", 4, "Me ha gustado muchísimo este libro") });
 
         //los objects
         var objetosADevolver = new List<object[]>
         {
             new object[] {resenaItemNull, "Debes seleccionar al menos un libro."},
             new object[] {resenaItemCero, "Debes seleccionar al menos un libro."},
-            new object[] {usuarioInexistente, "¡Error! El usuario no está registrado"}
+            new object[] {usuarioInexistente, "¡Error! El usuario no está registrado"},
+            new object[] {tituloNoEmpieza, "¡Error! El titulo de la resena debe empezar por Resena:"}
         };
         return objetosADevolver;
     }
@@ -97,7 +102,7 @@ public class CreateResena_test : AppForSEII4SqliteUT
         ILogger<ResenasController> logger = mock.Object;
         var controller = new ResenasController(_context,logger);
         //preparamos el dto que vamos a usar de parametro
-        var resenaDTO = new ResenaForCreateDTO("Dexter", "Morgan","Calle Miami Metro, 10","600777666","Muy buenos libros",
+        var resenaDTO = new ResenaForCreateDTO("Dexter", "Morgan","Calle Miami Metro, 10","600777666","Resena: muy bueno",
         new List<ResenaItemDTO>() {new ResenaItemDTO("La leyenda de las tierras raras", "Ediciones Martínez Roca", "Tapa Blanda", 5,"Demasiado bueno para ser verdad")} );
         //ahora el detaildto que deberia de devolver
         var DetailDTOEsperado= new ResenaDetailDTO("Dexter", "Morgan", "600777666",DateTime.Today, new List<ResenaItemDTO>() { new ResenaItemDTO("La leyenda de las tierras raras", "Ediciones Martínez Roca", "Tapa Blanda", 5,"Demasiado bueno para ser verdad") });
