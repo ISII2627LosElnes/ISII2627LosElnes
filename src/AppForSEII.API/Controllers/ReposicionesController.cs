@@ -86,6 +86,13 @@ public class ReposicionesController : ControllerBase
             return BadRequest(new ValidationProblemDetails(ModelState));
         }
 
+        //Ejercicio del examen para comprobar los números de teléfono para ver que su prefijo es correcto.
+        if (!reposicionDTO.Telefono.StartsWith("+34"))
+        {
+            ModelState.AddModelError("Telefono", "¡Error!, el teléfono debe empezar por +34");
+            return BadRequest(new ValidationProblemDetails(ModelState));
+        }
+
         var metodoPagoEncontrar = await _context.MetodoPagos.FirstOrDefaultAsync(u =>
                 u.Id == reposicionDTO.MetodoPago);
 
