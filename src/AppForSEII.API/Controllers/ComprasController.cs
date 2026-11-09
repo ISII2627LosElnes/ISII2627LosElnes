@@ -96,6 +96,12 @@ public class ComprasController : ControllerBase
             return BadRequest($"No existe el usuario con el nombre {compraForCreate.Nombre} y apellido {compraForCreate.Apellidos} introducido en la base de datos");
         }
 
+        //EXÁMEN SPRINT 2 
+        if (!compraForCreate.Direccion.Contains("Calle"))
+        {
+            return BadRequest("¡Error! La dirección de envío debe contener la palabra Calle");
+        }
+
         // Actualizar el perfil del cliente con los datos del formulario
         cliente.Name = compraForCreate.Nombre;
         cliente.Surname = compraForCreate.Apellidos;
