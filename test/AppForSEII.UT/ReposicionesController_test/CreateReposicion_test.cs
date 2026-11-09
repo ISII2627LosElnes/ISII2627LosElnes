@@ -36,9 +36,9 @@ public class CreateReposicion_test : AppForSEII4SqliteUT
         {
             new ApplicationUser("1", "Héctor", "Fernández", "hector@uclm.es", "Avda. España s/n")
         };
-        usuarios[0].PhoneNumber = "600555111";
+        usuarios[0].PhoneNumber = "+34 600555111";
 
-        var metodoPago = new PayPal(12, "600555111");
+        var metodoPago = new PayPal(12, "+34 600555111");
 
         _context.AddRange(usuarios);
         _context.AddRange(generos);
@@ -57,25 +57,28 @@ public class CreateReposicion_test : AppForSEII4SqliteUT
         };
 
         // Caso 1: reposicionItem es null
-        var reposicionItemNull = new ReposicionForCreateDTO("Héctor", "Fernández", "600777666", 12, null, "Comentario válido de más de veinte caracteres");
+        var reposicionItemNull = new ReposicionForCreateDTO("Héctor", "Fernández", "+34 600777666", 12, null, "Comentario válido de más de veinte caracteres");
 
         // Caso 2: reposicionItem está vacío
-        var reposicionItemCero = new ReposicionForCreateDTO("Héctor", "Fernández", "600777666", 12, new List<ReposicionItemDTO>(), "Comentario válido de más de veinte caracteres");
+        var reposicionItemCero = new ReposicionForCreateDTO("Héctor", "Fernández", "+34 600777666", 12, new List<ReposicionItemDTO>(), "Comentario válido de más de veinte caracteres");
 
         // Caso 3: usuario no existe ("Jesus" "Díaz")
-        var usuarioNull = new ReposicionForCreateDTO("Jesus", "Díaz", "600777999", 12, itemsValidos, "Comentario válido de más de veinte caracteres");
+        var usuarioNull = new ReposicionForCreateDTO("Jesus", "Díaz", "+34 600777999", 12, itemsValidos, "Comentario válido de más de veinte caracteres");
 
         // Caso 4: método de pago no existe
-        var metodoPagoNull = new ReposicionForCreateDTO("Héctor", "Fernández", "600777666", 100000, itemsValidos, "Comentario válido de más de veinte caracteres");
+        var metodoPagoNull = new ReposicionForCreateDTO("Héctor", "Fernández", "+34 600777666", 100000, itemsValidos, "Comentario válido de más de veinte caracteres");
 
         // Caso 5: libro no existe ("Libro no válido")
-        var libroNull = new ReposicionForCreateDTO("Héctor", "Fernández", "600777666", 12, new List<ReposicionItemDTO> { new ReposicionItemDTO("Libro no válido", "Autor no válido", 2) }, "Comentario válido de más de veinte caracteres");
+        var libroNull = new ReposicionForCreateDTO("Héctor", "Fernández", "+34 600777666", 12, new List<ReposicionItemDTO> { new ReposicionItemDTO("Libro no válido", "Autor no válido", 2) }, "Comentario válido de más de veinte caracteres");
 
         // Caso 6: stock es mayor a 0
-        var stockMayor0 = new ReposicionForCreateDTO("Héctor", "Fernández", "600777666", 12, new List<ReposicionItemDTO> { new ReposicionItemDTO("La Sombra del Viento", "Carlos Ruiz Zafón", 2) }, "Comentario válido de más de veinte caracteres");
+        var stockMayor0 = new ReposicionForCreateDTO("Héctor", "Fernández", "+34 600777666", 12, new List<ReposicionItemDTO> { new ReposicionItemDTO("La Sombra del Viento", "Carlos Ruiz Zafón", 2) }, "Comentario válido de más de veinte caracteres");
 
         //Caso 7: cantidad de libro es 0 o menor que 0
-        var cantidadMenorIgual0 = new ReposicionForCreateDTO("Héctor", "Fernández", "600777666", 12, new List<ReposicionItemDTO> { new ReposicionItemDTO("El Señor de los Anillos", "J.R.R. Tolkien", 0) }, "Comentario válido de más de veinte caracteres");
+        var cantidadMenorIgual0 = new ReposicionForCreateDTO("Héctor", "Fernández", "+34 600777666", 12, new List<ReposicionItemDTO> { new ReposicionItemDTO("El Señor de los Anillos", "J.R.R. Tolkien", 0) }, "Comentario válido de más de veinte caracteres");
+
+        //Caso 8: prefijo de teléfono correcto
+        var prefijoCorrecto = new ReposicionForCreateDTO("Héctor", "Fernández", "600777666", 12, new List<ReposicionItemDTO> { new ReposicionItemDTO("El Señor de los Anillos", "J.R.R. Tolkien", 2) }, "Comentario válido de más de veinte caracteres");
 
         var objetosADevolver = new List<object[]>
         {
@@ -85,7 +88,8 @@ public class CreateReposicion_test : AppForSEII4SqliteUT
             new object[] { metodoPagoNull, "El método de pago no se encuentra en la base de datos" },
             new object[] { libroNull, "El libro con título 'Libro no válido' no existe en el catálogo." },
             new object[] { stockMayor0, "No se puede reponer el libro 'La Sombra del Viento' porque actualmente hay stock disponible (5 unidades). Solo se pueden reponer libros con stock = 0." },
-            new object[] { cantidadMenorIgual0, "No se puede reponer el libro 'El Señor de los Anillos' porque actualmente la cantidad que se quiere reponer es menor o igual a 0" }
+            new object[] { cantidadMenorIgual0, "No se puede reponer el libro 'El Señor de los Anillos' porque actualmente la cantidad que se quiere reponer es menor o igual a 0" },
+            new object[] { prefijoCorrecto, "¡Error!, el teléfono debe empezar por +34"}
         };
 
         return objetosADevolver;
@@ -122,7 +126,7 @@ public class CreateReposicion_test : AppForSEII4SqliteUT
         var reposicionDTO = new ReposicionForCreateDTO(
             "Héctor",
             "Fernández",
-            "600555111",
+            "+34 600555111",
             12,
             new List<ReposicionItemDTO> { new ReposicionItemDTO("El Señor de los Anillos", "J.R.R. Tolkien", 2) },
             "Comentario válido de más de veinte caracteres"
@@ -132,7 +136,7 @@ public class CreateReposicion_test : AppForSEII4SqliteUT
         var detailDTOEsperado = new ReposicionDetailDTO(
             "Héctor",
             "Fernández",
-            "600555111",
+            "+34 600555111",
             DateTime.Today,
             30.0,
             new List<ReposicionItemDTO> { new ReposicionItemDTO("El Señor de los Anillos", "J.R.R. Tolkien", 2) },
