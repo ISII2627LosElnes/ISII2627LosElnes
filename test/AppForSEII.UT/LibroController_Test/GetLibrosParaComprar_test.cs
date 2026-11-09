@@ -116,14 +116,8 @@ public class GetLibrosParaComprar_test : AppForSEII4SqliteUT
         var okResult = Assert.IsType<OkObjectResult>(result);
         var libroDTOsActual = Assert.IsType<List<LibroParaComprarDTO>>(okResult.Value);
         
-        // Comprobación segura elemento a elemento para evitar fallos de referencia
-        Assert.Equal(expectedLibros.Count, libroDTOsActual.Count);
-        for (int i = 0; i < expectedLibros.Count; i++)
-        {
-            Assert.Equal(expectedLibros[i].Id, libroDTOsActual[i].Id);
-            Assert.Equal(expectedLibros[i].Titulo, libroDTOsActual[i].Titulo);
-            Assert.Equal(expectedLibros[i].PrecioCompra, libroDTOsActual[i].PrecioCompra);
-        }
+        // Comprobación de que la lista devuelta coincide con la esperada
+        Assert.Equal(expectedLibros, libroDTOsActual);
     }
 
     [Fact]
