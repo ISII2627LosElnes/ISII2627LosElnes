@@ -75,6 +75,13 @@ public class CreateSubasta_test : AppForSEII4SqliteUT
         //Caso 6: precio de la puja <= 0
         var precioPujaMenorA0 = new SubastaForCreateDTO("Mark", "Evans", "410723429", 1, "Comentario válido de más de veinte caracteres", new List<SubastaItemDTO> { new SubastaItemDTO("Caperucita roja", "Charles", "Recomendado para niños", -4m, 1)});
 
+        //CASO EXAMEN 1: Se introduce "Paco"
+        var nombrePaco = new SubastaForCreateDTO("Paco", "Evans", "410723429", 1, "Comentario válido de más de veinte caracteres", itemsValidos);
+
+        //CASO EXAMEN 2: Se introduce "Pepe"
+        var nombrePepe = new SubastaForCreateDTO("Pepe", "Evans", "410723429", 1, "Comentario válido de más de veinte caracteres", itemsValidos);
+
+
         var objetosADevolver = new List<object[]>
         {
             //caso en el no se selecciona ningún item
@@ -90,7 +97,14 @@ public class CreateSubasta_test : AppForSEII4SqliteUT
             //caso en el que no hay stock disponible
             new object[] { stockInsuficiente, "Error! Libro titulado 'Cronicas de la torre' no está disponible para ser subastado" },
             //caso en el se mete un precio de puja menor igual a 0
-            new object[] { precioPujaMenorA0, "Error! El precio de la puja para 'Caperucita roja' debe ser mayor de 0" }
+            new object[] { precioPujaMenorA0, "Error! El precio de la puja para 'Caperucita roja' debe ser mayor de 0" },
+
+
+
+            //CASO EXAMEN EN EL QUE SE METE COMO NOMBRE "PACO"
+            new object[] { nombrePaco, "¡Error!, los Pacos y los Pepes no pueden pujar" },
+            //CASO EXAMEN EN EL QUE SE METE COMO NOMBRE "PEPE"
+            new object[] { nombrePepe, "¡Error!, los Pacos y los Pepes no pueden pujar" }
         };
 
         return objetosADevolver;
