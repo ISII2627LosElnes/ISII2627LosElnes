@@ -71,6 +71,14 @@ public class ResenasController : ControllerBase
             var user = _context.ApplicationUsers.FirstOrDefault(au => au.Name == resenaForCreate.Nombre && au.Surname == resenaForCreate.Apellidos);
             if (user == null)
                 ModelState.AddModelError("ResenaApplicationUser", "¡Error! El usuario no está registrado");
+
+        //EXAMEN: COMPROBAR QUE EL TITULO EMPIECE POR RESEÑA:
+        if (!resenaForCreate.TituloResena.StartsWith("Resena:"))
+        {
+            ModelState.AddModelError("TituloResena", "¡Error! El titulo de la resena debe empezar por Resena:");
+        }
+
+
             //devolver los errores todos juntos
         if (ModelState.ErrorCount > 0)
         {
