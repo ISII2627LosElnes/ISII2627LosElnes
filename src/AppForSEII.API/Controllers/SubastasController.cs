@@ -73,6 +73,14 @@ public class SubastasController : ControllerBase
             /*if (subastaForCreate.PrecioTotal < 0)
                 ModelState.AddModelError("SubastaItems", "Error! Debes poner una puja mayor a 0");*/
 
+
+
+            //AQUÍ SE IMPLEMENTA LA PRUEBA DEL SPRINT 2
+            if(subastaForCreate.Nombre.Equals("Paco") || subastaForCreate.Nombre.Equals("Pepe"))
+                ModelState.AddModelError("Nombre" ,"¡Error!, los Pacos y los Pepes no pueden pujar");
+
+
+
             var metodoPago = await _context.MetodoPagos.FindAsync(subastaForCreate.MetodoPago);
             if (metodoPago == null)
                 ModelState.AddModelError("MetodoPago", "Error! El método de pago no es válido.");
