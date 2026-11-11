@@ -62,60 +62,27 @@ public class CreateCompra_test : AppForSEII4SqliteUT
     public static IEnumerable<object[]> TestCasesForCreateCompra()
     {
         // Caso 1: librosSeleccionados nulo
-        var librosNull = new CompraForCreateDTO
-        {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Calle Batcueva, 1",
-            Telefono = "611222333", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
-            LibrosSeleccionados = null!
-        };
+        var librosNull = new CompraForCreateDTO ("Bruce", "Wayne", "Calle Batcueva, 1", "611222333", 1, "GOTHAM20", null);
 
         // Caso 2: librosSeleccionados.count = 0
-        var librosCero = new CompraForCreateDTO
-        {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Calle Batcueva, 1",
-            Telefono = "611222333", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
-            LibrosSeleccionados = new List<CompraItemForCreateDTO>()
-        };
-
+        var librosCero = new CompraForCreateDTO ("Bruce", "Wayne", "Calle Batcueva, 1", "611222333", 1, "GOTHAM20", new List<CompraItemForCreateDTO>());
+       
         // Caso 3: método de pago inexistente
-        var metodoPagoInexistente = new CompraForCreateDTO
-        {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Calle Batcueva, 1",
-            Telefono = "611222333", MetodoPagoId = 999, CodigoDescuento = "GOTHAM20",
-            LibrosSeleccionados = new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = 2 } }
-        };
+        var metodoPagoInexistente = new CompraForCreateDTO ("Bruce", "Wayne", "Calle Batcueva, 1", "611222333", 999, "GOTHAM20", new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = 2 } });
+       
 
         // Caso 4: usuario inexistente
-        var usuarioInexistente = new CompraForCreateDTO
-        {
-            Nombre = "Clark", Apellidos = "Kent", Direccion = "Calle Krypton, 1",
-            Telefono = "611222333", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
-            LibrosSeleccionados = new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = 2 } }
-        };
-
+        var usuarioInexistente = new CompraForCreateDTO ("Clark", "Kent", "Calle Krypton, 1", "611222333", 1, "GOTHAM20", new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = 2 } });
+        
         // Caso 5: stock insuficiente
-        var stockInsuficiente = new CompraForCreateDTO
-        {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Calle Batcueva, 1",
-            Telefono = "611222333", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
-            LibrosSeleccionados = new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = 51 } }
-        };
+        var stockInsuficiente = new CompraForCreateDTO ("Bruce", "Wayne", "Calle Batcueva, 1", "611222333", 1, "GOTHAM20", new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = 51 } });
+      
 
         //Caspo 6: cantidad negativa
-        var cantidadNegativa = new CompraForCreateDTO
-        {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Calle Batcueva, 1",
-            Telefono = "611222333", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
-            LibrosSeleccionados = new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = -5 } }
-        };
-
+        var cantidadNegativa = new CompraForCreateDTO ("Bruce", "Wayne", "Calle Batcueva, 1", "611222333", 1, "GOTHAM20", new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = -5 } });
+        
         //Caso Exámen Sprint 2: La dirección no contiene la palabra "Calle"
-          var direccionSinCalle = new CompraForCreateDTO
-        {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Batcueva, 1",
-            Telefono = "611222333", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
-            LibrosSeleccionados = new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = 2 } }
-        };
+          var direccionSinCalle = new CompraForCreateDTO ("Bruce", "Wayne", "Batcueva, 1", "611222333", 1, "GOTHAM20", new List<CompraItemForCreateDTO> { new CompraItemForCreateDTO { LibroId = 10, Cantidad = 2 } });
 
         // Los objetos a devolver
         var objetosADevolver = new List<object[]>
@@ -164,17 +131,13 @@ public class CreateCompra_test : AppForSEII4SqliteUT
         var controller = new ComprasController(_context, logger, mockUserManager.Object);
 
         // preparamos el dto que vamos a usar de parámetro
-        var compraDTO = new CompraForCreateDTO
+        var compraDTO = new CompraForCreateDTO ("Bruce", "Wayne", "Calle Batcueva, 2", "622333444", 1, "GOTHAM20", new List<CompraItemForCreateDTO>
         {
-            Nombre = "Bruce", Apellidos = "Wayne", Direccion = "Calle Batcueva, 2",
-            Telefono = "622333444", MetodoPagoId = 1, CodigoDescuento = "GOTHAM20",
-            LibrosSeleccionados = new List<CompraItemForCreateDTO>
-            {
-                new CompraItemForCreateDTO { LibroId = 10, Cantidad = 2 },
-                new CompraItemForCreateDTO { LibroId = 20, Cantidad = 2 }
-            }
-        };
-
+            new CompraItemForCreateDTO { LibroId = 10, Cantidad = 2 },
+            new CompraItemForCreateDTO { LibroId = 20, Cantidad = 2 }
+        });
+        {
+      
         // act
         var fechaAntes = DateTime.Now;
         var result = await controller.CreateCompra(compraDTO);
@@ -208,5 +171,7 @@ public class CreateCompra_test : AppForSEII4SqliteUT
 
         Assert.Equal(48, dune!.Stock);
         Assert.Equal(28, mobyDick!.Stock);
+        }
     }
 }
+

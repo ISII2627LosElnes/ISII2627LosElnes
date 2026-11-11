@@ -4,6 +4,18 @@ namespace AppForSEII.API.CompraDTOs;
 
 public class CompraForCreateDTO
 {
+
+    public CompraForCreateDTO(string nombre, string apellidos, string direccion, string telefono, int metodoPagoId, string? codigoDescuento, List<CompraItemForCreateDTO>? librosSeleccionados)
+    {
+        Nombre = nombre;
+        Apellidos = apellidos;
+        Direccion = direccion;
+        Telefono = telefono;
+        MetodoPagoId = metodoPagoId;
+        CodigoDescuento = codigoDescuento;
+        LibrosSeleccionados = librosSeleccionados ?? new List<CompraItemForCreateDTO>();
+    }
+
     [Required(ErrorMessage = "El nombre es obligatorio")]
     public string Nombre { get; set; }
 
