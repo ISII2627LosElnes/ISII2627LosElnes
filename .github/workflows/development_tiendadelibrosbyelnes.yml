@@ -3,11 +3,11 @@ name: Build and deploy ASP.Net Core app to Azure Web App - tiendadelibrosByElnes
 on:
   push:
     branches:
-      - 'ElenaNavarro-ContinuousDelivery' # Cambia esto por el nombre exacto de TU rama, NO la de development
+      - 'Samuelne2626-ContinuousDelivery'
   pull_request:
     branches:
       - 'development'
-    types: # Esto dispara el workflow cuando un PR se cierra.
+    types: 
       - closed
   workflow_dispatch:
 
@@ -15,7 +15,7 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read 
     
     env:
       API: ./src/AppForSEII.API/AppForSEII.API.csproj
@@ -44,7 +44,6 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
-    # Esta línea asegura que solo se despliegue si el PR se aprueba y fusiona
     if: github.event.pull_request.merged == true
     runs-on: windows-latest
     needs: build
@@ -58,13 +57,11 @@ jobs:
         with:
           name: .net-app
 
-      # EL PASO DE 'Login to Azure' SE HA ELIMINADO COMPLETAMENTE
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'tiendadelibrosByElnes'
-          # Pon aquí el nombre exacto del SECRETO que creaste en GitHub
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_SAMUEL }}
           package: .
