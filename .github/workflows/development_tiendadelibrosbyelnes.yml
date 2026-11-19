@@ -1,19 +1,24 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy ASP.Net Core app to Azure Web App - tiendadelibrosByElnes
 
 on:
   push:
     branches:
+      - 'Samuelne2626-ContinuousDelivery'
+  pull_request:
+    branches:
       - 'development'
+    types: 
+      - closed
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read 
+    
+    env:
+      API: ./src/AppForSEII.API/AppForSEII.API.csproj
 
     steps:
       - uses: actions/checkout@v4
@@ -23,11 +28,14 @@ jobs:
         with:
           dotnet-version: '10.x'
 
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.API }}
+
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build ${{ env.API }} --configuration Release --no-restore
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish ${{ env.API }} -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -36,30 +44,24 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
+    if: github.event.pull_request.merged == true
     runs-on: windows-latest
     needs: build
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      id-token: write 
+      contents: read 
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5C95A502D47E44CEA983A80622EDC816 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_031095C1CB584B75BFCD100A165518EF }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_77023EA59F3940E5BDCABBEC1849567B }}
+
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'tiendadelibrosByElnes'
-          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_SAMUEL }}
           package: .
-          
