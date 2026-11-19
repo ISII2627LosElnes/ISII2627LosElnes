@@ -90,7 +90,7 @@ public class CreateCompra_test : AppForSEII4SqliteUT
             new object[] { librosNull, "Debe seleccionar al menos un libro." },
             new object[] { librosCero, "Debe seleccionar al menos un libro." },
             new object[] { metodoPagoInexistente, "El método de pago no es válido." },
-            new object[] { usuarioInexistente, "No existe el usuario con el nombre Clark" },
+            new object[] { usuarioInexistente, "El usuario no está registrado." },
             new object[] { stockInsuficiente, "No hay stock suficiente para 'Dune'." },
             new object[] { cantidadNegativa, "La cantidad para 'Dune' debe ser mayor que cero." },
             new object[] { direccionSinCalle, "¡Error! La dirección de envío debe contener la palabra Calle" }
