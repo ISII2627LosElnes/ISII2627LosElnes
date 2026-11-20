@@ -1,0 +1,178 @@
+@* directivas *@
+@page "/resenas/listlibrospararesenar"
+@using AppForSEII.Web.API
+@using Microsoft.AspNetCore.Authorization
+
+
+@inject AppForSEIIAPIClient apiservice
+@inject ResenaStateContainer resenaState
+@inject NavigationManager navigation
+
+@attribute [Authorize]
+
+@*HTML con las llamadas a C#*@
+
+        @*cabecera*@
+        <PageTitle>Reseñar libros</PageTitle>
+
+        <h3>Libros para reseñar</h3>
+
+        <div class="container">
+
+            @* filtros *@
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Tipo de libro</label>
+                    <input class="form-control" @bind="tipoLibro" />
+                </div>
+
+                <div class="col-md-6">
+                    <label>Género</label>
+                    <input class="form-control" @bind="genero" />
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col">
+                    <button class="btn btn-primary" @onclick="BuscarLibros">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+
+            @* resultados *@
+            <div class="row mt-3">
+
+                @*columna izquierda*@
+                <div class="col-md-8">
+                    @*comprobamos que se han cargado los libros *@
+                    @if (libros != null)
+                    {   
+                        @*si la api devuelve lista vacia se muestra el mensaje*@
+                        @if (!libros.Any())
+                        {
+                            <p>No se han encontrado libros.</p>
+                        }
+                        else
+                        {
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Tipo</th>
+                                        <th>Género</th>
+                                        <th>Editorial</th>
+                                        <th>Autor</th>
+                                        <th>Calificación</th>
+                                        <th>Fecha</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var libro in libros)
+                                    {
+                                        <tr>
+                                            <td>@libro.Titulo</td>
+                                            <td>@libro.TipoLibro</td>
+                                            <td>@libro.Genero</td>
+                                            <td>@libro.Editorial</td>
+                                            <td>@libro.Autor</td>
+                                            <td>@libro.CalificacionMedia</td>
+                                            <td>@libro.FechaLanzamiento.ToString("dd/MM/yyyy")</td>
+                                                                    <td>
+                                            <button class="btn btn-primary"
+                                                    @onclick="() => AddLibro(libro)">
+                                                Añadir
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    }
+
+                </div>
+
+
+
+                @* columna derecha *@
+                <div class="col-md-4">
+
+                    <button class="btn btn-secondary mb-2"
+                            @onclick="ToggleLibrosSeleccionados">
+                        Libros seleccionados: @resenaState.LibrosSeleccionados.Count
+                    </button>
+
+                    <div hidden="@(!mostrarSeleccionados)">
+                        <h5>Libros seleccionados</h5>
+
+                        @if (resenaState.LibrosSeleccionados.Count == 0)
+                        {
+                            <p>No has seleccionado ningún libro.</p>
+                        }
+                        else
+                        {
+                            @foreach (var libro in resenaState.LibrosSeleccionados)
+                            {
+                                <div class="mb-2">
+                                    <span>@libro.Titulo</span>
+                                    <button class="btn btn-danger btn-sm"
+                                            @onclick="() => RemoveLibro(libro)">Eliminar
+                                    </button>
+                                </div>
+                            }
+                        }
+
+                        <button class="btn btn-primary"
+                                disabled="@(resenaState.LibrosSeleccionados.Count == 0)"
+                                @onclick="HacerResena">
+                            Hacer reseña
+                        </button>
+                    </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+ @*logica en C#*@
+@code {
+    private string? tipoLibro;
+    private string? genero;
+    private ICollection<LibroParaResenarDTO>? libros;
+
+    private async Task BuscarLibros()
+    {
+         libros = await apiservice.GetLibrosParaResenarAsync(tipoLibro, genero);
+    }
+    private void AddLibro(LibroParaResenarDTO libro)
+    {
+        resenaState.AddLibro(libro);
+    }
+
+    private void RemoveLibro(LibroParaResenarDTO libro)
+    {
+        resenaState.RemoveLibro(libro);
+    }
+
+    private void HacerResena()
+{
+    navigation.NavigateTo("/resenas/createresena");
+}
+
+private bool mostrarSeleccionados = true;
+
+private void ToggleLibrosSeleccionados()
+{
+    mostrarSeleccionados = !mostrarSeleccionados;
+}
+
+protected override async Task OnInitializedAsync()
+{
+    libros = await apiservice.GetLibrosParaResenarAsync(null, null);
+}
+}
