@@ -1,0 +1,123 @@
+@* 1. DIRECTIVAS *@
+@page "/reposiciones/selectreposiciones"
+@rendermode InteractiveServer
+@using AppForSEII.Web.API
+@inject AppForSEIIAPIClient apiservice
+@* Descomenta estas dos líneas cuando quieras exigir inicio de sesión *@
+@* @using Microsoft.AspNetCore.Authorization *@
+@* @attribute [Authorize] *@
+
+<PageTitle>Reponer Libros</PageTitle>
+
+@* 2. MARKUP HTML CON BOOTSTRAP Y RAZOR *@
+<div class="container">
+    @* Cabecera *@
+    <h3>Seleccionar libros para reponer</h3>
+
+    @* Filtros (Autor y Género) *@
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Filtrar por autor..." @bind="filtroAutor" id="inputAutor" />
+        </div>
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Filtrar por género..." @bind="filtroGenero" id="inputGenero" />
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-primary" @onclick="SearchLibros" id="searchLibros">Buscar</button>
+        </div>
+    </div>
+
+    @* Aviso de error si falla la API *@
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger">@errorMessage</div>
+    }
+
+    @* Resultados y hueco para el carrito *@
+    <div class="row">
+        <div class="col-md-8">
+            @if (libros == null)
+            {
+                <p>Cargando libros...</p>
+            }
+            else if (!libros.Any())
+            {
+                <p>No hay libros disponibles para reponer con esos filtros.</p>
+            }
+            else
+            {
+                <table class="table table-striped table-hover" id="TableOfLibros">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Autor</th>
+                            <th>Género</th>
+                            <th>Fecha Lanzamiento</th>
+                            <th>Precio Reposición</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var libro in libros)
+                        {
+                            <tr>
+                                <td>@libro.Titulo</td>
+                                <td>@libro.Autor</td>
+                                <td>@libro.Genero</td>
+                                <td>@libro.FechaLanzamiento.DateTime.ToShortDateString()</td>
+                                <td>@libro.PrecioReposicion €</td>
+                                <td>
+                                    <button class="btn btn-outline-primary btn-sm" id="libroToReponer_@libro.Titulo">
+                                        Añadir
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Carrito de reposición</h5>
+                    <p class="text-muted">Aquí mostraremos los libros seleccionados cuando creemos el StateContainer.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 3. LÓGICA C# *@
+@code {
+    private ICollection<LibroParaReponerDTO>? libros;
+    private string? filtroAutor;
+    private string? filtroGenero;
+    private string errorMessage = "";
+
+    // Se ejecuta automáticamente al cargar la página
+    protected override async Task OnInitializedAsync()
+    {
+        await SearchLibros();
+    }
+
+    private async Task SearchLibros()
+    {
+        errorMessage = "";
+        try
+        {
+            // Si el input está vacío, enviamos null para que la API no filtre por ese campo
+            string? autor = string.IsNullOrWhiteSpace(filtroAutor) ? null : filtroAutor;
+            string? genero = string.IsNullOrWhiteSpace(filtroGenero) ? null : filtroGenero;
+
+            libros = await apiservice.GetLibrosParaReponerAsync(autor, genero);
+        }
+        catch (ApiException ex)
+        {
+            errorMessage = "Error al conectar con la API para cargar los libros.";
+            libros = new List<LibroParaReponerDTO>();
+        }
+        StateHasChanged();
+    }
+}
