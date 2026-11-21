@@ -93,7 +93,7 @@ public class ComprasController : ControllerBase
 
         if (cliente == null)
         {
-            return BadRequest($"No existe el usuario con el nombre {compraForCreate.Nombre} y apellido {compraForCreate.Apellidos} introducido en la base de datos");
+            return BadRequest($"El usuario no está registrado.");
         }
 
         //EXÁMEN SPRINT 2 
