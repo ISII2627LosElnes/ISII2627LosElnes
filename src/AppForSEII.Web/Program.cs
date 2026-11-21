@@ -7,7 +7,7 @@ using AppForSEII.Web.Components.Account;
 using AppForSEII.Web.Data;
 using AppForSEII.Web.API;
 
-
+using AppForSEII.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +80,7 @@ builder.Services.AddScoped<AppForSEIIAPIClient>(sp =>new AppForSEIIAPIClient(URI
 
 //StateContainer de Comprar libros
 builder.Services.AddScoped<AppForSEII.Web.CompraStateContainer>();
+builder.Services.AddScoped<ResenaStateContainer>();
 
 var app = builder.Build();
 
