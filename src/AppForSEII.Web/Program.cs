@@ -6,6 +6,7 @@ using AppForSEII.Web.Components;
 using AppForSEII.Web.Components.Account;
 using AppForSEII.Web.Data;
 using AppForSEII.Web.API;
+using AppForSEII.Web;
 
 using AppForSEII.Web;
 
@@ -78,6 +79,7 @@ string? URI2API = builder.Configuration.GetValue(typeof(string), "AppForSEIIAPIC
 //the environment variable URI2API is defined in appsettings.json
 builder.Services.AddScoped<AppForSEIIAPIClient>(sp =>new AppForSEIIAPIClient(URI2API, new HttpClient()));
 
+builder.Services.AddScoped<SubastaStateContainer>();
 //StateContainer de Comprar libros
 builder.Services.AddScoped<AppForSEII.Web.CompraStateContainer>();
 builder.Services.AddScoped<ResenaStateContainer>();
