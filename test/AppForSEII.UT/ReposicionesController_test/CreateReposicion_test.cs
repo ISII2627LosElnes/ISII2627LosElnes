@@ -84,7 +84,7 @@ public class CreateReposicion_test : AppForSEII4SqliteUT
         {
             new object[] { reposicionItemNull, "El carrito de reposición no puede estar vacío." },
             new object[] { reposicionItemCero, "El carrito de reposición no puede estar vacío." },
-            new object[] { usuarioNull, "No existe el usuario con el nombre Jesus y apellido Díaz introducido en la base de datos" },
+            new object[] { usuarioNull, "El usuario no está registrado" },
             new object[] { metodoPagoNull, "El método de pago no se encuentra en la base de datos" },
             new object[] { libroNull, "El libro con título 'Libro no válido' no existe en el catálogo." },
             new object[] { stockMayor0, "No se puede reponer el libro 'La Sombra del Viento' porque actualmente hay stock disponible (5 unidades). Solo se pueden reponer libros con stock = 0." },
