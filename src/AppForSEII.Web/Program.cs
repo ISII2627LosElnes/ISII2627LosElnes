@@ -8,7 +8,7 @@ using AppForSEII.Web.Data;
 using AppForSEII.Web.API;
 using AppForSEII.Web;
 
-
+using AppForSEII.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +80,9 @@ string? URI2API = builder.Configuration.GetValue(typeof(string), "AppForSEIIAPIC
 builder.Services.AddScoped<AppForSEIIAPIClient>(sp =>new AppForSEIIAPIClient(URI2API, new HttpClient()));
 
 builder.Services.AddScoped<SubastaStateContainer>();
+//StateContainer de Comprar libros
+builder.Services.AddScoped<AppForSEII.Web.CompraStateContainer>();
+builder.Services.AddScoped<ResenaStateContainer>();
 
 var app = builder.Build();
 

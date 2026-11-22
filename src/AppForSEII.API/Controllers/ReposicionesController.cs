@@ -82,7 +82,7 @@ public class ReposicionesController : ControllerBase
 
         if (usuario == null)
         {
-            ModelState.AddModelError("Usuario", $"No existe el usuario con el nombre {reposicionDTO.Nombre} y apellido {reposicionDTO.Apellido} introducido en la base de datos");
+            ModelState.AddModelError("Usuario", "El usuario no está registrado");
             return BadRequest(new ValidationProblemDetails(ModelState));
         }
 
