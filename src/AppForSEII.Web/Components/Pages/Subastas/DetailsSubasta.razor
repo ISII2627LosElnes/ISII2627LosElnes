@@ -1,0 +1,111 @@
+@page "/subastas/detailssubasta"
+@using AppForSEII.Web.API
+@using Microsoft.AspNetCore.Authorization
+@inject AppForSEIIAPIClient apiservice
+
+@attribute [Authorize]
+
+<h3>Subasta</h3>
+
+@if (subasta==null)
+{
+    <p>@error</p>    
+}else
+{
+    <table class="table table-borderless table-sm">
+        <tr>
+            <th>Nombre y apellidos</th>
+            <td id="NombreApellidos">@subasta.Nombre @subasta.Apellidos</td>
+        </tr>
+        <tr>
+            <th>Teléfono</th>
+            <td id="Teléfono">@subasta.Telefono</td>
+        </tr>
+        <tr>
+            <th>Precio de la subasta</th>
+            <td id="PrecioSubasta">@subasta.PrecioSubasta</td>
+        </tr>
+        <tr>
+            <th>Fecha de la subasta</th>
+            <td id="FechaSubasta">@subasta.FechaSubasta.ToString("dd/MM/yyyy hh:mm:ss")</td>
+        </tr>
+    </table>
+
+
+    <h4>Libros subastados</h4>
+
+    <table class="table" id="LibrosSubastados">
+        <thead>
+            <tr>
+                <th scope="col">Titulo</th>
+                <th scope="col">Autor</th>
+                <th scope="col">Descripcion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SubastaItemDTO item in subasta.SubastaItems)
+            {
+                <tr id="SubastaItem_@item.Titulo">
+                    <td>@item.Titulo</td>
+                    <td>@item.Autor</td>
+                    <td>@item.Descripcion</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    }
+
+
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int SubastaID { get; set; }
+    private SubastaDetailDTO subasta;
+    private string error = "";
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        //we check the user is logged in
+        string userName = "";
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var user = authState?.User;
+
+            if (user is not null)
+            {
+                if (user.Identity is not null && user.Identity.IsAuthenticated)
+                {
+                    userName = user.Identity.Name;
+                }
+            }
+        }
+
+        try {
+            var resultado = await apiservice.GetDetailsForSubastasAsync(SubastaID);
+            subasta = resultado?.FirstOrDefault();
+        }
+        catch (ApiException exception)
+        {
+            subasta = null;
+            error = $"API Error {exception.StatusCode} para SubastaID={SubastaID}: {exception.Message}";
+            return;
+        }
+
+        string nombreLogueado = userName.Contains('@') ? userName.Split('@')[0] : userName;
+        if ((subasta == null) || !string.Equals(subasta.Nombre, nombreLogueado, StringComparison.OrdinalIgnoreCase))
+        {
+            error = $"Error! La subasta es nula o pertenece a otro usuario \n subasta.Nombre asociado: '{subasta?.Nombre}' | userName: '{userName}' | nombreLogueado: '{nombreLogueado}'";
+            subasta = null;
+        }
+
+
+    }
+
+}

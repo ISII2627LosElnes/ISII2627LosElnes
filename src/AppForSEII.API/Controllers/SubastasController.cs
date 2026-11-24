@@ -47,9 +47,9 @@ public class SubastasController : ControllerBase
                     si.CantidadSubasta
                 )).ToList()
             ))
-            .FirstOrDefaultAsync();
+            .ToListAsync();
 
-            if (subasta == null)
+            if (!subasta.Any()) 
             {
                 return NotFound("No se ha encontrado la subasta");
             }
