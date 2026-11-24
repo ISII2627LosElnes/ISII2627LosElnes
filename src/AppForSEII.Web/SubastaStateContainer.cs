@@ -4,14 +4,19 @@ namespace AppForSEII.Web
 {
     public class SubastaStateContainer
     {
-        // Instancia de la subasta en curso que se compartirá entre páginas
+        // Instancia de la lista de libros seleccionados que se compartirá entre páginas
         public List<LibroParaSubastarDTO> librosSubasta { get; private set; } = new();
 
+        // Comprueba si un libro ya está añadido al carrito de pujas
+        public bool EstaLibroSeleccionado(LibroParaSubastarDTO libro)
+        {
+            return librosSubasta.Any(si => si.Titulo == libro.Titulo);
+        }
 
         // Añade un libro a la lista de pujas evitando duplicados (Paso 3)
         public void AnadirLibroSubasta(LibroParaSubastarDTO libro)
         {
-            if (!librosSubasta.Any(si => si.Titulo == libro.Titulo))
+            if (!EstaLibroSeleccionado(libro))
             {
                 librosSubasta.Add(libro);
             }
