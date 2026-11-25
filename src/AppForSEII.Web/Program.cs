@@ -84,6 +84,9 @@ builder.Services.AddScoped<SubastaStateContainer>();
 builder.Services.AddScoped<AppForSEII.Web.CompraStateContainer>();
 builder.Services.AddScoped<ResenaStateContainer>();
 
+//StateContainer de Reposicion de libros
+builder.Services.AddScoped<ReposicionStateContainer>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
