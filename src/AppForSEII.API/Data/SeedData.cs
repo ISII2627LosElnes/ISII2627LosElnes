@@ -576,48 +576,98 @@ public static void SeedCompras(ApplicationDbContext dbContext)
     dbContext.SaveChanges();
 }
 
+
+
 public static void SeedCompraItems(ApplicationDbContext dbContext)
 {
+    // Buscamos los libros que vamos a asociar a las compras
     var sombraDelViento = dbContext.Libros.FirstOrDefault(l => l.Titulo == "La sombra del viento");
     var juegoDelAngel = dbContext.Libros.FirstOrDefault(l => l.Titulo == "El juego del ángel");
     var harryPotter = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Harry Potter y la piedra filosofal");
     var detectivesSalvajes = dbContext.Libros.FirstOrDefault(l => l.Titulo == "Los detectives salvajes");
 
-    var compraConDescuento = dbContext.Compras.FirstOrDefault(c => c.CodigoDescuento == "DESC10");
-    var compraSinDescuento = dbContext.Compras.FirstOrDefault(c => c.PrecioTotal == 30.00m && c.CodigoDescuento == null);
+    // Buscamos cada compra por su fecha y su cliente
+    var compra1 = dbContext.Compras.FirstOrDefault(c =>
+        c.FechaCompra == new DateTime(2026, 10, 15) &&
+        c.Usuario.Email == "samuel@test.com");
 
-    if (sombraDelViento == null || juegoDelAngel == null || harryPotter == null ||
-        compraConDescuento == null || compraSinDescuento == null)
+    var compra2 = dbContext.Compras.FirstOrDefault(c =>
+        c.FechaCompra == new DateTime(2026, 10, 16) &&
+        c.Usuario.Email == "manuel@test.com");
+
+    var compra3 = dbContext.Compras.FirstOrDefault(c =>
+        c.FechaCompra == new DateTime(2026, 10, 17) &&
+        c.Usuario.Email == "ismael@test.com");
+
+    var compra4 = dbContext.Compras.FirstOrDefault(c =>
+        c.FechaCompra == new DateTime(2026, 10, 18) &&
+        c.Usuario.Email == "gabriel@test.com");
+
+    if (sombraDelViento == null || juegoDelAngel == null ||
+        harryPotter == null || detectivesSalvajes == null ||
+        compra1 == null || compra2 == null ||
+        compra3 == null || compra4 == null)
     {
         return;
     }
 
-    //Items para la compra 1
-    if (!dbContext.CompraItems.Any(ci => ci.LibroId == sombraDelViento.Id && ci.CompraId == compraConDescuento.Id))
+    // Relacionamos cada libro con la compra que le corresponde
+    var asignaciones = new[]
     {
-        dbContext.CompraItems.Add(new CompraItem(1,4,sombraDelViento,compraConDescuento));
+        new { Libro = sombraDelViento, Compra = compra1, CompraAnterior = compra1, Cantidad = 4 },
+        new { Libro = juegoDelAngel, Compra = compra2, CompraAnterior = compra1, Cantidad = 3 },
+        new { Libro = harryPotter, Compra = compra3, CompraAnterior = compra2, Cantidad = 5 },
+        new { Libro = detectivesSalvajes, Compra = compra4, CompraAnterior = compra2, Cantidad = 4 }
+    };
+
+    // Utilizamos una transacción para guardar todos los cambios juntos
+    using var transaction = dbContext.Database.BeginTransaction();
+
+    foreach (var asignacion in asignaciones)
+    {
+        // Comprobamos si el libro ya pertenece a su compra correcta
+        var item = dbContext.CompraItems.FirstOrDefault(ci =>
+            ci.LibroId == asignacion.Libro.Id &&
+            ci.CompraId == asignacion.Compra.Id);
+
+        if (item != null)
+        {
+            continue;
+        }
+
+        // Buscamos si el libro estaba asociado a la compra incorrecta
+        item = dbContext.CompraItems.FirstOrDefault(ci =>
+            ci.LibroId == asignacion.Libro.Id &&
+            ci.CompraId == asignacion.CompraAnterior.Id);
+
+        if (item != null)
+        {
+            // Conservamos la cantidad del libro
+            int cantidad = item.Cantidad;
+
+            // Eliminamos la asociación incorrecta
+            dbContext.CompraItems.Remove(item);
+            dbContext.SaveChanges();
+
+            // Creamos una nueva asociación con la compra correcta
+            dbContext.CompraItems.Add(
+                new CompraItem(0, cantidad, asignacion.Libro, asignacion.Compra)
+            );
+        }
+        else
+        {
+            // Si no existe el item, lo creamos directamente
+            dbContext.CompraItems.Add(
+                new CompraItem(0, asignacion.Cantidad, asignacion.Libro, asignacion.Compra)
+            );
+        }
     }
 
-    //Items para la compra 2    
-    if (!dbContext.CompraItems.Any(ci => ci.LibroId == juegoDelAngel.Id && ci.CompraId == compraConDescuento.Id))
-    {
-        dbContext.CompraItems.Add(new CompraItem(2,3,juegoDelAngel,compraConDescuento));
-    }
-
-    //Items para la compra 3
-    if (!dbContext.CompraItems.Any(ci => ci.LibroId == harryPotter.Id && ci.CompraId == compraSinDescuento.Id))
-    {
-        dbContext.CompraItems.Add(new CompraItem(3,5,harryPotter,compraSinDescuento));
-    }
-
-    //Items para la compra 4
-    if (!dbContext.CompraItems.Any(ci => ci.LibroId == detectivesSalvajes.Id && ci.CompraId == compraSinDescuento.Id))
-    {
-        dbContext.CompraItems.Add(new CompraItem(4,4,detectivesSalvajes,compraSinDescuento));
-    }
-
+    // Guardamos los cambios y confirmamos la transacción
     dbContext.SaveChanges();
+    transaction.Commit();
 }
+
 
 
 public static void SeedSubastas(ApplicationDbContext dbContext)
