@@ -23,7 +23,7 @@ public class SubastasController : ControllerBase
     
     [HttpGet]
     [Route("[action]")]
-    [ProducesResponseType(typeof(IList<SubastaDetailDTO>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(SubastaDetailDTO), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetDetailsForSubastas(int id)
     {
