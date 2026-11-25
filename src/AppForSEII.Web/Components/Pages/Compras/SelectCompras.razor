@@ -6,9 +6,13 @@
 @rendermode InteractiveServer
 @using AppForSEII.Web
 @using AppForSEII.Web.API
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 @inject AppForSEIIAPIClient apiservice
 @inject CompraStateContainer compraState
 @inject NavigationManager navigation
+
+
 
 @* Descomenta estas dos líneas cuando quieras exigir inicio de sesión como Cliente *@
 @* @using Microsoft.AspNetCore.Authorization *@

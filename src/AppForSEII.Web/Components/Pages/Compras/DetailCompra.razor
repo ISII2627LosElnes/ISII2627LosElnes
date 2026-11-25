@@ -1,0 +1,132 @@
+
+@* 1. DIRECTIVAS *@
+@page "/compras/detailcompra"
+@using AppForSEII.Web.API
+@inject AppForSEIIAPIClient apiservice
+
+<PageTitle>Detalle de Compra</PageTitle>
+
+@* 2. MARKUP HTML CON BOOTSTRAP Y RAZOR *@
+<div class="container">
+
+    <h3>Detalle de compra</h3>
+
+    @if (cargando)
+    {
+        <p>Cargando los detalles de la compra...</p>
+    }
+    else if (compra == null)
+    {
+        <div class="alert alert-danger">
+            @error
+        </div>
+    }
+    else
+    {
+        <table class="table table-borderless table-sm">
+            <tr>
+                <th>Nombre y apellidos</th>
+                <td id="NombreApellidos">@compra.Nombre @compra.Apellidos</td>
+            </tr>
+            <tr>
+                <th>Dirección de envío</th>
+                <td id="Direccion">@compra.Direccion</td>
+            </tr>
+            <tr>
+                <th>Teléfono</th>
+                <td id="Telefono">@compra.Telefono</td>
+            </tr>
+            <tr>
+                <th>Método de pago</th>
+                <td id="MetodoPago">@compra.MetodoPago</td>
+            </tr>
+            <tr>
+                <th>Fecha de compra</th>
+                <td id="FechaCompra">@compra.FechaCompra.ToString("dd/MM/yyyy HH:mm:ss")</td>
+            </tr>
+            <tr>
+                <th>Código de descuento</th>
+                <td id="CodigoDescuento">@(string.IsNullOrWhiteSpace(compra.CodigoDescuento) ? "Sin descuento" : compra.CodigoDescuento)</td>
+            </tr>
+        </table>
+
+        <h4>Libros comprados</h4>
+
+        <table class="table table-striped" id="LibrosComprados">
+            <thead>
+                <tr>
+                    <th scope="col">Título</th>
+                    <th scope="col">Género</th>
+                    <th scope="col">Editorial</th>
+                    <th scope="col">Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (CompraItemDTO item in compra.Compraitems)
+                {
+                    <tr id="CompraItem_@item.Titulo">
+                        <td>@item.Titulo</td>
+                        <td>@item.Genero</td>
+                        <td>@item.Editorial</td>
+                        <td>@item.Cantidad</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="row" colspan="3" class="text-end">Precio total</th>
+                    <td id="PrecioTotal">@compra.PrecioTotal.ToString("N2") €</td>
+                </tr>
+            </tfoot>
+        </table>
+    }
+
+</div>
+
+@* 3. LÓGICA C# *@
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int? CompraID { get; set; }
+
+    private ComprasDetailDTO? compra;
+    private string error = "";
+    private bool cargando = true;
+
+    // Recupera los detalles de la compra desde la API
+    protected override async Task OnParametersSetAsync()
+    {
+        compra = null;
+        error = "";
+
+        if (CompraID == null || CompraID <= 0)
+        {
+            error = "No se ha indicado una compra válida.";
+            cargando = false;
+            return;
+        }
+
+        cargando = true;
+
+        try
+        {
+            compra = await apiservice.GetDetailsForComprasAsync(CompraID);
+        }
+        catch (ApiException ex) when (ex.StatusCode == 404)
+        {
+            error = $"No existe ninguna compra con id={CompraID}.";
+        }
+        catch (ApiException)
+        {
+            error = "Error al cargar los detalles de la compra.";
+        }
+        catch (HttpRequestException)
+        {
+            error = "No se ha podido conectar con la API.";
+        }
+        finally
+        {
+            cargando = false;
+        }
+    }
+}
