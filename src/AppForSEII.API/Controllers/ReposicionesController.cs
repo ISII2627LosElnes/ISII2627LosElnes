@@ -28,7 +28,7 @@ public class ReposicionesController : ControllerBase
 
     [HttpGet]
     [Route("[action]")]
-    [ProducesResponseType(typeof(IList<ReposicionDetailDTO>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ReposicionDetailDTO), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetDetailsForReposiciones(int id)
     {

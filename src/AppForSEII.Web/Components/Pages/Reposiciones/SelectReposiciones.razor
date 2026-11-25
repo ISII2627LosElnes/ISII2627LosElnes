@@ -3,9 +3,10 @@
 @rendermode InteractiveServer
 @using AppForSEII.Web.API
 @inject AppForSEIIAPIClient apiservice
-@* Descomenta estas dos líneas cuando quieras exigir inicio de sesión *@
-@* @using Microsoft.AspNetCore.Authorization *@
-@* @attribute [Authorize] *@
+@inject ReposicionStateContainer reposicionState
+@inject NavigationManager navigation
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
 <PageTitle>Reponer Libros</PageTitle>
 
@@ -33,7 +34,7 @@
         <div class="alert alert-danger">@errorMessage</div>
     }
 
-    @* Resultados y hueco para el carrito *@
+    @* Resultados y Carrito *@
     <div class="row">
         <div class="col-md-8">
             @if (libros == null)
@@ -67,7 +68,9 @@
                                 <td>@libro.FechaLanzamiento.DateTime.ToShortDateString()</td>
                                 <td>@libro.PrecioReposicion €</td>
                                 <td>
-                                    <button class="btn btn-outline-primary btn-sm" id="libroToReponer_@libro.Titulo">
+                                    <button class="btn btn-outline-primary btn-sm"
+                                            @onclick="@(() => AddLibro(libro))"
+                                            id="libroToReponer_@libro.Titulo">
                                         Añadir
                                     </button>
                                 </td>
@@ -82,7 +85,47 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Carrito de reposición</h5>
-                    <p class="text-muted">Aquí mostraremos los libros seleccionados cuando creemos el StateContainer.</p>
+
+                    @if (!reposicion.ReposicionItems.Any())
+                    {
+                        <p class="text-muted">No hay libros seleccionados.</p>
+                    }
+                    else
+                    {
+                        @foreach (var item in reposicion.ReposicionItems)
+                        {
+                            var subtotal = reposicionState.GetPrecioUnitario(item.Titulo) * item.Cantidad;
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <strong>@item.Titulo</strong>
+                                    <span class="badge bg-secondary ms-1">x@item.Cantidad</span>
+                                    <div class="text-muted small">@subtotal.ToString("0.00") €</div>
+                                </div>
+                                <div class="d-flex gap-1">
+                                    <button class="btn btn-outline-secondary btn-sm"
+                                            @onclick="@(() => DecreaseLibro(item))"
+                                            title="Restar uno">
+                                        -
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm"
+                                            @onclick="@(() => RemoveItem(item))"
+                                            id="removeLibro_@item.Titulo">
+                                        Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    <hr />
+                    <h5>Precio total: @reposicionState.PrecioTotal.ToString("0.00") €</h5>
+
+                    <button class="btn btn-primary w-100 mt-2"
+                            @onclick="ReponerLibros"
+                            disabled="@(!reposicion.ReposicionItems.Any())"
+                            id="reponerLibrosButton">
+                        Reponer libros
+                    </button>
                 </div>
             </div>
         </div>
@@ -96,6 +139,8 @@
     private string? filtroGenero;
     private string errorMessage = "";
 
+    private ReposicionForCreateDTO reposicion => reposicionState.Reposicion;
+
     // Se ejecuta automáticamente al cargar la página
     protected override async Task OnInitializedAsync()
     {
@@ -107,17 +152,36 @@
         errorMessage = "";
         try
         {
-            // Si el input está vacío, enviamos null para que la API no filtre por ese campo
             string? autor = string.IsNullOrWhiteSpace(filtroAutor) ? null : filtroAutor;
             string? genero = string.IsNullOrWhiteSpace(filtroGenero) ? null : filtroGenero;
 
             libros = await apiservice.GetLibrosParaReponerAsync(autor, genero);
         }
-        catch (ApiException ex)
+        catch (ApiException)
         {
             errorMessage = "Error al conectar con la API para cargar los libros.";
             libros = new List<LibroParaReponerDTO>();
         }
         StateHasChanged();
+    }
+
+    private void AddLibro(LibroParaReponerDTO libro)
+    {
+        reposicionState.AddLibroToReposicion(libro);
+    }
+
+    private void DecreaseLibro(ReposicionItemDTO item)
+    {
+        reposicionState.DecreaseLibroQuantity(item);
+    }
+
+    private void RemoveItem(ReposicionItemDTO item)
+    {
+        reposicionState.RemoveReposicionItem(item);
+    }
+
+    private void ReponerLibros()
+    {
+        navigation.NavigateTo("/reposiciones/createreposicion");
     }
 }
