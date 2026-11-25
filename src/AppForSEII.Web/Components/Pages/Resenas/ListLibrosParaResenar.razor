@@ -15,31 +15,35 @@
         @*cabecera*@
         <PageTitle>Reseñar libros</PageTitle>
 
-        <h3>Libros para reseñar</h3>
+        <h3>Seleccionar libros para reseñar</h3>
 
         <div class="container">
 
             @* filtros *@
-            <div class="row">
-                <div class="col-md-6">
-                    <label>Tipo de libro</label>
-                    <input class="form-control" @bind="tipoLibro" />
+            <div class="row mb-3">
+
+                <div class="col-md-4">
+                    <input type="text"
+                        class="form-control"
+                        placeholder="Filtrar por tipo de libro..."
+                        @bind="tipoLibro" />
                 </div>
 
-                <div class="col-md-6">
-                    <label>Género</label>
-                    <input class="form-control" @bind="genero" />
+                <div class="col-md-4">
+                    <input type="text"
+                        class="form-control"
+                        placeholder="Filtrar por género..."
+                        @bind="genero" />
                 </div>
-            </div>
 
-            <div class="row mt-3">
-                <div class="col">
-                    <button class="btn btn-primary" @onclick="BuscarLibros">
+                <div class="col-md-4">
+                    <button class="btn btn-primary"
+                            @onclick="BuscarLibros">
                         Buscar
                     </button>
                 </div>
-            </div>
 
+            </div>
             @* resultados *@
             <div class="row mt-3">
 
@@ -55,7 +59,7 @@
                         }
                         else
                         {
-                            <table class="table">
+                            <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>Título</th>
@@ -80,11 +84,20 @@
                                             <td>@libro.Autor</td>
                                             <td>@libro.CalificacionMedia</td>
                                             <td>@libro.FechaLanzamiento.ToString("dd/MM/yyyy")</td>
-                                                                    <td>
-                                            <button class="btn btn-primary"
-                                                    @onclick="() => AddLibro(libro)">
-                                                Añadir
-                                            </button>
+                                            <td>
+                                            @if (resenaState.LibrosSeleccionados.Any(l => l.Id == libro.Id))
+                                            {
+                                                <button class="btn btn-outline-primary" disabled>
+                                                    Añadido
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-primary"
+                                                        @onclick="() => AddLibro(libro)">
+                                                    Añadir
+                                                </button>
+                                            }
                                         </td>
                                     </tr>
                                     }
@@ -100,37 +113,36 @@
                 @* columna derecha *@
                 <div class="col-md-4">
 
-                    <button class="btn btn-secondary mb-2"
-                            @onclick="ToggleLibrosSeleccionados">
-                        Libros seleccionados: @resenaState.LibrosSeleccionados.Count
-                    </button>
+                <div class="border rounded p-3">
 
-                    <div hidden="@(!mostrarSeleccionados)">
-                        <h5>Libros seleccionados</h5>
+                <h4>Libros seleccionados</h4>
 
-                        @if (resenaState.LibrosSeleccionados.Count == 0)
-                        {
-                            <p>No has seleccionado ningún libro.</p>
-                        }
-                        else
-                        {
-                            @foreach (var libro in resenaState.LibrosSeleccionados)
-                            {
-                                <div class="mb-2">
-                                    <span>@libro.Titulo</span>
-                                    <button class="btn btn-danger btn-sm"
-                                            @onclick="() => RemoveLibro(libro)">Eliminar
-                                    </button>
-                                </div>
-                            }
-                        }
+                @if (resenaState.LibrosSeleccionados.Count == 0)
+                {
+                    <p>No has seleccionado ningún libro.</p>
+                }
+                else
+                {
+                    @foreach (var libro in resenaState.LibrosSeleccionados)
+                    {
+                        <div class="border-bottom py-3 d-flex justify-content-between align-items-center">
+                            <strong>@libro.Titulo</strong>
 
-                        <button class="btn btn-primary"
-                                disabled="@(resenaState.LibrosSeleccionados.Count == 0)"
-                                @onclick="HacerResena">
-                            Hacer reseña
+                            <button class="btn btn-outline-danger"
+                                @onclick="() => RemoveLibro(libro)">
+                            Eliminar
                         </button>
                     </div>
+                    }
+                }
+
+                <button class="btn btn-primary w-100 mt-3"
+                        disabled="@(resenaState.LibrosSeleccionados.Count == 0)"
+                        @onclick="HacerResena">
+                    Hacer reseña
+                </button>
+
+</div>
 
             </div>
 
@@ -164,12 +176,6 @@
     navigation.NavigateTo("/resenas/createresena");
 }
 
-private bool mostrarSeleccionados = true;
-
-private void ToggleLibrosSeleccionados()
-{
-    mostrarSeleccionados = !mostrarSeleccionados;
-}
 
 protected override async Task OnInitializedAsync()
 {
