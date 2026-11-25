@@ -1,0 +1,102 @@
+@* directivas *@
+@page "/resenas/detailresena"
+@using AppForSEII.Web.API
+@using Microsoft.AspNetCore.Authorization
+
+@inject AppForSEIIAPIClient apiservice
+
+@attribute [Authorize]
+
+@* cabecera *@
+<PageTitle>Detalle de reseña</PageTitle>
+
+<h3>Detalle de la reseña</h3>
+
+
+@if (resena == null)
+{
+    <div class="alert alert-danger" role="alert">
+    @error
+    </div>
+}
+else
+{
+    @* datos del cliente y de la reseña *@
+    <table class="table table-borderless table-sm w-auto">
+        <tr>
+            <th class="pe-4">Nombre</th>
+            <td id="Nombre">@resena.Nombre</td>
+        </tr>
+        <tr>
+            <th class="pe-4">Apellidos</th>
+            <td id="Apellidos">@resena.Apellidos</td>
+        </tr>
+        <tr>
+            <th class="pe-4">Teléfono</th>
+            <td id="Telefono">@resena.Telefono</td>
+        </tr>
+        <tr>
+            <th class="pe-4">Fecha de la reseña</th>
+            <td id="FechaResena">@resena.FechaResena.ToString("dd/MM/yyyy")</td>
+        </tr>
+    </table>
+
+    @* libros reseñados *@
+<h4>Libros reseñados</h4>
+
+<table class="table table-striped table-hover" id="LibrosResenados">
+    <thead>
+        <tr>
+            <th scope="col">Título</th>
+            <th scope="col">Editorial</th>
+            <th scope="col">Tipo de libro</th>
+            <th scope="col">Calificación</th>
+            <th scope="col">Descripción</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (ResenaItemDTO item in resena.ResenaItems)
+        {
+            <tr id="ResenaItem_@item.Titulo">
+                <td>@item.Titulo</td>
+                <td>@item.Editorial</td>
+                <td>@item.TipoLibro</td>
+                <td>@item.Calificacion</td>
+                <td>@item.Descripcion</td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+
+
+
+@* logica en C# *@
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int ResenaID { get; set; }
+
+    private ResenaDetailDTO? resena;
+    private string error = "";
+
+    
+protected override async Task OnInitializedAsync()
+{
+    try
+    {
+        resena = await apiservice.GetDetailsForResenasAsync(ResenaID);
+    }
+    catch (ApiException exception)
+    {
+        resena = null;
+    }
+
+    if (resena == null)
+    {
+        error = $"No se ha podido obtener la reseña con ID={ResenaID}";
+    }
+}
+
+}

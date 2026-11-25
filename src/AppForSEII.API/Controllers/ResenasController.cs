@@ -22,7 +22,7 @@ public class ResenasController : ControllerBase
     
     [HttpGet]
     [Route("[action]")]
-    [ProducesResponseType(typeof(IList<ResenaDetailDTO>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ResenaDetailDTO), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> GetDetailsForResenas(int id)
     {
