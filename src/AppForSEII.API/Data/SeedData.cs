@@ -408,6 +408,17 @@ public static void SeedResenaItems(ApplicationDbContext dbContext)
         dbContext.ResenaItems.Add(new ResenaItem(sombraDelViento, null, 3, opinionLibro));
     }
 
+        // Añadimos más libros a una misma reseña
+    if (!dbContext.ResenaItems.Any(ri => ri.LibroId == juegoDelAngel.Id && ri.ResenaId == opinionLibro.Id))
+    {
+        dbContext.ResenaItems.Add(new ResenaItem(juegoDelAngel, "Una historia interesante que mantiene la intriga.", 4, opinionLibro));
+    }
+
+    if (!dbContext.ResenaItems.Any(ri => ri.LibroId == harryPotter.Id && ri.ResenaId == opinionLibro.Id))
+    {
+        dbContext.ResenaItems.Add(new ResenaItem(harryPotter, "Una lectura muy entretenida con grandes personajes.", 5, opinionLibro));
+    }
+
     dbContext.SaveChanges();
 }
 
